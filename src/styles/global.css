@@ -1,0 +1,111 @@
+@import './variables.css';
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500&display=swap');
+
+:root {
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'Inter', sans-serif;
+   
+}
+html {
+  scroll-behavior: smooth;
+}
+
+@font-face {
+  font-family: 'Span Compressed';
+  src: url('../fonts/Span/FFontspring-DEMO-span-thin') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Span Compressed';
+  src: url('../fonts/Span/Fontspring-DEMO-span-lightcomp.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Span Compressed';
+  src: url('../fonts/Span/Fontspring-DEMO-span-regularcomp.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Span Compressed';
+  src: url('../fonts/Span/Fontspring-DEMO-span-semiboldcomp.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Span Compressed';
+  src: url('../fonts/Span/Fontspring-DEMO-span-boldcomp.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Span Compressed', serif;
+  src: url('../fonts/Span/Fontspring-DEMO-span-italic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@layer utilities {
+  @media screen and (min-width: 768px), screen and (max-width: calc(1295px)) and (orientation: landscape) {
+    .sqsrte-large {
+      font-size: calc((var(--large-text-size-value) - 1) * 1.2vw + 1rem);
+    }
+  }
+}
+
+
+
+
+/* Now use it */
+h1 {
+  font-family: 'Span Compressed', serif;
+  
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+}
+
+
+
+
+
+
+button {
+  font-family: var(--font-family-sans);
+  cursor: pointer;
+ 
+  outline: none;
+  transition: all var(--transition-normal);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-primary-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray-dark);
+  border-radius: var(--border-radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray);
+}
