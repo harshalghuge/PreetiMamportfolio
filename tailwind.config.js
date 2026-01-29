@@ -7,9 +7,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
+        montserrat: ['Montserrat', 'sans-serif'],
         span: ['Span Compressed', 'serif'],
         serif: ['Cormorant Garamon', 'Cambria', 'Times New Roman', 'serif'],
-        sans: ['Inter','Arial', 'Helvetica', 'sans-serif'],
+        sans: ["Montserrat",'Inter','Arial', 'Helvetica', 'sans-serif'],
       },
       animation: {
         fadeInUp: "fadeInUp 1s ease-out",

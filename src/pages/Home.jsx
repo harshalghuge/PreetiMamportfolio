@@ -19,43 +19,43 @@ import "../styles/global.css"; // Import global.css
       </div>
 
       {/* Content Container */}
-      <div className="mt-15 sm:mt-20 md:mt-16 lg:mt-10">
-      <div className="mt-16  text-center">
-        <div className="relative z-10 w-full">
-          <div className="mx-auto max-w-6xl">
-            <div className="max-w-4xl">
-              {/* Subtitle */}
-              <p className="text-white/90 font-sans text-[10px] sm:text-[12px] md:text-[14px] tracking-[0.2em] uppercase mb-4">
-                READY TO FALL IN LOVE WITH LIFE AGAIN?
-              </p>
-
-              {/* Heading */}
-              <div className="main-qoute font-serif font-light">
-                <h1 className="text-white text-[40px] sm:text-[56px] md:text-[64px] leading-[1.1]">
-                  <span className="block font-span tracking-[-0.01em]">
-                    When did you stop
-                  </span>
-
-                  <span className="block tracking-[-0.01em]">
-                    knowing who you are?
-                  </span>
-
-                  {/* to add anything new just add new span with content for next line */}
-                </h1>
-              </div>
-
-              {/* Description */}
-              <div className="mx-auto w-[90%] sm:w-[80%] md:max-w-[65%] text-center">
-                <p
-                  className="mt-6 text-white/80 text-[22px] sm:text-[18px] md:text-[18px]
-                font-sans font-light
-                text-justify md:text-center-last md:text-center"
-                >
-                  Maybe it was gradual, role by role, responsibility by
-                  responsibility. Maybe it was sudden, a loss that cracked
-                  everything open. Either way, you're here. And that matters.
+        <div className="">
+        <div className="mt-16  text-center">
+          <div className="relative z-10 w-full">
+            <div className="mx-auto max-w-6xl">
+              <div className="max-w-4xl">
+                {/* Subtitle */}
+                <p className="text-white/90 font-sans text-[10px] sm:text-[12px] md:text-[16px] tracking-[0.1em] font-medium uppercase mb-4">
+                  READY TO FALL IN LOVE WITH LIFE AGAIN?
                 </p>
-              </div>
+
+                {/* Heading */}
+                <div className="main-qoute font-serif font-light md:w-[70%] md:mx-auto md:text-center">
+                  <h1 className="text-white/90 font-light text-[40px] sm:text-[56px] md:text-[56px] leading-[1] uppercase">
+                    <span className="block font-span tracking-[-0.01em] ">
+                      When did you stop
+                    </span>
+
+                    <span className="block tracking-[-0.01em]">
+                      knowing who you are?
+                    </span>
+
+                    {/* to add anything new just add new span with content for next line */}
+                  </h1>
+                </div>
+
+                {/* Description */}
+                <div className="mx-auto w-[90%] sm:w-[80%] md:max-w-[65%] text-center">
+                  <p
+                    className="mt-6 text-white/80 text-[22px] sm:text-[18px] md:text-[18px]
+                  font-sans font-light
+                  text-justify md:text-center-last md:text-center"
+                  >
+                    Maybe it was gradual, role by role, responsibility by
+                    responsibility. Maybe it was sudden, a loss that cracked
+                    everything open. Either way, you're here. And that matters.
+                  </p>
+                </div>
 
               {/* Button */}
               <div className="mt-8 flex justify-center">

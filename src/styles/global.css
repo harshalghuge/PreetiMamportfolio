@@ -63,17 +63,23 @@ html {
 
 
 /* Now use it */
-h1 {
+/* h1 {
   font-family: 'Span Compressed', serif;
   
-}
+} */
 
 body {
+  margin: 0;
+  padding: 0;
   font-family: var(--font-family-base);
   font-size: var(--font-size-base);
   line-height: 1.6;
+  overflow-x: hidden;
 }
-
+header{
+  margin: 0;
+  padding: 0;
+}
 
 
 
