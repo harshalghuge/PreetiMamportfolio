@@ -102,27 +102,27 @@ const CardContent = ({ number, title, subtitle, quote, description, decorativeEl
       {/* Top Section */}
       <div className="space-y-6">
         {/* Number */}
-        <div className="text-6xl md:text-7xl font-serif text-[#d4a574] opacity-60">
+        <div className="text-6xl md:text-7xl font-serif text-[#f1a14b] opacity-60">
           {number}
         </div>
 
         {/* Title */}
         <div>
-          <h3 className="text-2xl md:text-3xl lg:text-4xl font-serif text-[#2a2a2a] mb-2">
+          <h3 className="text-2xl md:text-3xl lg:text-4xl font-serif text-[#050505] mb-2">
             {title}
           </h3>
-          <p className="text-xs md:text-sm tracking-[0.2em] uppercase text-gray-500">
+          <p className="text-xs md:text-sm tracking-[0.2em] uppercase text-gray-800">
             {subtitle}
           </p>
         </div>
 
         {/* Quote */}
-        <p className="text-lg md:text-xl font-serif italic text-[#c8886f] leading-relaxed">
+        <p className="text-lg md:text-xl font-serif italic text-[#f1a14b] leading-relaxed">
           {quote}
         </p>
 
         {/* Description */}
-        <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+        <p className="text-sm md:text-base text-gray-800 leading-relaxed">
           {description}
         </p>
       </div>
@@ -214,8 +214,9 @@ const WorkTogether = () => {
         {/* Card 3 - Kaifiyat */}
         <article className="relative min-h-[600px] md:min-h-[700px] overflow-hidden group bg-[#ebe8e0] hover:shadow-2xl transition-shadow duration-500 md:col-span-2 lg:col-span-1">
           <AnimatedImageCard 
-            image="https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg" 
+            image="https://images.pexels.com/photos/26447320/pexels-photo-26447320/free-photo-of-person-hand-holding-daisies-in-forest.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" 
             index={2}
+            
           />
           
           <CardContent
