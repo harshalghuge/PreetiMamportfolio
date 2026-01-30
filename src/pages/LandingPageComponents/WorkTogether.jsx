@@ -11,24 +11,24 @@ const AnimatedImageCard = ({ image, index }) => {
 
       const rect = cardRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      
+
       // Calculate scroll progress (0 to 1) based on card visibility
       const cardTop = rect.top;
       const cardHeight = rect.height;
-      
+
       // Progress from 0 (entering viewport) to 1 (leaving viewport)
       const progress = (windowHeight - cardTop) / (windowHeight + cardHeight);
-      
+
       // Clamp between 0 and 1
       const clampedProgress = Math.max(0, Math.min(1, progress));
-      
+
       setScrollProgress(clampedProgress);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     handleScroll(); // Initial calculation
-    
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Calculate parallax transform based on scroll progress
@@ -54,7 +54,10 @@ const AnimatedImageCard = ({ image, index }) => {
         }}
       >
         <img
-          src={image || "https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg"}
+          src={
+            image ||
+            "https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg"
+          }
           alt="Card background"
           className="w-full h-[110%] object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
@@ -67,7 +70,14 @@ const AnimatedImageCard = ({ image, index }) => {
 };
 
 // Card Content Component
-const CardContent = ({ number, title, subtitle, quote, description, decorativeElement }) => {
+const CardContent = ({
+  number,
+  title,
+  subtitle,
+  quote,
+  description,
+  decorativeElement,
+}) => {
   const cardRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -78,7 +88,7 @@ const CardContent = ({ number, title, subtitle, quote, description, decorativeEl
           setIsVisible(true);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
 
     if (cardRef.current) {
@@ -96,7 +106,7 @@ const CardContent = ({ number, title, subtitle, quote, description, decorativeEl
     <div
       ref={cardRef}
       className={`relative z-10 flex flex-col justify-between h-full p-8 md:p-10 lg:p-12 transition-all duration-1000 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
     >
       {/* Top Section */}
@@ -132,20 +142,23 @@ const CardContent = ({ number, title, subtitle, quote, description, decorativeEl
         {/* Explore Button */}
         <button className="group/btn flex items-center gap-2 text-sm md:text-base tracking-[0.15em] uppercase text-gray-700 hover:text-[#c8886f] transition-all duration-300">
           <span>Explore</span>
-          <svg 
-            className="w-5 h-5 transform group-hover/btn:translate-x-2 transition-transform duration-300" 
-            fill="none" 
-            stroke="currentColor" 
+          <svg
+            className="w-5 h-5 transform group-hover/btn:translate-x-2 transition-transform duration-300"
+            fill="none"
+            stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            />
           </svg>
         </button>
 
         {/* Decorative Line Drawing */}
-        <div className="opacity-30 text-[#d4a574]">
-          {decorativeElement}
-        </div>
+        <div className="opacity-30 text-[#d4a574]">{decorativeElement}</div>
       </div>
     </div>
   );
@@ -160,9 +173,10 @@ const WorkTogether = () => {
         <h2 className="text-xl md:text-2xl lg:text-3xl text-center tracking-[0.2em] uppercase font-light text-[#2a2a2a]">
           Three Paths, One Philosophy
         </h2>
-        
+
         <p className="text-center text-sm md:text-base mt-4 md:mt-6 text-gray-600 max-w-3xl leading-relaxed">
-          Whether you're 7 or 70, the work is the same: learning to be fully present to yourself so you can be fully alive.
+          Whether you're 7 or 70, the work is the same: learning to be fully
+          present to yourself so you can be fully alive.
         </p>
       </div>
 
@@ -170,11 +184,14 @@ const WorkTogether = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
         {/* Card 1 - Young Soul'Tales */}
         <article className="relative min-h-[600px] md:min-h-[700px] overflow-hidden group bg-[#ebe8e0] hover:shadow-2xl transition-shadow duration-500">
-          <AnimatedImageCard 
-            image="https://images.pexels.com/photos/1166643/pexels-photo-1166643.jpeg" 
-            index={0}
+           <div
+            className="absolute inset-0 bg-cover bg-center opacity-20"
+            style={{
+              backgroundImage:
+                'url("https://youngsoultales.com/wp-content/uploads/2024/06/gallery01.jpg")',
+            }}
           />
-          
+
           <CardContent
             number="01"
             title="Young Soul'Tales"
@@ -182,7 +199,14 @@ const WorkTogether = () => {
             quote='"The Missing Education"'
             description="Teaching children the emotional skills they deserve from the start, before the world teaches them to disconnect from themselves. Programs for children and workshops for parents."
             decorativeElement={
-              <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="currentColor" strokeWidth="1">
+              <svg
+                width="80"
+                height="80"
+                viewBox="0 0 80 80"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+              >
                 <path d="M20 40 Q 40 20, 60 40 T 80 60" />
               </svg>
             }
@@ -191,34 +215,50 @@ const WorkTogether = () => {
 
         {/* Card 2 - Soul'Tales */}
         <article className="relative min-h-[600px] md:min-h-[700px] overflow-hidden group bg-[#ebe8e0] hover:shadow-2xl transition-shadow duration-500">
-          <AnimatedImageCard 
-            image="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg" 
-            index={1}
+          {/* Background image */}
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-40"
+            style={{
+              backgroundImage:
+                'url("https://img.freepik.com/premium-vector/primrose-flower-line-art-primrose-outline-illustration-february-birth-month-flower_646071-1775.jpg")',
+            }}
           />
-          
-          <CardContent
-            number="02"
-            title="Soul'Tales"
-            subtitle="For Adults"
-            quote='"The Space Between"'
-            description="Life isn't about birth and death, it's about everything in between. Transformational retreats for adults ready to wake up to the life they're actually living."
-            decorativeElement={
-              <svg width="80" height="100" viewBox="0 0 80 100" fill="none" stroke="currentColor" strokeWidth="1">
-                <path d="M40 20 Q 50 40, 40 60 Q 30 80, 40 100" />
-                <circle cx="40" cy="20" r="8" />
-              </svg>
-            }
-          />
+
+          {/* Content above background */}
+          <div className="relative z-10">
+            <CardContent
+              number="02"
+              title="Soul'Tales"
+              subtitle="For Adults"
+              quote='"The Space Between"'
+              description="Life isn't about birth and death, it's about everything in between. Transformational retreats for adults ready to wake up to the life they're actually living."
+              decorativeElement={
+                <svg
+                  width="80"
+                  height="100"
+                  viewBox="0 0 80 100"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                >
+                  <path d="M40 20 Q 50 40, 40 60 Q 30 80, 40 100" />
+                  <circle cx="40" cy="20" r="8" />
+                </svg>
+              }
+            />
+          </div>
         </article>
 
         {/* Card 3 - Kaifiyat */}
         <article className="relative min-h-[600px] md:min-h-[700px] overflow-hidden group bg-[#ebe8e0] hover:shadow-2xl transition-shadow duration-500 md:col-span-2 lg:col-span-1">
-          <AnimatedImageCard 
-            image="https://images.pexels.com/photos/26447320/pexels-photo-26447320/free-photo-of-person-hand-holding-daisies-in-forest.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" 
-            index={2}
-            
+           <div
+            className="absolute inset-0 bg-cover bg-center opacity-20"
+            style={{
+              backgroundImage:
+                'url("hhttps://i.pinimg.com/736x/97/26/da/9726da12eede3299ce306bc1e66569cf.jpg")',
+            }}
           />
-          
+
           <CardContent
             number="03"
             title="Kaifiyat"
@@ -226,7 +266,14 @@ const WorkTogether = () => {
             quote='"Healing Into Potential"'
             description="Healing isn't about fixing what's broken, it's about uncovering what was always whole. Accessible listening circles for those who need them most."
             decorativeElement={
-              <svg width="90" height="80" viewBox="0 0 90 80" fill="none" stroke="currentColor" strokeWidth="1">
+              <svg
+                width="90"
+                height="80"
+                viewBox="0 0 90 80"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+              >
                 <path d="M10 60 Q 30 40, 50 50 Q 70 60, 80 40" />
                 <circle cx="50" cy="50" r="5" />
               </svg>

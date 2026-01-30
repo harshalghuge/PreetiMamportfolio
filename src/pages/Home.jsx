@@ -1,25 +1,26 @@
 import React from "react";
 import "../styles/global.css"; // Import global.css
 
- const Home = () => {
+const Home = () => {
   return (
-    <section className="relative w-full min-h-screen flex items-center overflow-hidden">
-      {/* Background Image - Using Unsplash for high-quality black & white texture */}
+    <section className="relative w-full min-h-screen flex items-center overflow-hidden ">
+     
       <div
-        className="absolute inset-0 w-full h-full bg-cover bg-center"
-        style={{
-          backgroundImage: `url("/images/IMG5.JPEG")`,
-        }}
-      >
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/30"></div>
+        className="absolute inset-0 bg-cover bg-center hidden md:block"
+        style={{ backgroundImage: `url("/images/IMG5.JPEG")` }}
+      />
 
-        {/* Gradient Overlay for depth */}
-        {/* <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-transparent to-black/30"></div> */}
-      </div>
+      {/* Mobile background */}
+      <div
+        className="absolute inset-0 bg-cover bg-center block md:hidden"
+        style={{ backgroundImage: `url("/images/mobilebg1.JPEG")` }}
+      />
+
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/30"></div>
 
       {/* Content Container */}
-        <div className="">
+      <div className="">
         <div className="mt-16  text-center">
           <div className="relative z-10 w-full">
             <div className="mx-auto max-w-6xl">
@@ -57,20 +58,20 @@ import "../styles/global.css"; // Import global.css
                   </p>
                 </div>
 
-              {/* Button */}
-              <div className="mt-8 flex justify-center">
-                <button
-                  className="px-6 py-2 sm:px-8 sm:py-3 rounded-full border-2 border-white/70 text-white/70 
+                {/* Button */}
+                <div className="mt-8 flex justify-center">
+                  <button
+                    className="px-6 py-2 sm:px-8 sm:py-3 rounded-full border-2 border-white/70 text-white/70 
                               text-[14px] sm:text-[15px] tracking-[0.12em] uppercase italic font-medium
                               hover:bg-white hover:text-black transition-all duration-300"
-                >
-                  About Me
-                </button>
+                  >
+                    About Me
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </section>
   );

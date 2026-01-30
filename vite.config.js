@@ -9,4 +9,7 @@ export default defineConfig({
   plugins: [react(),
     tailwindcss()
   ],
+  server: {
+    allowedHosts: ['damien-protestive-toya.ngrok-free.dev']
+  },
 })

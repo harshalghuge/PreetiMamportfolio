@@ -2,7 +2,7 @@ import React from "react";
 
 const BlogCard = ({ image, title, height }) => {
   return (
-    <article className="flex flex-col gap-4">
+    <article className="flex flex-col gap-2">
       <div className={`overflow-hidden ${height}`}>
         <img
           src={image}
@@ -16,7 +16,7 @@ const BlogCard = ({ image, title, height }) => {
 
       <a
         href="/blog"
-        className="text-xs tracking-widest uppercase border-b border-black w-fit"
+        className="text-xs tracking-widest uppercase border-b border-black w-fit mt-2"
       >
         Read More
       </a>
@@ -26,7 +26,7 @@ const BlogCard = ({ image, title, height }) => {
 
 const LandingBlog = () => {
   return (
-    <section className="bg-[#a9a792] py-40">
+    <section className="bg-[#a9a792] py-20 lg:py-40">
       <div className="max-w-6xl mx-auto px-8">
         {/* GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-32">

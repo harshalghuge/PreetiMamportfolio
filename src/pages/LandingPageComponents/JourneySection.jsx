@@ -44,7 +44,7 @@ export default function JourneySection() {
             className="absolute left-1/2 -translate-x-1/2 top-0 w-px bg-stone-500 origin-top"
           />
 
-          <div className="space-y-16">
+          <div className="space-y-5 lg:space-y-16">
             {journeyItems.map((item, index) => {
               /* Each item appears when line reaches its progress */
               const start = index / journeyItems.length;

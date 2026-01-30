@@ -90,7 +90,7 @@ export const Blog = () => {
   return (
     <div className="relative w-full bg-[#f5f3ed] overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[60vh] flex  items-center justify-center overflow-hidden">
         {/* Animated Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#e9e6dc] via-[#f5f3ed] to-[#ebe8e0]">
           <div className="absolute top-20 left-10 w-64 h-64 bg-[#d4a574]/10 rounded-full blur-3xl animate-float"></div>
@@ -98,7 +98,7 @@ export const Blog = () => {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 text-center px-4 max-w-5xl py-20">
+        <div className="relative z-10 text-center px-4 max-w-5xl py-10">
           <div className="mb-6 animate-fade-in-up">
             <span className="text-sm md:text-base tracking-[0.3em] uppercase text-[#c8886f] font-light">
               Stories & Insights
@@ -129,7 +129,7 @@ export const Blog = () => {
       </section>
 
       {/* Featured Blogs Section */}
-      <section className="relative py-16 md:py-24 px-4">
+      <section className="relative py-10 md:py-24 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="mb-12">
             <h2 className="text-3xl md:text-4xl font-serif text-[#2a2a2a] mb-4">

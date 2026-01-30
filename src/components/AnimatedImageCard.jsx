@@ -38,7 +38,7 @@ const AnimatedImageCard = ({
 
   return (
     <div className="absolute inset-0 overflow-hidden flex items-center justify-center">
-      <div className="w-[60%] md:w-full h-full flex items-center justify-center bg-cover">
+      <div className="w-[60%] md:w-full flex items-center justify-center bg-center bg-cover">
         <img
           ref={imgRef}
           src={image?.trim() || DEFAULT_IMAGE}
