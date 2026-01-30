@@ -54,7 +54,7 @@ const Header = () => {
               </h1>
 
               {/* Desktop Nav */}
-              <nav className="hidden lg:flex gap-8 text-xs font-bold">
+              <nav className="hidden lg:flex gap-8 text-l font-bold">
                 {["HOME", "ABOUT", "WORK WITH ME", "BLOG", "CONTACT"].map(
                   (item) => {
                     const path =
@@ -105,6 +105,7 @@ const Header = () => {
       </header>
 
       {/* MOBILE FULLSCREEN MENU */}
+    
       <div
         className={`fixed inset-0 z-[1020] bg-black/10 backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)]
         ${
