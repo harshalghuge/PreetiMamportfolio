@@ -7,13 +7,13 @@ const Home = () => {
      
       <div
         className="absolute inset-0 bg-cover bg-center hidden md:block"
-        style={{ backgroundImage: `url("/images/IMG5.JPEG")` }}
+        style={{ backgroundImage: `url("/HeroSectionBg/IMG5.JPEG")` }}
       />
 
       {/* Mobile background */}
       <div
         className="absolute inset-0 bg-cover bg-center block md:hidden"
-        style={{ backgroundImage: `url("/images/mobilebg1.JPEG")` }}
+        style={{ backgroundImage: `url("/HeroSectionBg/mobilebg1.JPEG")` }}
       />
 
       {/* Dark Overlay */}
