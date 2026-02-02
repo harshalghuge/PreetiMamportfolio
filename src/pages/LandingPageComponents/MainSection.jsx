@@ -83,12 +83,12 @@ const MainSection = () => {
 
 
   return (
-    <>
+    <> 
       {/* ================= TOP SECTION ================= */}
-       <section className="w-full bg-[#F7F4EE]">
+       <section className="w-full bg-[#F7F4EE]  ">
       <div className="grid grid-cols-1 md:grid-cols-2">
         {/* IMAGE */}
-        <div className="relative h-[420px] md:h-[640px] overflow-hidden order-1 md:order-2">
+        <div className="relative h-[420px] md:h-[640px] overflow-hidden order-1 md:order-2 fade-up">
           <AnimatedImageCard animate />
         </div>
 
@@ -184,7 +184,7 @@ const MainSection = () => {
 
       {/* ================= BOTTOM SECTION ================= */}
       <section className="w-full bg-[#F7F4EE]">
-        <div className="grid grid-cols-1 md:grid-cols-2">
+        <div className="grid">
           {/* IMAGE */}
           {/* <div className="relative h-[490px] md:h-[680px]">
             <AnimatedImageCard
@@ -195,7 +195,7 @@ const MainSection = () => {
           </div> */}
 
           {/* TEXT */}
-          <div className="flex flex-col justify-center items-center px-10 py-2 md:px-20 md:py-16">
+          <div className="flex flex-col justify-center items-center  py-2  md:py-16 fade-up">
             {/* ====================================old version==================================== */}
             {/* <h2 className="text-3xl font-serif text-[#1D1A13] tracking-wide">
               MEET MINERVA
