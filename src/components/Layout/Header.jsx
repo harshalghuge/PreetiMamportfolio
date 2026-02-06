@@ -28,10 +28,11 @@ const Header = () => {
     < >
       {/* HEADER */}
       <header
-        className={`fixed  inset-x-0 z-1030 transition-all duration-300 ease-out ${
+        className={`absolute inset-x-0 z-1030 transition-all duration-300 ease-out  ${
           scrolled && !mobileMenuOpen
             ? "top-4"
             : "top-0"
+            
         }`}
       >
         {/* HEADER CONTAINER */}

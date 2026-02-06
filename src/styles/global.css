@@ -116,15 +116,57 @@ img {
   background: var(--color-gray);
 }
 
-/* global.css */
+/* Card Stack Animation Styles */
+.card-stack {
+  width: 100%;
+  transform-origin: top center;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
 
-.fade-up {
+/* Ensure smooth hardware acceleration */
+.card-stack * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Improve rendering performance */
+.card-stack .bg-white {
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Smooth image transitions */
+.card-stack img {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Remove default animations on mobile */
+@media (max-width: 768px) {
+  .card-stack {
+    perspective: none !important;
+    transform-style: flat !important;
+    position: relative !important;
+    transform: none !important;
+  }
+}
+
+/* Optional: Add a subtle shadow gradient for depth */
+.card-stack::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition: opacity 0.3s ease;
 }
 
-.fade-up.show {
-  opacity: 1;
-  transform: translateY(0);
+/* Hover effect for cards */
+.card-stack:hover .bg-white {
+  transform: translateY(-2px);
 }
+
+

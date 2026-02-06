@@ -22,20 +22,13 @@ const FinalCTA = () => {
 
     try {
         const res = await fetch(
-            "https://script.google.com/macros/s/AKfycbwdLRHadxMD026bjoPSc5PSgius5PER327uLd9Umf-9MvLnc-envN1fko4PluC5JIQwLQ/exec",
+            "https://script.google.com/macros/s/AKfycbyF3n5yHTkg54L7bnHoMq25rcoot70D0twI0otefMDksMqsUl50N5UoFjL0_BIGAQoXSw/exec",
             {
                 method: "POST",
-                // 2. IMPORTANT: Remove the Content-Type header. 
-                // Let the browser handle it for a simple form-data POST.
-                // headers: {
-                //   "Content-Type": "text/plain", // <--- DELETE THIS LINE
-                // },
+               
                 body: params, // 3. Use the URLSearchParams object
                 
-                // Optional: You can also try:
-                // headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                // body: params.toString(), 
-                // But often removing the header entirely works best for simple POSTs.
+          
             }
         );
 

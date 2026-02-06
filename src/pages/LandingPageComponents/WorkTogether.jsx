@@ -1,288 +1,620 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿// import React, { useLayoutEffect, useRef } from "react";
+// import gsap from "gsap";
+// import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// AnimatedImageCard Component with Modern Scroll Animation
-const AnimatedImageCard = ({ image, index }) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const cardRef = useRef(null);
+// gsap.registerPlugin(ScrollTrigger);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!cardRef.current) return;
+// const WorkTogether = () => {
+//   const sectionRef = useRef(null);
+//   const cardsRef = useRef([]);
 
-      const rect = cardRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+//   const cards = [
+//     {
+//       number: "01",
+//       title: "Young Soul'Tales",
+//       subtitle: "For Children & Parents",
+//       quote: "The Missing Education",
+//       description:
+//         "Teaching children the emotional skills they deserve from the start, before the world teaches them to disconnect from themselves.",
+//       image:
+//         "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1200&q=80",
+//       color: "#f1a14b",
+//       bgColor: "#fef9f3",
+//     },
+//     {
+//       number: "02",
+//       title: "Soul'Tales",
+//       subtitle: "For Adults",
+//       quote: "The Space Between",
+//       description:
+//         "Life isn't about birth and death, it's about everything in between. Transformational retreats for adults.",
+//       image:
+//         "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&q=80",
+//       color: "#c8886f",
+//       bgColor: "#faf7f4",
+//     },
+//     {
+//       number: "03",
+//       title: "Kaifiyat",
+//       subtitle: "For Communities",
+//       quote: "Healing Into Potential",
+//       description:
+//         "Healing isn't about fixing what's broken, it's about uncovering what was always whole.",
+//       image:
+//         "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&q=80",
+//       color: "#d4a574",
+//       bgColor: "#f8f5f1",
+//     },
+//   ];
 
-      // Calculate scroll progress (0 to 1) based on card visibility
-      const cardTop = rect.top;
-      const cardHeight = rect.height;
+//   useLayoutEffect(() => {
+//     const ctx = gsap.context(() => {
+//       const cardElements = cardsRef.current.filter(Boolean);
+      
+//       if (cardElements.length === 0) return;
 
-      // Progress from 0 (entering viewport) to 1 (leaving viewport)
-      const progress = (windowHeight - cardTop) / (windowHeight + cardHeight);
+//       cardElements.forEach((card, index) => {
+//         const isLast = index === cardElements.length - 1;
+        
+//         // Stack offset for visibility
+//         const yValue = (cardElements.length - 1 - index) * 30;
 
-      // Clamp between 0 and 1
-      const clampedProgress = Math.max(0, Math.min(1, progress));
+//         // Set initial position
+//         gsap.set(card, {
+//           y: yValue,
+//           transformOrigin: "top center",
+//         });
 
-      setScrollProgress(clampedProgress);
-    };
+//         if (!isLast) {
+//           // Pin each card except the last
+//           ScrollTrigger.create({
+//             trigger: card,
+//             start: "top 100px",
+//             end: () => `+=${window.innerHeight}`,
+//             pin: true,
+//             pinSpacing: false,
+//             scrub: 1,
+//           });
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial calculation
+//           // Fade and move up the current card
+//           gsap.to(card, {
+//             y: -80,
+//             opacity: 0,
+//             scrollTrigger: {
+//               trigger: card,
+//               start: "top 100px",
+//               end: () => `+=${window.innerHeight}`,
+//               scrub: 1,
+//             },
+//           });
+//         } else {
+//           // Last card - pin with spacing to prevent overlap
+//           ScrollTrigger.create({
+//             trigger: card,
+//             start: "top 100px",
+//             end: () => `+=${window.innerHeight * 0.5}`,
+//             pin: true,
+//             pinSpacing: true, // Changed to true for last card
+//             scrub: 1,
+//           });
+//         }
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+//         // Bring next card forward
+//         if (index > 0) {
+//           const prevCard = cardElements[index - 1];
+          
+//           gsap.to(card, {
+//             y: 0,
+//             scrollTrigger: {
+//               trigger: prevCard,
+//               start: "top 100px",
+//               end: () => `+=${window.innerHeight}`,
+//               scrub: 1,
+//             },
+//           });
+//         }
+//       });
+//     }, sectionRef);
 
-  // Calculate parallax transform based on scroll progress
-  const getParallaxTransform = () => {
-    // Subtle parallax movement
-    const movement = (scrollProgress - 0.5) * 50;
-    return `translateY(${movement}px)`;
-  };
+//     return () => ctx.revert();
+//   }, []);
 
-  return (
-    <div
-      ref={cardRef}
-      className="absolute inset-0 w-full h-full overflow-hidden"
-    >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/30 z-[5] transition-all duration-500 group-hover:bg-black/10" />
+//   return (
+//     <section ref={sectionRef} className="w-full bg-[#e9e6dc]">
+//       {/* Header */}
+//       <div className="py-24 px-4 text-center max-w-4xl mx-auto">
+//         <h2 className="text-4xl md:text-6xl font-serif text-[#2a2a2a] mb-6">
+//           Three Paths, One Philosophy
+//         </h2>
+//         <p className="text-lg text-gray-600 leading-relaxed">
+//           Learning to be present to yourself is the foundation of a fully lived
+//           life — at any age.
+//         </p>
+//       </div>
 
-      {/* Image with parallax scroll animation */}
-      <div
-        className="w-full h-full transition-transform duration-100 ease-linear"
-        style={{
-          transform: getParallaxTransform(),
-        }}
-      >
-        <img
-          src={
-            image ||
-            "https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg"
-          }
-          alt="Card background"
-          className="w-full h-[110%] object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-        />
-      </div>
+//       {/* Desktop Stack */}
+//       <div className="hidden md:block pb-20">
+//         {cards.map((card, index) => (
+//           <div
+//             key={card.number}
+//             ref={(el) => (cardsRef.current[index] = el)}
+//             className="card-stack"
+//           >
+//             <div className="max-w-6xl mx-auto px-6 py-4">
+//               <div 
+//                 className="bg-white rounded-3xl overflow-hidden"
+//                 style={{
+//                   boxShadow: '0 20px 60px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.05)',
+//                 }}
+//               >
+//                 <div
+//                   className={`grid md:grid-cols-2 ${
+//                     index % 2 === 1 ? "md:grid-flow-dense" : ""
+//                   }`}
+//                 >
+//                   {/* Image */}
+//                   <div 
+//                     className={`relative min-h-[500px] overflow-hidden group ${
+//                       index % 2 === 1 ? "md:col-start-2" : ""
+//                     }`}
+//                   >
+//                     <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30 group-hover:from-black/0 group-hover:to-black/20 transition-all duration-500 z-10" />
+//                     <img
+//                       src={card.image}
+//                       alt={card.title}
+//                       className="w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-700"
+//                     />
+//                     <div
+//                       className="absolute top-8 left-8 text-9xl font-serif opacity-15 z-20 select-none"
+//                       style={{ color: card.color }}
+//                     >
+//                       {card.number}
+//                     </div>
+//                   </div>
 
-      {/* Animated gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/40 z-[6] transition-opacity duration-500 group-hover:opacity-70" />
-    </div>
-  );
-};
+//                   {/* Content */}
+//                   <div
+//                     className={`flex flex-col justify-center p-12 lg:p-16 ${
+//                       index % 2 === 1 ? "md:col-start-1" : ""
+//                     }`}
+//                     style={{ backgroundColor: card.bgColor }}
+//                   >
+//                     <span
+//                       className="inline-block mb-5 px-5 py-2 rounded-full text-xs tracking-widest uppercase self-start font-semibold"
+//                       style={{
+//                         backgroundColor: card.color + "25",
+//                         color: card.color,
+//                       }}
+//                     >
+//                       {card.subtitle}
+//                     </span>
 
-// Card Content Component
-const CardContent = ({
-  number,
-  title,
-  subtitle,
-  quote,
-  description,
-  decorativeElement,
-}) => {
-  const cardRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+//                     <h3 className="text-4xl lg:text-5xl font-serif mb-4 text-[#1a1a1a] leading-tight">
+//                       {card.title}
+//                     </h3>
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 },
-    );
+//                     <p
+//                       className="text-2xl lg:text-3xl font-serif italic mb-6 leading-relaxed"
+//                       style={{ color: card.color }}
+//                     >
+//                       "{card.quote}"
+//                     </p>
 
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
+//                     <p className="text-base lg:text-lg text-gray-700 leading-relaxed mb-8">
+//                       {card.description}
+//                     </p>
 
-    return () => {
-      if (cardRef.current) {
-        observer.unobserve(cardRef.current);
-      }
-    };
-  }, []);
+//                     <button
+//                       className="group self-start px-8 py-3.5 rounded-full text-white text-sm font-medium tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-xl inline-flex items-center gap-2"
+//                       style={{ 
+//                         backgroundColor: card.color,
+//                         boxShadow: `0 4px 14px ${card.color}40`
+//                       }}
+//                     >
+//                       <span>Explore Journey</span>
+//                       <svg
+//                         className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+//                         fill="none"
+//                         stroke="currentColor"
+//                         viewBox="0 0 24 24"
+//                       >
+//                         <path
+//                           strokeLinecap="round"
+//                           strokeLinejoin="round"
+//                           strokeWidth={2}
+//                           d="M17 8l4 4m0 0l-4 4m4-4H3"
+//                         />
+//                       </svg>
+//                     </button>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
 
-  return (
-    <div
-      ref={cardRef}
-      className={`relative z-10 flex flex-col justify-between h-full p-8 md:p-10 lg:p-12 transition-all duration-1000 ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-      }`}
-    >
-      {/* Top Section */}
-      <div className="space-y-6">
-        {/* Number */}
-        <div className="text-6xl md:text-7xl font-serif text-[#f1a14b] opacity-60">
-          {number}
-        </div>
+//       {/* Mobile */}
+//       <div className="md:hidden px-4 pb-20 space-y-8">
+//         {cards.map((card) => (
+//           <div
+//             key={card.number}
+//             className="bg-white rounded-2xl overflow-hidden shadow-lg"
+//           >
+//             <div className="relative h-64">
+//               <div className="absolute inset-0 bg-black/20 z-10" />
+//               <img
+//                 src={card.image}
+//                 alt={card.title}
+//                 className="w-full h-full object-cover"
+//               />
+//               <div
+//                 className="absolute top-6 left-6 text-6xl font-serif opacity-20 z-20"
+//                 style={{ color: card.color }}
+//               >
+//                 {card.number}
+//               </div>
+//             </div>
+//             <div
+//               className="p-6 space-y-4"
+//               style={{ backgroundColor: card.bgColor }}
+//             >
+//               <span
+//                 className="inline-block px-3 py-1 rounded-full text-xs tracking-widest uppercase"
+//                 style={{
+//                   backgroundColor: card.color + "20",
+//                   color: card.color,
+//                 }}
+//               >
+//                 {card.subtitle}
+//               </span>
+//               <h3 className="text-2xl font-serif">{card.title}</h3>
+//               <p
+//                 className="text-lg italic font-serif"
+//                 style={{ color: card.color }}
+//               >
+//                 "{card.quote}"
+//               </p>
+//               <p className="text-sm text-gray-700 leading-relaxed">
+//                 {card.description}
+//               </p>
+//               <button
+//                 className="w-full px-6 py-3 rounded-full text-white text-sm tracking-wide"
+//                 style={{ backgroundColor: card.color }}
+//               >
+//                 Explore Journey →
+//               </button>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </section>
+//   );
+// };
 
-        {/* Title */}
-        <div>
-          <h3 className="text-2xl md:text-3xl lg:text-4xl font-serif text-[#050505] mb-2">
-            {title}
-          </h3>
-          <p className="text-xs md:text-sm tracking-[0.2em] uppercase text-gray-800">
-            {subtitle}
-          </p>
-        </div>
+// export default WorkTogether;
 
-        {/* Quote */}
-        <p className="text-lg md:text-xl font-serif italic text-[#f1a14b] leading-relaxed">
-          {quote}
-        </p>
+import React, { useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-        {/* Description */}
-        <p className="text-sm md:text-base text-gray-800 leading-relaxed">
-          {description}
-        </p>
-      </div>
+gsap.registerPlugin(ScrollTrigger);
 
-      {/* Bottom Section with Decorative Element */}
-      <div className="flex items-end justify-between mt-8">
-        {/* Explore Button */}
-        <button className="group/btn flex items-center gap-2 text-sm md:text-base tracking-[0.15em] uppercase text-gray-700 hover:text-[#c8886f] transition-all duration-300">
-          <span>Explore</span>
-          <svg
-            className="w-5 h-5 transform group-hover/btn:translate-x-2 transition-transform duration-300"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 8l4 4m0 0l-4 4m4-4H3"
-            />
-          </svg>
-        </button>
-
-        {/* Decorative Line Drawing */}
-        <div className="opacity-30 text-[#d4a574]">{decorativeElement}</div>
-      </div>
-    </div>
-  );
-};
-
-// WorkTogether Component
 const WorkTogether = () => {
+  const sectionRef = useRef(null);
+  const cardsRef = useRef([]);
+  const mobileCardsRef = useRef([]);
+
+  const cards = [
+    {
+      number: "01",
+      title: "Young Soul'Tales",
+      subtitle: "For Children & Parents",
+      quote: "The Missing Education",
+      description:
+        "Teaching children the emotional skills they deserve from the start, before the world teaches them to disconnect from themselves.",
+      image:
+        "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1200&q=80",
+      color: "#f1a14b",
+      bgColor: "#fef9f3",
+    },
+    {
+      number: "02",
+      title: "Soul'Tales",
+      subtitle: "For Adults",
+      quote: "The Space Between",
+      description:
+        "Life isn't about birth and death, it's about everything in between. Transformational retreats for adults.",
+      image:
+        "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&q=80",
+      color: "#c8886f",
+      bgColor: "#faf7f4",
+    },
+    {
+      number: "03",
+      title: "Kaifiyat",
+      subtitle: "For Communities",
+      quote: "Healing Into Potential",
+      description:
+        "Healing isn't about fixing what's broken, it's about uncovering what was always whole.",
+      image:
+        "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&q=80",
+      color: "#d4a574",
+      bgColor: "#f8f5f1",
+    },
+  ];
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      mm.add("(min-width: 768px)", () => {
+        const cardElements = cardsRef.current.filter(Boolean);
+
+        if (cardElements.length === 0) return;
+
+        cardElements.forEach((card, index) => {
+          const isLast = index === cardElements.length - 1;
+
+          // Stack offset for visibility
+          const yValue = (cardElements.length - 1 - index) * 30;
+
+          // Set initial position
+          gsap.set(card, {
+            y: yValue,
+            transformOrigin: "top center",
+          });
+
+          if (!isLast) {
+            // Pin each card except the last
+            ScrollTrigger.create({
+              trigger: card,
+              start: "top 100px",
+              end: () => `+=${window.innerHeight}`,
+              pin: true,
+              pinSpacing: false,
+              scrub: 1,
+            });
+
+            // Fade and move up the current card
+            gsap.to(card, {
+              y: -80,
+              opacity: 0,
+              scrollTrigger: {
+                trigger: card,
+                start: "top 100px",
+                end: () => `+=${window.innerHeight}`,
+                scrub: 1,
+              },
+            });
+          } else {
+            // Last card - pin with spacing to prevent overlap
+            ScrollTrigger.create({
+              trigger: card,
+              start: "top 100px",
+              end: () => `+=${window.innerHeight * 0.5}`,
+              pin: true,
+              pinSpacing: true,
+              scrub: 1,
+            });
+          }
+
+          // Bring next card forward
+          if (index > 0) {
+            const prevCard = cardElements[index - 1];
+
+            gsap.to(card, {
+              y: 0,
+              scrollTrigger: {
+                trigger: prevCard,
+                start: "top 100px",
+                end: () => `+=${window.innerHeight}`,
+                scrub: 1,
+              },
+            });
+          }
+        });
+      });
+
+      mm.add("(max-width: 767px)", () => {
+        const mobileCards = mobileCardsRef.current.filter(Boolean);
+
+        if (mobileCards.length === 0) return;
+
+        mobileCards.forEach((card) => {
+          gsap.from(card, {
+            y: 40,
+            opacity: 0,
+            duration: 0.6,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          });
+        });
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="w-full bg-[#e9e6dc] overflow-hidden">
-      {/* Heading */}
-      <div className="py-16 md:py-24 px-4 flex flex-col items-center justify-center">
-        <h2 className="text-xl md:text-2xl lg:text-3xl text-center tracking-[0.2em] uppercase font-light text-[#2a2a2a]">
+    <section ref={sectionRef} className="w-full bg-[#e9e6dc]">
+      {/* Header */}
+      <div className="py-20 px-4 text-center max-w-4xl mx-auto">
+        <h2 className="text-4xl md:text-6xl font-serif text-[#2a2a2a] mb-6">
           Three Paths, One Philosophy
         </h2>
-
-        <p className="text-center text-sm md:text-base mt-4 md:mt-6 text-gray-600 max-w-3xl leading-relaxed">
-          Whether you're 7 or 70, the work is the same: learning to be fully
-          present to yourself so you can be fully alive.
+        <p className="text-lg text-gray-600 leading-relaxed">
+          Learning to be present to yourself is the foundation of a fully lived
+          life — at any age.
         </p>
       </div>
 
-      {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
-        {/* Card 1 - Young Soul'Tales */}
-        <article className="relative min-h-[600px] md:min-h-[700px] overflow-hidden group bg-[#ebe8e0] hover:shadow-2xl transition-shadow duration-500">
-           <div
-            className="absolute inset-0 bg-cover bg-center opacity-20"
-            style={{
-              backgroundImage:
-                'url("https://youngsoultales.com/wp-content/uploads/2024/06/gallery01.jpg")',
-            }}
-          />
-
-          <CardContent
-            number="01"
-            title="Young Soul'Tales"
-            subtitle="For Children & Parents"
-            quote='"The Missing Education"'
-            description="Teaching children the emotional skills they deserve from the start, before the world teaches them to disconnect from themselves. Programs for children and workshops for parents."
-            decorativeElement={
-              <svg
-                width="80"
-                height="80"
-                viewBox="0 0 80 80"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-              >
-                <path d="M20 40 Q 40 20, 60 40 T 80 60" />
-              </svg>
-            }
-          />
-        </article>
-
-        {/* Card 2 - Soul'Tales */}
-        <article className="relative min-h-[600px] md:min-h-[700px] overflow-hidden group bg-[#ebe8e0] hover:shadow-2xl transition-shadow duration-500">
-          {/* Background image */}
+      {/* Desktop Stack */}
+      <div className="hidden md:block">
+        {cards.map((card, index) => (
           <div
-            className="absolute inset-0 bg-cover bg-center opacity-40"
-            style={{
-              backgroundImage:
-                'url("https://img.freepik.com/premium-vector/primrose-flower-line-art-primrose-outline-illustration-february-birth-month-flower_646071-1775.jpg")',
-            }}
-          />
-
-          {/* Content above background */}
-          <div className="relative z-10">
-            <CardContent
-              number="02"
-              title="Soul'Tales"
-              subtitle="For Adults"
-              quote='"The Space Between"'
-              description="Life isn't about birth and death, it's about everything in between. Transformational retreats for adults ready to wake up to the life they're actually living."
-              decorativeElement={
-                <svg
-                  width="80"
-                  height="100"
-                  viewBox="0 0 80 100"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                >
-                  <path d="M40 20 Q 50 40, 40 60 Q 30 80, 40 100" />
-                  <circle cx="40" cy="20" r="8" />
-                </svg>
-              }
-            />
-          </div>
-        </article>
-
-        {/* Card 3 - Kaifiyat */}
-        <article className="relative min-h-[600px] md:min-h-[700px] overflow-hidden group bg-[#ebe8e0] hover:shadow-2xl transition-shadow duration-500 md:col-span-2 lg:col-span-1">
-           <div
-            className="absolute inset-0 bg-cover bg-center opacity-20"
-            style={{
-              backgroundImage:
-                'url("hhttps://i.pinimg.com/736x/97/26/da/9726da12eede3299ce306bc1e66569cf.jpg")',
-            }}
-          />
-
-          <CardContent
-            number="03"
-            title="Kaifiyat"
-            subtitle="For Communities"
-            quote='"Healing Into Potential"'
-            description="Healing isn't about fixing what's broken, it's about uncovering what was always whole. Accessible listening circles for those who need them most."
-            decorativeElement={
-              <svg
-                width="90"
-                height="80"
-                viewBox="0 0 90 80"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
+            key={card.number}
+            ref={(el) => (cardsRef.current[index] = el)}
+            className="card-stack"
+          >
+            <div className="max-w-6xl mx-auto px-6 py-4">
+              <div
+                className="bg-white rounded-3xl overflow-hidden"
+                style={{
+                  boxShadow:
+                    "0 20px 60px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.05)",
+                }}
               >
-                <path d="M10 60 Q 30 40, 50 50 Q 70 60, 80 40" />
-                <circle cx="50" cy="50" r="5" />
-              </svg>
-            }
-          />
-        </article>
+                <div
+                  className={`grid md:grid-cols-2 ${
+                    index % 2 === 1 ? "md:grid-flow-dense" : ""
+                  }`}
+                >
+                  {/* Image */}
+                  <div
+                    className={`relative min-h-[420px] md:min-h-[520px] overflow-hidden group ${
+                      index % 2 === 1 ? "md:col-start-2" : ""
+                    }`}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30 group-hover:from-black/0 group-hover:to-black/20 transition-all duration-500 z-10" />
+                    <img
+                      src={card.image}
+                      alt={card.title}
+                      className="absolute inset-0 w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div
+                      className="absolute top-8 left-8 text-9xl font-serif opacity-15 z-20 select-none"
+                      style={{ color: card.color }}
+                    >
+                      {card.number}
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div
+                    className={`flex flex-col justify-center p-12 lg:p-16 ${
+                      index % 2 === 1 ? "md:col-start-1" : ""
+                    }`}
+                    style={{ backgroundColor: card.bgColor }}
+                  >
+                    <span
+                      className="inline-block mb-5 px-5 py-2 rounded-full text-xs tracking-widest uppercase self-start font-semibold"
+                      style={{
+                        backgroundColor: card.color + "25",
+                        color: card.color,
+                      }}
+                    >
+                      {card.subtitle}
+                    </span>
+
+                    <h3 className="text-4xl lg:text-5xl font-serif mb-4 text-[#1a1a1a] leading-tight">
+                      {card.title}
+                    </h3>
+
+                    <p
+                      className="text-2xl lg:text-3xl font-serif italic mb-6 leading-relaxed"
+                      style={{ color: card.color }}
+                    >
+                      "{card.quote}"
+                    </p>
+
+                    <p className="text-base lg:text-lg text-gray-700 leading-relaxed mb-8">
+                      {card.description}
+                    </p>
+
+                    <button
+                      className="group self-start px-8 py-3.5 rounded-full text-white text-sm font-medium tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-xl inline-flex items-center gap-2"
+                      style={{
+                        backgroundColor: card.color,
+                        boxShadow: `0 4px 14px ${card.color}40`,
+                      }}
+                    >
+                      <span>Explore Journey</span>
+                      <svg
+                        className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Mobile */}
+      <div className="md:hidden px-4 pb-20 space-y-8">
+        {cards.map((card, index) => (
+          <div
+            key={card.number}
+            ref={(el) => (mobileCardsRef.current[index] = el)}
+            className="bg-white rounded-2xl overflow-hidden shadow-lg"
+          >
+            <div className="relative aspect-[4/3] overflow-hidden">
+              <div className="absolute inset-0 bg-black/20 z-10" />
+              <img
+                src={card.image}
+                alt={card.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div
+                className="absolute top-6 left-6 text-6xl font-serif opacity-20 z-20"
+                style={{ color: card.color }}
+              >
+                {card.number}
+              </div>
+            </div>
+            <div
+              className="p-6 space-y-4"
+              style={{ backgroundColor: card.bgColor }}
+            >
+              <span
+                className="inline-block px-3 py-1 rounded-full text-xs tracking-widest uppercase"
+                style={{
+                  backgroundColor: card.color + "20",
+                  color: card.color,
+                }}
+              >
+                {card.subtitle}
+              </span>
+              <h3 className="text-2xl font-serif">{card.title}</h3>
+              <p
+                className="text-lg italic font-serif"
+                style={{ color: card.color }}
+              >
+                "{card.quote}"
+              </p>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {card.description}
+              </p>
+              <button
+                className="w-full px-6 py-3 rounded-full text-white text-sm tracking-wide"
+                style={{ backgroundColor: card.color }}
+              >
+                Explore Journey →
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
 };
 
 export default WorkTogether;
+
+
