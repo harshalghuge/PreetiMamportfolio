@@ -59,27 +59,27 @@ const MainSection = () => {
           if (target === titleRef.current) {
             setTimeout(
               () => setIsVisible((prev) => ({ ...prev, title: true })),
-              100,
+              50,
             );
           } else if (target === para1Ref.current) {
             setTimeout(
               () => setIsVisible((prev) => ({ ...prev, paragraph1: true })),
-              300,
+              150,
             );
           } else if (target === dividerRef.current) {
             setTimeout(
               () => setIsVisible((prev) => ({ ...prev, divider: true })),
-              500,
+              250,
             );
           } else if (target === para2Ref.current) {
             setTimeout(
               () => setIsVisible((prev) => ({ ...prev, paragraph2: true })),
-              700,
+              350,
             );
           } else if (target === buttonRef.current) {
             setTimeout(
               () => setIsVisible((prev) => ({ ...prev, button: true })),
-              900,
+              450,
             );
           }
         }

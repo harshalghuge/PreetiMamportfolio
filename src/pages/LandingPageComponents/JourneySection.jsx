@@ -40,7 +40,7 @@ export default function JourneySection() {
             <h2 className="text-2xl md:text-3xl font-light text-stone-700 tracking-wide">
               The Journey So Far
             </h2>
-           <div class="h-[2px] bg-gradient-to-r from-transparent via-[#8B7355] to-transparent transition-all duration-1000 delay-300 w-full opacity-100"></div>
+           <div className="h-[2px] bg-gradient-to-r from-transparent via-[#8B7355] to-transparent transition-all duration-1000 delay-300 w-full opacity-100"></div>
           </div>
 
           {/* Timeline */}
@@ -136,7 +136,7 @@ export default function JourneySection() {
               <h2 className="text-4xl xl:text-5xl font-light text-stone-700 tracking-wide">
                 The Journey So Far
               </h2>
-              <div class="h-[3px] bg-gradient-to-r w-[25rem] mx-auto from-transparent via-[#8B7355] to-transparent transition-all duration-1000 delay-300 opacity-100 mt-3"></div>
+              <div className="h-[3px] bg-gradient-to-r w-[25rem] mx-auto from-transparent via-[#8B7355] to-transparent transition-all duration-1000 delay-300 opacity-100 mt-3"></div>
             </div>
 
             {/* Horizontal Timeline Container */}

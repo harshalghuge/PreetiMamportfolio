@@ -1,10 +1,8 @@
 import React from "react";
 import "../styles/global.css"; // Import global.css
-import Header from "../components/Layout/Header.jsx";
-
 const Home = () => {
   return (
-    <> <Header />
+    <>
     <section className="relative w-full min-h-screen flex items-center overflow-hidden ">
      
       <div

@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Footer } from "./components/Layout";
+import { Header, Footer } from "./components/Layout";
 
 import Home from "./pages/Home";
 import { About } from "./pages/About";
@@ -35,6 +35,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Header />
       <main className="main-content">
         <Routes>
           <Route
