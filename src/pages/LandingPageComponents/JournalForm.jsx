@@ -102,7 +102,7 @@ const FinalCTA = () => {
           </div>
 
           {/* RIGHT IMAGE */}
-          <div className="flex justify-center w-[250px] h-[420px] overflow-hidden ml-0 lg:ml-20">
+          <div className="flex justify-center mx-auto w-[250px] h-[420px] overflow-hidden  lg:ml-20">
            
               <img
                 src="./images/IMG10.jpeg"
