@@ -11,6 +11,7 @@ import LandingBlog from "./pages/LandingPageComponents/LandingBlog.jsx";
 
 import "./styles/global.css";
 import { useEffect } from "react";
+import { Contact } from "./pages/Contact.jsx";
 
 function App() {
 
@@ -48,6 +49,7 @@ function App() {
                 {/* <Blog /> */}
                 <LandingBlog />
                 <JournalForm />
+                
               </>
             }
           />
@@ -55,6 +57,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/work-with-me" element={<WorkTogether />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>
 

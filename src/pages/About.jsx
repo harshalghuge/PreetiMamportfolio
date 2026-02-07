@@ -4,14 +4,15 @@ export const About = () => {
   return (
     <div className="bg-white">
       {/* Hero Section - Fixed Background */}
-      <section className="relative h-[480px] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[380px] flex items-center justify-center overflow-hidden bg-white">
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-fixed rounded-b-[4rem]"
+          className="absolute inset-0 bg-cover bg-center bg-fixed rounded-b-[2rem] "
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1544027993-37dbfe43562a?q=80&w=2070&auto=format&fit=crop')"
+            backgroundImage: "url('https://images.unsplash.com/photo-1544027993-37dbfe43562a?q=80&w=2070&auto=format&fit=crop')",
+            backgroundColor: "white",
           }}
         >
-          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-black/40 bg-white -z-100" ></div>
         </div>
         
         <div className="relative z-10 text-center text-white px-6">
