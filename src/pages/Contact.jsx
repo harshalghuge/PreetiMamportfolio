@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 
-
 export const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -47,11 +46,14 @@ export const Contact = () => {
     setSubmitStatus(null);
 
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-    const adminTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID; // Email to YOU
-    const autoReplyTemplateId = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID; // Email to USER
+    const publicKey =
+      import.meta.env.VITE_EMAILJS_PUBLIC_TOKEN ||
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY; // ← Tries both
+    const adminTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const autoReplyTemplateId = import.meta.env
+      .VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID;
     const adminRecipientEmail =
-      import.meta.env.VITE_CONTACT_RECEIVER_EMAIL || "ghugeharshal7@example.com";
+      import.meta.env.VITE_CONTACT_RECEIVER_EMAIL || "ghugeharshal7@gmail.com";
 
     const commonParams = {
       from_name: formData.name,
@@ -85,7 +87,7 @@ export const Contact = () => {
         serviceId,
         adminTemplateId,
         adminTemplateParams,
-        publicKey
+        publicKey,
       );
 
       // 2. Send auto-reply to USER (confirmation)
@@ -98,10 +100,10 @@ export const Contact = () => {
           serviceId,
           autoReplyTemplateId,
           autoReplyTemplateParams,
-          publicKey
+          publicKey,
         );
       }
-      
+
       setSubmitStatus("success");
       setToast({
         show: true,
