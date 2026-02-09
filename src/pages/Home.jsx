@@ -31,7 +31,7 @@ const Home = () => {
                 </p>
 
                 {/* Heading */}
-                <div className="main-qoute font-serif font-light md:w-[70%] md:mx-auto md:text-center">
+                <div className="main-qoute font-serif font-light md:w-[70%] md:mx-auto md:text-center pl-2 pr-2">
                   <h1 className="text-white/90 font-light text-5xl leading-[1.2em] uppercase">
                     <span className="block font-span tracking-[-0.01em] ">
                       When did you stop
