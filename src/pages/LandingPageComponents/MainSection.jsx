@@ -139,23 +139,19 @@ const MainSection = () => {
               {/* First Paragraph */}
               <p
                 ref={para1Ref}
-                className={`mt-8 text-base lg:text-lg leading-relaxed text-[#2D2A1F] indent-8 font-light transition-all duration-500 ${
+                className={`mt-8 text-base lg:text-lg leading-relaxed text-[#2D2A1F]  font-light transition-all duration-500 ${
                   isVisible.paragraph1
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-12"
                 }`}
                 style={{
-                  textAlign: "justify",
+                  textAlign: "start",
                   hyphens: "auto",
                 }}
               >
-                I spent years searching for something I couldn't name—a sense of
-                being at home in my own life. School, success, and pleasing
-                others never gave it to me. I learned the hard way that the most
-                important education is never taught: understanding ourselves—how
-                to feel, how to listen to our inner world, how to be with who we
-                are. Through lived experience, I discovered that I am not what
-                happened to me, but what I choose to become.
+                I'm Preeti - and I spent years searching for something I couldn't name. 
+                <br />
+                A feeling of being at home in my own life. A sense that I was living, not just performing.
               </p>
 
               {/* Decorative divider */}
@@ -175,22 +171,19 @@ const MainSection = () => {
               {/* Second Paragraph */}
               <p
                 ref={para2Ref}
-                className={`text-base lg:text-lg leading-relaxed text-[#2D2A1F] indent-8 font-light transition-all duration-500 ${
+                className={`text-base lg:text-lg leading-relaxed text-[#2D2A1F]  font-light transition-all duration-500 ${
                   isVisible.paragraph2
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-12"
                 }`}
                 style={{
-                  textAlign: "justify",
+                  textAlign: "start",
                   hyphens: "auto",
                 }}
               >
-                Today, this missing education is my life's work. I support
-                children in developing the emotional skills they deserve, create
-                experiential spaces for adults ready to go deeper, and build
-                accessible communities where every voice can be heard. Growth
-                doesn't begin with strategy—it begins with self-understanding.
-                If this resonates, trust that.
+                The answer wasn't in achievement or success. It was in the education no one ever gave us: 
+                how to understand ourselves. <br />
+                That became my life's work.
               </p>
 
               {/* Button */}

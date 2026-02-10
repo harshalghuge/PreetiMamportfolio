@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import { About } from "./pages/About";
 import MainSection  from "./pages/LandingPageComponents/MainSection.jsx";
 import WorkTogether from "./pages/LandingPageComponents/WorkTogether.jsx";
+import WorkWithMeSection from "./pages/LandingPageComponents/WorkWithMeSection.jsx";
 import { Blog } from "./pages/Blog.jsx";
 import JournalForm from "./pages/LandingPageComponents/JournalForm.jsx";
 import LandingBlog from "./pages/LandingPageComponents/LandingBlog.jsx";
@@ -46,6 +47,7 @@ function App() {
                 <Home />
                 <MainSection />
                 <WorkTogether />
+                <WorkWithMeSection />
                 {/* <Blog /> */}
                 <LandingBlog />
                 <JournalForm />
