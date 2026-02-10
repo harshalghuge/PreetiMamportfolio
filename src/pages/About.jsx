@@ -297,7 +297,11 @@ export const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: i * 0.05 }}
-                className="group rounded-xl border border-white/45 bg-white/22 backdrop-blur-md shadow-[0_10px_30px_rgba(60,42,26,0.12)] p-6 md:p-7"
+                className={`group rounded-xl border border-white/45 bg-white/22 backdrop-blur-md shadow-[0_10px_30px_rgba(60,42,26,0.12)] p-6 md:p-7 ${
+                  i === sevenTruths.length - 1
+                    ? "md:col-span-2 md:max-w-[520px] md:mx-auto w-full"
+                    : ""
+                }`}
               >
                 <div className="flex items-start gap-5">
                   <div className="font-serif text-3xl text-stone-700 leading-none min-w-[2.2rem]">
@@ -309,6 +313,7 @@ export const About = () => {
                 </div>
               </motion.article>
             ))}
+          
           </div>
         </div>
       </section>
