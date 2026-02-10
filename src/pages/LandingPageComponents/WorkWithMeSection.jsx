@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 const offerings = [
   {
@@ -7,6 +8,15 @@ const offerings = [
     description:
       "A 4-week live program teaching parents how to raise emotionally intelligent children through practical emotional literacy tools.",
     meta: "Online | 4 Weeks | Cohort-Based",
+    image: "/images/youngsoul2.jpeg",
+    theme: {
+      bg: "#f3e6d8",
+      border: "#d7bca1",
+      badge: "#a7683f",
+      title: "#2f241a",
+      text: "#5f4a37",
+      meta: "#8e6a4b",
+    },
   },
   {
     audience: "For Communities",
@@ -14,6 +24,15 @@ const offerings = [
     description:
       "A 90-minute guided experience in the art of being truly heard, creating room for authentic connection and emotional release.",
     meta: "In-person | 90 Minutes | Monthly",
+    image: "/images/IMG8.jpeg",
+    theme: {
+      bg: "#e4eee7",
+      border: "#b8ccb9",
+      badge: "#4f7e61",
+      title: "#1f3326",
+      text: "#3f5d47",
+      meta: "#5e8168",
+    },
   },
   {
     audience: "For Seekers",
@@ -21,6 +40,15 @@ const offerings = [
     description:
       "Immersive residential experiences blending shadow work, person-centered presence, and somatic practices in carefully held spaces.",
     meta: "Residential | Multi-day | Limited Spots",
+    image: "/images/IMG13.jpeg",
+    theme: {
+      bg: "#f0e3e6",
+      border: "#d1b8c2",
+      badge: "#8f4e64",
+      title: "#3a2230",
+      text: "#5f4150",
+      meta: "#7e5a69",
+    },
   },
   {
     audience: "For Organisations",
@@ -28,53 +56,183 @@ const offerings = [
     description:
       "Bring emotional intelligence and human skills to your teams through practical sessions on self-awareness, listening, and leadership.",
     meta: "In-person or Virtual | Customised",
+    image: "/images/IMG14.jpeg",
+    theme: {
+      bg: "#e1e8f1",
+      border: "#b8c6da",
+      badge: "#4d6d97",
+      title: "#1e2c3f",
+      text: "#405675",
+      meta: "#5e789c",
+    },
+  },
+];
+
+const alternatingThemes = [
+  {
+    bg: "#f4ede4",
+    border: "#dfd0bf",
+    badge: "#a7744d",
+    title: "#312419",
+    text: "#61503f",
+    meta: "#8d6f55",
+  },
+  {
+    bg: "#e9efea",
+    border: "#cad8cd",
+    badge: "#5e7f67",
+    title: "#223328",
+    text: "#46604d",
+    meta: "#68826f",
   },
 ];
 
 const WorkWithMeSection = () => {
+  const sectionRefs = useRef([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("translate-x-0", "opacity-100");
+          entry.target.classList.remove("-translate-x-14", "translate-x-14", "opacity-0");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.25, rootMargin: "0px 0px -60px 0px" }
+    );
+
+    sectionRefs.current.forEach((node, idx) => {
+      if (!node) return;
+      node.classList.add(
+        "transition-all",
+        "duration-700",
+        "ease-out",
+        idx % 2 === 0 ? "-translate-x-14" : "translate-x-14",
+        "opacity-0"
+      );
+      observer.observe(node);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="w-full bg-[#F2EFE8] py-20 md:py-28 border-y border-[#dbd4c8]">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid place-items-center">
-          <header className="max-w-3xl mx-auto mb-12 md:mb-16  ">
-            <h2 className=" text-center font-serif text-4xl md:text-5xl text-[#2a2720] mb-5">
-              Work With Me
-            </h2>
-            <p className="text-center text-[#666057] text-base md:text-lg leading-relaxed mb-8">
-              Whether you're seeking transformation for yourself, your children,
-              or your organization, here's how we can begin.
-            </p>
-          </header>
+    <div className="w-full bg-[#faf4f4]">
+      <section className="relative h-[380px] flex items-center justify-center overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-fixed rounded-b-[2rem] bg-[url('../images/aboutBg_mobile.JPEG')] md:bg-[url('../images/IMG_4276.JPEG')]"
+        >
+          <div className="absolute inset-0 bg-black/45 rounded-b-[2rem]"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          {offerings.map((item) => (
+        <div className="relative z-10 max-w-4xl px-6 text-center text-white ">
+          <h1 className="mb-6  font-serif text-5xl font-light md:text-6xl lg:text-7xl">
+            Work With Me
+          </h1>
+          <p className="text-xl font-light leading-relaxed md:text-2xl">
+            Whether you're seeking transformation for yourself, your children, or your organization—here's how we can begin.
+          </p>
+        </div>
+      </section>
+
+      <section className="pt-20 pb-20 md:pt-28 md:pb-28">
+      {/* <div className="mx-auto max-w-6xl px-5 md:px-8 grid place-items-center mb-12" >
+        <header className="mx-auto mb-16 max-w-3xl text-center md:mb-24">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#9f7f64]">
+            Work With Me
+          </p>
+          <h1 className="mb-5 font-serif text-4xl text-[#27241f] md:text-6xl">
+            Designed For Deep, Real Change
+          </h1>
+          <p className="text-base leading-relaxed text-[#5f584d] md:text-lg">
+            These are not generic sessions. Each path is intentionally crafted
+            to meet where you are and guide where you want to go.
+          </p>
+        </header>
+      </div> */}
+
+      <div className="space-y-10 md:space-y-14">
+        {offerings.map((item, index) => {
+          const imageRight = index % 2 === 0;
+          const theme = alternatingThemes[index % 2];
+          return (
             <article
               key={item.title}
-              className="rounded-2xl border border-[#d4ccbf] bg-white/55 backdrop-blur-sm p-7 md:p-8 shadow-[0_10px_30px_rgba(49,38,27,0.06)]"
+              ref={(el) => (sectionRefs.current[index] = el)}
+              className="mx-auto w-full max-w-7xl px-5 md:px-8"
+              style={{ transitionDelay: `${index * 110}ms` }}
             >
-              <span className="inline-block mb-5 px-4 py-2 rounded-full bg-[#7f907f] text-white text-[11px] font-semibold tracking-wide uppercase">
-                {item.audience}
-              </span>
+              <div
+                className="grid items-stretch overflow-hidden border-y md:min-h-[520px] md:grid-cols-2"
+                style={{ backgroundColor: theme.bg, borderColor: theme.border }}
+              >
+                <div
+                  className={`relative h-[320px] md:h-full ${
+                    imageRight ? "md:order-2" : "md:order-1"
+                  }`}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="absolute inset-0 block h-full w-full object-cover object-center"
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent" />
+                </div>
 
-              <h3 className="font-serif text-2xl text-[#2f2b24] mb-4">
-                {item.title}
-              </h3>
-
-              <p className="text-[#6a645d] leading-relaxed text-base mb-7">
-                {item.description}
-              </p>
-
-              <div className="h-px w-full bg-[#d6cec1] mb-5" />
-
-              <p className="text-sm text-[#bd7d59] tracking-wide">
-                {item.meta}
-              </p>
+                <div
+                  className={`h-full flex items-center ${
+                    imageRight ? "md:order-1" : "md:order-2"
+                  }`}
+                >
+                  <div className="w-full px-6 py-10 md:px-12 md:py-14 lg:px-16">
+                    <p
+                      className="mb-4 text-xs font-semibold uppercase tracking-[0.14em]"
+                      style={{ color: theme.badge }}
+                    >
+                      {item.audience}
+                    </p>
+                    <h2
+                      className="mb-4 font-serif text-3xl leading-tight md:text-5xl"
+                      style={{ color: theme.title }}
+                    >
+                      {item.title}
+                    </h2>
+                    <p
+                      className="mb-7 text-base leading-relaxed md:text-lg"
+                      style={{ color: theme.text }}
+                    >
+                      {item.description}
+                    </p>
+                    <div
+                      className="inline-flex items-center border-b pb-1 text-sm uppercase tracking-[0.14em]"
+                      style={{ borderColor: theme.meta, color: theme.meta }}
+                    >
+                      {item.meta}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </article>
-          ))}
-        </div>
+          );
+        })}
       </div>
-    </section>
+
+      <div className="mx-auto mt-16 max-w-6xl px-5 text-center md:mt-24 md:px-8">
+        <Link
+          to="/contact"
+          className="group inline-flex items-center gap-3 rounded-full bg-[#a7683f] px-8 py-3.5 text-sm font-semibold uppercase tracking-[0.1em] text-white shadow-[0_12px_28px_rgba(122,78,47,0.35)] transition-all duration-300 hover:-translate-y-1 hover:bg-[#8f5630] hover:shadow-[0_18px_36px_rgba(122,78,47,0.45)]"
+        >
+          Book Discovery Call
+          <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
+            &rarr;
+          </span>
+        </Link>
+      </div>
+      </section>
+    </div>
   );
 };
 

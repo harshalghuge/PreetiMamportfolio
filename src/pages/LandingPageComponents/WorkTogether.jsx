@@ -18,7 +18,7 @@ const WorkTogether = () => {
       description:
         "Teaching children the emotional skills they deserve from the start, before the world teaches them to disconnect from themselves.",
       image:
-        "./images/youngsoul1.jpeg",
+        "/images/youngsoul1.jpeg",
       color: "#f1a14b",
       bgColor: "#fef9f3",
     },
@@ -30,7 +30,7 @@ const WorkTogether = () => {
       description:
         "Life isn't about birth and death, it's about everything in between. Transformational retreats for adults.",
       image:
-        "./images/IMG9.jpeg",
+        "/images/IMG9.jpeg",
       color: "#c8886f",
       bgColor: "#faf7f4",
     },
@@ -42,7 +42,7 @@ const WorkTogether = () => {
       description:
         "Healing isn't about fixing what's broken, it's about uncovering what was always whole.",
       image:
-        "./images/kaifiat1.png",
+        "/images/kaifiat1.png",
       color: "#d4a574",
       bgColor: "#f8f5f1",
     },
@@ -115,13 +115,13 @@ const WorkTogether = () => {
                 className="card w-full bg-white rounded-3xl overflow-hidden shadow-2xl"
               >
                 <div
-                  className={`grid md:grid-cols-2 ${
+                  className={`grid items-stretch md:grid-cols-2 md:min-h-[520px] ${
                     index % 2 === 1 ? "md:grid-flow-dense" : ""
                   }`}
                 >
                   {/* Image */}
                   <div
-                    className={`relative h-[230px] md:h-[500px] lg:h-[100%] overflow-hidden group ${
+                    className={`relative h-[260px] md:h-full overflow-hidden group ${
                       index % 2 === 1 ? "md:col-start-2" : ""
                     }`}
                   >
@@ -129,7 +129,8 @@ const WorkTogether = () => {
                     <img
                       src={card.image}
                       alt={card.title}
-                      className="absolute inset-0 w-full h-[100%] object-cover scale-105 group-hover:scale-110 transition-transform duration-700"
+                      className="absolute inset-0 block w-full h-full object-cover object-center scale-105 group-hover:scale-110 transition-transform duration-700"
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
                     />
                     <div
                       className="absolute top-8 left-8 text-7xl md:text-9xl font-serif opacity-55 z-20 select-none"
@@ -141,7 +142,7 @@ const WorkTogether = () => {
 
                   {/* Content */}
                   <div
-                    className={`flex flex-col justify-center p-8 md:p-12 lg:p-16 ${
+                    className={`h-full flex flex-col justify-center p-8 md:p-12 lg:p-16 ${
                       index % 2 === 1 ? "md:col-start-1" : ""
                     }`}
                     style={{ backgroundColor: card.bgColor }}
