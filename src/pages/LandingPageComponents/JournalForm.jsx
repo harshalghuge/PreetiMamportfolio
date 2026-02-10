@@ -22,7 +22,7 @@ const FinalCTA = () => {
 
     try {
       const res = await fetch(
-        "https://script.google.com/macros/s/AKfycbyPUL_QDu5BKpGTaX3iedpcXVcmc6RTzPtx_vnBO5AG6ihh_OeaOVwpo2wuODjvNCwI/exec",
+        "https://script.google.com/macros/s/AKfycbwsjcDAOUdL6JnP7A7OetozzJxXakozq2W2QHJNacZmhB3KZsmyfUwRYCcKNRU1EOZa/exec",
         {
           method: "POST",
 
