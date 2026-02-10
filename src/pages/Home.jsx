@@ -1,6 +1,8 @@
 import React from "react";
 import "../styles/global.css"; // Import global.css
+import { useNavigate } from "react-router-dom";
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <>
     <section className="relative w-full min-h-screen flex items-center overflow-hidden ">
@@ -64,7 +66,8 @@ const Home = () => {
                     className="px-6 py-2 sm:px-8 sm:py-3 rounded-full border-2 border-white/70 text-white/70 
                               text-[14px] sm:text-[15px] tracking-[0.12em] uppercase italic font-medium
                               hover:bg-white hover:text-black transition-all duration-300"
-                  >
+                    onClick={()=> navigate("/about")}
+                    >
                     About Me
                   </button>
                 </div>
