@@ -90,19 +90,19 @@ const WorkTogether = () => {
     <section ref={sectionRef} className="w-full bg-[#e9e6dc]">
 
       {/* Header */}
-      <div className="py-15 px-4 text-center max-w-4xl mx-auto">
+      <div className="py-14 px-4 text-center max-w-4xl mx-auto">
         <h2 className="text-4xl md:text-6xl font-serif text-[#2a2a2a] mb-6">
           Three Paths, One Philosophy
         </h2>
-        <p className="text-lg text-gray-600 leading-relaxed">
+        <p className="text-[16px] text-gray-600 leading-relaxed">
           Learning to be present to yourself is the foundation of a fully lived
           life — at any age.
         </p>
       </div>
 
       {/* Cards Container */}
-      <div className="cards-container w-full min-h-screen pt-[100px] pb-[50px] border-t-2 border-b-2 border-dashed border-[#d0cdc3]">
-        <div className="cards w-full max-w-[1200px] mx-auto px-5 md:px-8 lg:px-12">
+      <div className="cards-container w-full min-h-screen pt-[30px] pb-[50px] border-t-2 border-b-2 border-dashed border-[#d0cdc3]">
+        <div className="cards w-full max-w-[1200px] mx-auto px-4 md:px-8 lg:px-12">
           {cards.map((card, index) => (
             <div
               key={card.number}
@@ -120,11 +120,11 @@ const WorkTogether = () => {
                   }`}
                 >
                   {/* Image */}
-                  <div
-                    className={`relative h-[260px] md:h-full overflow-hidden group ${
-                      index % 2 === 1 ? "md:col-start-2" : ""
-                    }`}
-                  >
+                <div
+                  className={`relative h-[210px] md:h-full overflow-hidden group ${
+                    index % 2 === 1 ? "md:col-start-2" : ""
+                  }`}
+                >
                     <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30 group-hover:from-black/0 group-hover:to-black/20 transition-all duration-500 z-10" />
                     <img
                       src={card.image}
@@ -142,7 +142,7 @@ const WorkTogether = () => {
 
                   {/* Content */}
                   <div
-                    className={`h-full flex flex-col justify-center p-8 md:p-12 lg:p-16 ${
+                    className={`h-full flex flex-col justify-center p-6 md:p-12 lg:p-16 ${
                       index % 2 === 1 ? "md:col-start-1" : ""
                     }`}
                     style={{ backgroundColor: card.bgColor }}
@@ -203,7 +203,7 @@ const WorkTogether = () => {
       </div>
 
       {/* Spacer */}
-      <div className="w-screen h-40"></div>
+      <div className="w-screen h-60 md:h-40"></div>
     </section>
   );
 };

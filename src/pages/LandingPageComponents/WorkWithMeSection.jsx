@@ -91,25 +91,37 @@ const WorkWithMeSection = () => {
   const sectionRefs = useRef([]);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion) {
+      sectionRefs.current.forEach((node) => {
+        if (!node) return;
+        node.classList.add("opacity-100", "translate-y-0");
+        node.classList.remove("opacity-0", "translate-y-10");
+      });
+      return undefined;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          entry.target.classList.add("translate-x-0", "opacity-100");
-          entry.target.classList.remove("-translate-x-14", "translate-x-14", "opacity-0");
+          entry.target.classList.add("translate-y-0", "opacity-100");
+          entry.target.classList.remove("translate-y-10", "opacity-0");
           observer.unobserve(entry.target);
         });
       },
-      { threshold: 0.25, rootMargin: "0px 0px -60px 0px" }
+      { threshold: 0.12, rootMargin: "0px 0px -45px 0px" }
     );
 
-    sectionRefs.current.forEach((node, idx) => {
+    sectionRefs.current.forEach((node) => {
       if (!node) return;
       node.classList.add(
         "transition-all",
         "duration-700",
         "ease-out",
-        idx % 2 === 0 ? "-translate-x-14" : "translate-x-14",
+        "transform-gpu",
+        "translate-y-10",
         "opacity-0"
       );
       observer.observe(node);
@@ -119,118 +131,87 @@ const WorkWithMeSection = () => {
   }, []);
 
   return (
-    <div className="w-full bg-[#faf4f4]">
-      <section className="relative h-[380px] flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-fixed rounded-b-[2rem] bg-[url('../images/aboutBg_mobile.JPEG')] md:bg-[url('../images/IMG_4276.JPEG')]"
-        >
-          <div className="absolute inset-0 bg-black/45 rounded-b-[2rem]"></div>
+    <div className="w-full overflow-x-clip bg-[#faf4f4]">
+      <section className="relative flex h-[320px] items-center justify-center overflow-hidden sm:h-[360px] md:h-[420px]">
+        <div className="absolute inset-0 rounded-b-[2rem] bg-cover bg-center bg-[url('../images/aboutBg_mobile.JPEG')] md:bg-[url('../images/IMG_4276.JPEG')] lg:bg-fixed">
+          <div className="absolute inset-0 rounded-b-[2rem] bg-black/45"></div>
         </div>
 
-        <div className="relative z-10 max-w-4xl px-6 text-center text-white ">
-          <h1 className="mb-6  font-serif text-5xl font-light md:text-6xl lg:text-7xl">
+        <div className="relative z-10 max-w-4xl px-5 text-center text-white sm:px-6">
+          <h1 className="mb-4 font-serif text-4xl font-light leading-tight sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl">
             Work With Me
           </h1>
-          <p className="text-xl font-light leading-relaxed md:text-2xl">
-            Whether you're seeking transformation for yourself, your children, or your organization—here's how we can begin.
+          <p className="mx-auto max-w-[36rem] text-base font-light leading-relaxed sm:text-lg md:text-2xl">
+            Whether you are seeking transformation for yourself, your children, or your organization, here is how we can begin.
           </p>
         </div>
       </section>
 
-      <section className="pt-20 pb-20 md:pt-28 md:pb-28">
-      {/* <div className="mx-auto max-w-6xl px-5 md:px-8 grid place-items-center mb-12" >
-        <header className="mx-auto mb-16 max-w-3xl text-center md:mb-24">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#9f7f64]">
-            Work With Me
-          </p>
-          <h1 className="mb-5 font-serif text-4xl text-[#27241f] md:text-6xl">
-            Designed For Deep, Real Change
-          </h1>
-          <p className="text-base leading-relaxed text-[#5f584d] md:text-lg">
-            These are not generic sessions. Each path is intentionally crafted
-            to meet where you are and guide where you want to go.
-          </p>
-        </header>
-      </div> */}
+      <section className="pb-16 pt-14 sm:pt-16 md:pb-28 md:pt-24">
+        <div className="space-y-8 md:space-y-14">
+          {offerings.map((item, index) => {
+            const imageRight = index % 2 === 0;
+            const theme = alternatingThemes[index % 2];
 
-      <div className="space-y-10 md:space-y-14">
-        {offerings.map((item, index) => {
-          const imageRight = index % 2 === 0;
-          const theme = alternatingThemes[index % 2];
-          return (
-            <article
-              key={item.title}
-              ref={(el) => (sectionRefs.current[index] = el)}
-              className="mx-auto w-full max-w-7xl px-5 md:px-8"
-              style={{ transitionDelay: `${index * 110}ms` }}
-            >
-              <div
-                className="grid items-stretch overflow-hidden border-y md:min-h-[520px] md:grid-cols-2"
-                style={{ backgroundColor: theme.bg, borderColor: theme.border }}
+            return (
+              <article
+                key={item.title}
+                ref={(el) => (sectionRefs.current[index] = el)}
+                className="mx-auto w-full max-w-7xl px-4 sm:px-5 md:px-8"
+                style={{ transitionDelay: `${index * 110}ms` }}
               >
                 <div
-                  className={`relative h-[320px] md:h-full ${
-                    imageRight ? "md:order-2" : "md:order-1"
-                  }`}
+                  className="grid items-stretch overflow-hidden border-y md:min-h-[520px] md:grid-cols-2"
+                  style={{ backgroundColor: theme.bg, borderColor: theme.border }}
                 >
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="absolute inset-0 block h-full w-full object-cover object-center"
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent" />
-                </div>
+                  <div
+                    className={`relative min-h-[300px] sm:min-h-[340px] md:min-h-[520px] ${imageRight ? "md:order-2" : "md:order-1"}`}
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 block h-full w-full object-cover object-center"
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent" />
+                  </div>
 
-                <div
-                  className={`h-full flex items-center ${
-                    imageRight ? "md:order-1" : "md:order-2"
-                  }`}
-                >
-                  <div className="w-full px-6 py-10 md:px-12 md:py-14 lg:px-16">
-                    <p
-                      className="mb-4 text-xs font-semibold uppercase tracking-[0.14em]"
-                      style={{ color: theme.badge }}
-                    >
-                      {item.audience}
-                    </p>
-                    <h2
-                      className="mb-4 font-serif text-3xl leading-tight md:text-5xl"
-                      style={{ color: theme.title }}
-                    >
-                      {item.title}
-                    </h2>
-                    <p
-                      className="mb-7 text-base leading-relaxed md:text-lg"
-                      style={{ color: theme.text }}
-                    >
-                      {item.description}
-                    </p>
-                    <div
-                      className="inline-flex items-center border-b pb-1 text-sm uppercase tracking-[0.14em]"
-                      style={{ borderColor: theme.meta, color: theme.meta }}
-                    >
-                      {item.meta}
+                  <div className={`flex h-full items-center ${imageRight ? "md:order-1" : "md:order-2"}`}>
+                    <div className="w-full px-5 py-8 sm:px-6 md:px-12 md:py-14 lg:px-16">
+                      <p className="mb-4 text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: theme.badge }}>
+                        {item.audience}
+                      </p>
+                      <h2 className="mb-4 break-words font-serif text-2xl leading-tight sm:text-3xl md:text-5xl" style={{ color: theme.title }}>
+                        {item.title}
+                      </h2>
+                      <p className="mb-6 text-sm leading-relaxed sm:text-base md:mb-7 md:text-lg" style={{ color: theme.text }}>
+                        {item.description}
+                      </p>
+                      <div
+                        className="inline-flex items-center pb-1 text-sm uppercase tracking-[0.07em] md:tracking-[0.14em]"
+                        style={{ borderColor: theme.meta, color: theme.meta }}
+                      >
+                        {item.meta}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </article>
-          );
-        })}
-      </div>
+              </article>
+            );
+          })}
+        </div>
 
-      <div className="mx-auto mt-16 max-w-6xl px-5 text-center md:mt-24 md:px-8">
-        <Link
-          to="/contact"
-          className="group inline-flex items-center gap-3 rounded-full bg-[#a7683f] px-8 py-3.5 text-sm font-semibold uppercase tracking-[0.1em] text-white shadow-[0_12px_28px_rgba(122,78,47,0.35)] transition-all duration-300 hover:-translate-y-1 hover:bg-[#8f5630] hover:shadow-[0_18px_36px_rgba(122,78,47,0.45)]"
-        >
-          Book Discovery Call
-          <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
-            &rarr;
-          </span>
-        </Link>
-      </div>
+        <div className="mx-auto mt-16 max-w-6xl px-5 text-center md:mt-24 md:px-8">
+          <Link
+            to="/contact"
+            className="group inline-flex items-center gap-3 rounded-full bg-[#a7683f] px-6 py-3 text-xs font-semibold uppercase tracking-[0.1em] text-white shadow-[0_12px_28px_rgba(122,78,47,0.35)] transition-all duration-300 hover:-translate-y-1 hover:bg-[#8f5630] hover:shadow-[0_18px_36px_rgba(122,78,47,0.45)] sm:px-8 sm:py-3.5 sm:text-sm"
+          >
+            Book Discovery Call
+            <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+          </Link>
+        </div>
       </section>
     </div>
   );

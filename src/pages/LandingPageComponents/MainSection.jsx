@@ -1,10 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import AnimatedImageCard from "../../components/AnimatedImageCard";
-import JourneySection from "./JourneySection";
 import ProfileCard from "./ProfileCard";
+import JourneySection from "./JourneySection";
 
 const MainSection = () => {
-  const [offset, setOffset] = useState(0);
   const [isVisible, setIsVisible] = useState({
     title: false,
     paragraph1: false,
@@ -20,35 +18,9 @@ const MainSection = () => {
   const buttonRef = useRef(null);
 
   useEffect(() => {
-    let lastScrollY = window.scrollY;
-    let ticking = false;
-
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const direction = currentScrollY > lastScrollY ? "down" : "up";
-      lastScrollY = currentScrollY;
-
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setOffset((prev) => {
-            const step = 1.1;
-            if (direction === "up") return Math.min(prev + step, 60);
-            return Math.max(prev - step, 0);
-          });
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
     const observerOptions = {
-      threshold: 0.2,
-      rootMargin: "0px 0px -100px 0px",
+      threshold: 0.1,
+      rootMargin: "0px 0px -40px 0px",
     };
 
     const observerCallback = (entries) => {
@@ -82,6 +54,8 @@ const MainSection = () => {
               450,
             );
           }
+
+          observer.unobserve(target);
         }
       });
     };
@@ -104,9 +78,9 @@ const MainSection = () => {
     <>
       {/* ================= TOP SECTION ================= */}
       <section className="w-full bg-[#F7F4EE]  ">
-        <div className="grid grid-cols-1 md:grid-cols-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 ">
           {/* IMAGE */}
-          <div className="relative h-[350px] md:h-[640px] overflow-hidden order-1 md:order-2 fade-up">
+          <div className="relative hidden md:block  order-1 h-[350px] overflow-hidden md:order-2 md:h-[640px]">
             <ProfileCard />
           </div>
 
@@ -139,13 +113,13 @@ const MainSection = () => {
               {/* First Paragraph */}
               <p
                 ref={para1Ref}
-                className={`mt-8 text-base lg:text-lg leading-relaxed text-[#2D2A1F]  font-light transition-all duration-500 ${
+                className={`mt-8 w-full md:w-[90%] text-base lg:text-lg leading-relaxed text-[#2D2A1F]  font-light transition-all duration-500 text-center ${
                   isVisible.paragraph1
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-12"
                 }`}
                 style={{
-                  textAlign: "start",
+                  textAlign:"center",
                   hyphens: "auto",
                 }}
               >
@@ -171,75 +145,36 @@ const MainSection = () => {
               {/* Second Paragraph */}
               <p
                 ref={para2Ref}
-                className={`text-base lg:text-lg leading-relaxed text-[#2D2A1F]  font-light transition-all duration-500 ${
+                className={`w-full md:w-[90%] text-base lg:text-lg leading-relaxed text-[#2D2A1F]  font-light transition-all duration-500 text-center ${
                   isVisible.paragraph2
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-12"
                 }`}
                 style={{
-                  textAlign: "start",
+                  textAlign:"center",
                   hyphens: "auto",
                 }}
               >
                 The answer wasn't in achievement or success. It was in the education no one ever gave us: 
-                how to understand ourselves. <br />
+                how to understand ourselves.
                 That became my life's work.
               </p>
-
-              {/* Button */}
-              <button
-                ref={buttonRef}
-                className={`mt-8 px-8 py-1 border-2 border-[#2D2A1F] rounded-full text-sm tracking-[0.2em] font-medium
-                transition-all duration-500 
-                hover:bg-[#2D2A1F] hover:text-white hover:shadow-lg hover:scale-105
-                active:scale-95
-                ${
-                  isVisible.button
-                    ? "opacity-100 scale-100"
-                    : "opacity-0 scale-90"
-                }`}
-              >
-                LEARN MORE
-              </button>
             </div>
           </div>
+
+
+          {/* {image shouls be at botom of para for mobile} */}
+              <div className="relative block lg:hidden   h-[350px] overflow-hidden p-4 order-3 md:h-[640px]">
+                <ProfileCard />
+              </div>
         </div>
       </section>
 
       {/* ================= BOTTOM SECTION ================= */}
       <section className="w-full bg-[#F7F4EE]">
         <div className="grid">
-          {/* IMAGE */}
-          {/* <div className="relative h-[490px] md:h-[680px]">
-            <AnimatedImageCard
-              image={
-                "https://riselovelive.com/wp-content/uploads/2020/02/and-my-journey-begins_pin-683x1024.png"
-              }
-            />
-          </div> */}
-
-          {/* TEXT */}
-          <div className="flex flex-col justify-center items-center  py-2  fade-up">
-            {/* ====================================old version==================================== */}
-            {/* <h2 className="text-3xl font-serif text-[#1D1A13] tracking-wide">
-              MEET MINERVA
-            </h2>
-
-            <p className="mt-5 text-[18px] leading-5 text-[#2D2A1F] max-w-[520px]">
-              Tapping into the blue whale shark turtle energy, tripplethra channel
-              typography coldlaid silver fertility awareness divine feminine.
-            </p>
-
-            <p className="mt-4 text-[18px] leading-5 text-[#2D2A1F] max-w-[520px]">
-              Universal talking stick wisdom of your body, healer nonprofit
-              retreat kale chips kombucha beth change programming your DNA.
-            </p>
-
-            <button className="mt-6 w-fit border border-[#2D2A1F] px-6 py-2 rounded-full text-[12px] tracking-widest hover:bg-black hover:text-white transition-all">
-              LEARN MORE
-            </button> */}
-
-            {/* ====================================journey section==================================== */}
+          {/* Journey Section */}
+          <div className="flex flex-col items-center justify-center py-2">
             <JourneySection />
           </div>
         </div>

@@ -49,20 +49,20 @@ const FinalCTA = () => {
   };
 
   return (
-    <section className="bg-[#fbf8f1] py-32">
+    <section className="overflow-x-clip bg-[#fbf8f1] py-16 sm:py-20 lg:py-28">
       <div className="max-w-6xl mx-auto px-6 ">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20  items-center ml-0 lg:ml-30">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
           {/* LEFT CONTENT */}
-          <div className="text-center  max-w-xl mx-auto  flex-col justify-center items-center  ">
-            <p className="text-l tracking-widest uppercase mb-6">
+          <div className="mx-auto max-w-xl text-center">
+            <p className="mb-4 text-sm tracking-[0.2em] uppercase sm:mb-6">
               Before You Go
             </p>
 
-            <h2 className="font-serif text-5xl leading-tight mb-6 uppercase">
+            <h2 className="mb-4 font-serif text-3xl leading-tight uppercase sm:mb-6 sm:text-4xl lg:text-5xl">
               Something for the journey
             </h2>
 
-            <p className="text-sx leading-relaxed mb-10 text-black/70">
+            <p className="mb-8 text-sm leading-relaxed text-black/70 sm:mb-10 sm:text-base">
               The Rerooting Journal is a 7-day guided journey back to yourself.
               Not advice. Not affirmations. Just questions that help you
               remember who you were before the world told you who to be.
@@ -94,7 +94,7 @@ const FinalCTA = () => {
 
               <button
                 type="submit"
-                className="mt-4 inline-block border border-black px-6 py-2 text-sm tracking-wide uppercase hover:bg-black hover:text-white transition rounded-2xl"
+                className="mt-4 inline-block rounded-2xl border border-black px-6 py-2 text-sm tracking-wide uppercase transition hover:bg-black hover:text-white"
               >
                 Submit
               </button>
@@ -102,7 +102,7 @@ const FinalCTA = () => {
           </div>
 
           {/* RIGHT IMAGE */}
-          <div className="flex justify-center mx-auto w-[250px] h-[420px] overflow-hidden  lg:ml-20">
+          <div className="mx-auto flex h-[340px] w-[220px] justify-center overflow-hidden sm:h-[420px] sm:w-[250px]">
            
               <img
                 src="./images/IMG10.jpeg"
