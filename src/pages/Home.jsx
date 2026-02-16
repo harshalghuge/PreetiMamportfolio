@@ -1,40 +1,56 @@
-import React from "react";
+import React, { useRef } from "react";
 import "../styles/global.css"; // Import global.css
 import { useNavigate } from "react-router-dom";
+import { motion, useScroll, useTransform } from "framer-motion";
+
 const Home = () => {
   const navigate = useNavigate();
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const desktopBgY = useTransform(scrollYProgress, [0, 1], ["45%", "85%"]);
+
   return (
     <>
-    <section className="relative w-full min-h-screen flex items-center overflow-hidden ">
-     
-      <div
-        className="absolute inset-0 bg-cover bg-center hidden md:block"
-        style={{ backgroundImage: `url("/images/IMG5.JPEG")` }}
+    <section ref={heroRef} className="relative w-full min-h-screen flex items-center overflow-hidden ">
+
+      <motion.div
+        style={{
+          backgroundPositionY: desktopBgY,
+          backgroundImage: `url("/images/IMG5.JPEG")`,
+          filter: "grayscale(100%) contrast(110%) brightness(72%)",
+        }}
+        className="absolute inset-0 bg-cover bg-center bg-fixed hidden md:block will-change-[background-position]"
       />
 
       {/* Mobile background */}
       <div
-        className="absolute inset-0 bg-cover bg-center block md:hidden"
-        style={{ backgroundImage: `url("/images/mobilebg1.JPEG")` }}
+        className="absolute inset-0 bg-cover bg-center bg-fixed block md:hidden"
+        style={{
+          backgroundImage: `url("/images/mobilebg1.JPEG")`,
+          filter: "grayscale(100%) contrast(108%) brightness(70%)",
+        }}
       />
 
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/30"></div>
+      {/* Neutral grey overlay
+      <div className="absolute inset-0 bg-stone-500/10"></div> */}
 
       {/* Content Container */}
       <div className="">
-        <div className="mt-16  text-center">
+        <div className="mt-24  text-center">
           <div className="relative z-10 w-full">
-            <div className="mx-auto max-w-6xl">
-              <div className="max-w-4xl">
+            <div className="mx-auto max-w-7xl">
+              <div className="max-w-5xl">
                 {/* Subtitle */}
-                <p className=" max-w-[80%] mx-auto text-white/80 font-sans text-[16px] sm:text-[18px]  lg:tracking-[0.1em] font-medium uppercase mb-4">
+                <p className="max-w-[85%] mx-auto text-white/80 font-sans text-[15px] sm:text-[17px] md:text-[18px] lg:tracking-[0.1em] font-medium uppercase mb-4">
                   READY TO FALL IN LOVE WITH LIFE AGAIN?
                 </p>
 
                 {/* Heading */}
-                <div className="main-qoute font-serif font-light md:w-[70%] md:mx-auto md:text-center pl-2 pr-2">
-                  <h1 className="text-white/90 font-light text-5xl leading-[1.2em] uppercase">
+                <div className="main-qoute font-serif font-light md:w-[78%] md:mx-auto md:text-center px-2">
+                  <h1 className="text-white/90 font-light text-5xl sm:text-6xl lg:text-7xl leading-[1.12em] uppercase">
                     <span className="block font-span tracking-[-0.01em] ">
                       When did you stop
                     </span>
@@ -48,9 +64,9 @@ const Home = () => {
                 </div>
 
                 {/* Description */}
-                <div className="mx-auto w-[90%] sm:w-[80%] md:max-w-[65%] text-center">
+                <div className="mx-auto w-[90%] sm:w-[84%] md:max-w-[66%] text-center">
                   <p
-                    className="mt-6 text-white/70 text-[18px] sm:text-[18px] md:text-[18px]
+                    className="mt-6 text-white/70 text-[17px] sm:text-[18px] md:text-[19px]
                   font-sans font-medium mx-auto
                   text-center md:text-center-last md:text-center"
                   >
@@ -63,7 +79,7 @@ const Home = () => {
                 {/* Button */}
                 <div className="mt-8 flex justify-center">
                   <button
-                    className="px-6 py-2 sm:px-8 sm:py-3 rounded-full border-2 border-white/70 text-white/70 
+                    className="px-7 py-2.5 sm:px-9 sm:py-3.5 rounded-full border-2 border-white/70 text-white/70 
                               text-[14px] sm:text-[15px] tracking-[0.12em] uppercase italic font-medium
                               hover:bg-white hover:text-black transition-all duration-300"
                     onClick={()=> navigate("/about")}

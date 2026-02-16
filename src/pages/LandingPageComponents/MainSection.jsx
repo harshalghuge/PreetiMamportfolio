@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import ProfileCard from "./ProfileCard";
 import JourneySection from "./JourneySection";
 
 const MainSection = () => {
@@ -77,97 +76,96 @@ const MainSection = () => {
   return (
     <>
       {/* ================= TOP SECTION ================= */}
-      <section className="w-full bg-[#F7F4EE]  ">
-        <div className="grid grid-cols-1 md:grid-cols-2 ">
-          {/* IMAGE */}
-          <div className="relative hidden md:block  order-1 h-[350px] overflow-hidden md:order-2 md:h-[640px]">
-            <ProfileCard />
+      <section className="relative w-full bg-gradient-to-b from-[#F7F4EE] via-[#FAF8F3] to-white py-12 md:py-16 lg:py-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          {/* Section Label */}
+          <div
+            ref={titleRef}
+            className={`flex items-center justify-center lg:justify-start gap-3 mb-10 md:mb-0 transition-all duration-700 ${
+              isVisible.title
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 -translate-x-8"
+            }`}
+          >
+            <div className="w-12 h-[1px] bg-[#8B7355]" />
+            <span className="text-sm tracking-[0.3em] text-[#8B7355] font-light uppercase">
+              About
+            </span>
           </div>
 
-          {/* TEXT */}
-          <div className="flex items-center justify-center px-6 py-12 md:p-16 order-2 md:order-1 relative overflow-hidden">
-            {/* Background decorative elements */}
-            <div className="absolute top-20 right-10 w-32 h-32 rounded-full bg-[#8B7355] opacity-5 blur-3xl pointer-events-none" />
-            <div className="absolute bottom-20 left-10 w-40 h-40 rounded-full bg-[#8B7355] opacity-5 blur-3xl pointer-events-none" />
-
-            <div className="flex flex-col justify-center items-center max-w-2xl mx-auto z-10">
-              {/* Title with elegant reveal animation */}
-              <div
-                ref={titleRef}
-                className={`relative overflow-hidden transition-all duration-1000 ${
-                  isVisible.title
+          {/* Main Content Grid */}
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+            {/* Text Content */}
+            <div className="lg:col-span-6 space-y-8 text-center lg:text-left">
+              <h2
+                ref={para1Ref}
+                className={`text-4xl md:text-5xl lg:text-6xl font-serif text-[#1D1A13] leading-[1.1] transition-all duration-700 delay-100 ${
+                  isVisible.paragraph1
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-8"
                 }`}
               >
-                <h2 className="text-3xl lg:text-4xl font-serif text-[#1D1A13] tracking-wide mb-2 text-center">
-                  MEET PREETI
-                </h2>
-                <div
-                  className={`h-[2px] bg-gradient-to-r from-transparent via-[#8B7355] to-transparent transition-all duration-1000 delay-300 ${
-                    isVisible.title ? "w-full opacity-100" : "w-0 opacity-0"
+                Meet Preeti
+              </h2>
+
+              <div className="space-y-6">
+                <p
+                  ref={dividerRef}
+                  className={`text-lg md:text-xl leading-relaxed text-[#2D2A1F]/80 transition-all duration-700 delay-200 ${
+                    isVisible.divider
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-8"
                   }`}
-                />
+                >
+                  I spent years searching for something I couldn't name. A
+                  feeling of being at home in my own life. A sense that I was
+                  living, not just performing.
+                </p>
+
+                <p
+                  ref={para2Ref}
+                  className={`text-lg md:text-xl leading-relaxed text-[#2D2A1F]/80 transition-all duration-700 delay-300 ${
+                    isVisible.paragraph2
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-8"
+                  }`}
+                >
+                  The answer wasn't in achievement or success. It was in the
+                  education no one ever gave us: how to understand ourselves.
+                </p>
+
+                <p className="text-lg md:text-xl leading-relaxed text-[#2D2A1F] font-medium italic">
+                  That became my life's work.
+                </p>
               </div>
+            </div>
 
-              {/* First Paragraph */}
-              <p
-                ref={para1Ref}
-                className={`mt-8 w-full md:w-[90%] text-base lg:text-lg leading-relaxed text-[#2D2A1F]  font-light transition-all duration-500 text-center ${
-                  isVisible.paragraph1
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-12"
-                }`}
-                style={{
-                  textAlign:"center",
-                  hyphens: "auto",
-                }}
-              >
-                I'm Preeti - and I spent years searching for something I couldn't name. 
-                <br />
-                A feeling of being at home in my own life. A sense that I was living, not just performing.
-              </p>
+            {/* Image Content */}
+            <div className="lg:col-span-6 flex justify-center lg:justify-end">
+              <div className="w-full max-w-[360px] md:max-w-[420px]">
+                <div className="relative">
+                  {/* Accent Border */}
+                  <div className="absolute -inset-4 bg-gradient-to-br from-[#8B7355]/10 to-transparent rounded-2xl" />
 
-              {/* Decorative divider */}
-              <div
-                ref={dividerRef}
-                className={`my-6 flex items-center gap-3 transition-all duration-500 ${
-                  isVisible.divider
-                    ? "opacity-60 scale-100"
-                    : "opacity-0 scale-75"
-                }`}
-              >
-                <div className="w-2 h-2 rounded-full bg-[#8B7355]" />
-                <div className="w-12 h-[1px] bg-[#8B7355]" />
-                <div className="w-2 h-2 rounded-full bg-[#8B7355]" />
+                  {/* Image Container */}
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl">
+                    <img
+                      src="/images/IMG12.jpeg"
+                      alt="Preeti"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  {/* Decorative Element */}
+                  <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#8B7355]/5 rounded-full blur-2xl -z-10" />
+                </div>
               </div>
-
-              {/* Second Paragraph */}
-              <p
-                ref={para2Ref}
-                className={`w-full md:w-[90%] text-base lg:text-lg leading-relaxed text-[#2D2A1F]  font-light transition-all duration-500 text-center ${
-                  isVisible.paragraph2
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-12"
-                }`}
-                style={{
-                  textAlign:"center",
-                  hyphens: "auto",
-                }}
-              >
-                The answer wasn't in achievement or success. It was in the education no one ever gave us: 
-                how to understand ourselves.
-                That became my life's work.
-              </p>
             </div>
           </div>
-
-
-          {/* {image shouls be at botom of para for mobile} */}
-              <div className="relative block lg:hidden   h-[350px] overflow-hidden p-4 order-3 md:h-[640px]">
-                <ProfileCard />
-              </div>
         </div>
+
+        {/* Bottom Fade Transition */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-white pointer-events-none" />
       </section>
 
       {/* ================= BOTTOM SECTION ================= */}

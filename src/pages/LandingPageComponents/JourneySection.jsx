@@ -216,15 +216,23 @@ export default function JourneySection() {
           {/* Timeline */}
           <div className="relative">
             {/* Static background line */}
-            <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-stone-300" />
+            <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-stone-300 z-0" />
 
             {/* Animated center line */}
             <motion.div
               style={{ height: lineHeight }}
-              className="absolute left-1/2 -translate-x-1/2 top-0 w-px bg-stone-500 origin-top"
+              className="absolute left-1/2 -translate-x-1/2 top-0 w-px bg-stone-500 origin-top z-0"
             />
 
-            <div className="space-y-5 lg:space-y-16">
+            <div className="pointer-events-none absolute bottom-0 right-0 z-[1]">
+              <img
+                className="w-28 md:w-36 h-auto object-contain opacity-90"
+                src="/images/2.png"
+                alt="Journey decorative"
+              />
+            </div>
+
+            <div className="relative z-10 space-y-5 lg:space-y-16">
               {verticalItems}
             </div>
           </div>
@@ -233,8 +241,8 @@ export default function JourneySection() {
 
       {/* DESKTOP - HORIZONTAL TIMELINE */}
       <div ref={horizontalRef} className="hidden lg:block h-[500vh] w-full mt-10">
-        <div className="sticky top-0 flex items-center justify-center overflow-hidden">
-          <div className="w-full max-w-7xl mx-auto px-16 py-2 lg:py-10">
+        <div className="sticky top-0 relative flex items-center justify-center overflow-hidden">
+          <div className="w-full max-w-7xl mx-auto px-16 py-2 lg:py-10 relative z-10">
             {/* Header */}
             <div className="text-center mb-16">
               <h2 className="text-4xl xl:text-5xl font-light text-stone-700 tracking-wide">
@@ -261,8 +269,25 @@ export default function JourneySection() {
               </div>
             </div>
           </div>
+
+          {/* <div className="pointer-events-none absolute -bottom-33 -left-20 z-[1]">
+            <img
+              className="w-[260px] xl:w-[320px] h-auto object-contain opacity-10"
+              src="/images/3.png"
+              alt="Journey decorative"
+            />
+          </div> */}
+          <div className="pointer-events-none absolute top-0 right-0 z-[1]">
+            <img
+              className="w-[260px] xl:w-[300px] h-auto object-contain opacity-10"
+              src="/images/8.png"
+              alt="Journey decorative"
+            />
+          </div>
         </div>
+       
       </div>
+      
     </>
   );
 }

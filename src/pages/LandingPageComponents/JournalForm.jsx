@@ -50,10 +50,10 @@ const FinalCTA = () => {
 
   return (
     <section className="overflow-x-clip bg-[#fbf8f1] py-16 sm:py-20 lg:py-28">
-      <div className="max-w-6xl mx-auto px-6 ">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,36rem)_minmax(0,16rem)] lg:items-center lg:justify-center lg:gap-32 xl:gap-80">
           {/* LEFT CONTENT */}
-          <div className="mx-auto max-w-xl text-center">
+          <div className="mx-auto w-full max-w-xl text-center">
             <p className="mb-4 text-sm tracking-[0.2em] uppercase sm:mb-6">
               Before You Go
             </p>

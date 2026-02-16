@@ -132,16 +132,16 @@ const WorkWithMeSection = () => {
 
   return (
     <div className="w-full overflow-x-clip bg-[#faf4f4]">
-      <section className="relative flex h-[320px] items-center justify-center overflow-hidden sm:h-[360px] md:h-[420px]">
-        <div className="absolute inset-0 rounded-b-[2rem] bg-cover bg-center bg-[url('../images/aboutBg_mobile.JPEG')] md:bg-[url('../images/IMG_4276.JPEG')] lg:bg-fixed">
-          <div className="absolute inset-0 rounded-b-[2rem] bg-black/45"></div>
+      <section className="relative flex h-[320px] items-center justify-center overflow-hidden sm:h-[360px] md:h-[380px]">
+        <div className="absolute inset-0 bg-cover bg-center bg-[url('../images/aboutBg_mobile.JPEG')] md:bg-[url('../images/IMG_4276.JPEG')] lg:bg-fixed">
+          <div className="absolute inset-0  bg-black/45"></div>
         </div>
 
         <div className="relative z-10 max-w-4xl px-5 text-center text-white sm:px-6">
           <h1 className="mb-4 font-serif text-4xl font-light leading-tight sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl">
             Work With Me
           </h1>
-          <p className="mx-auto max-w-[36rem] text-base font-light leading-relaxed sm:text-lg md:text-2xl">
+          <p className="mx-auto max-w-[86rem] text-base font-light leading-relaxed sm:text-lg md:text-2xl">
             Whether you are seeking transformation for yourself, your children, or your organization, here is how we can begin.
           </p>
         </div>

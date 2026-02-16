@@ -513,38 +513,6 @@ export const Contact = () => {
         </div>
       </section>
 
-      {/* Map Section - Fixed Background */}
-      <section className="relative h-[500px] overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-fixed"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?q=80&w=2070&auto=format&fit=crop')",
-          }}
-        >
-          <div className="absolute inset-0 bg-stone-900/40"></div>
-        </div>
-
-        <div className="relative z-10 h-full flex items-center justify-center text-white text-center px-6">
-          <div>
-            <h2 className="font-serif text-4xl lg:text-5xl font-light mb-4">
-              Visit My Office
-            </h2>
-            <p className="text-xl text-stone-200 mb-8">
-              Located in the heart of Pune
-            </p>
-            <a
-              href="https://maps.google.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block px-8 py-3 bg-white text-stone-900 rounded-full font-medium hover:bg-stone-100 transition-all duration-300 shadow-xl"
-            >
-              Get Directions
-            </a>
-          </div>
-        </div>
-      </section>
-
       {/* FAQ Section */}
       <section className="py-24 lg:py-32 bg-stone-50">
         <div className="max-w-4xl mx-auto px-6 lg:px-12">

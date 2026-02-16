@@ -56,7 +56,7 @@ const Header = () => {
 
               {/* Desktop Nav */}
               <nav className="hidden lg:flex gap-8 text-l font-bold">
-                {["HOME", "ABOUT", "WORK WITH ME", "BLOG", "CONTACT"].map(
+                {["HOME", "ABOUT", "WORK WITH ME", "CONTACT"].map(
                   (item) => {
                     const path =
                       item === "HOME"
@@ -69,6 +69,15 @@ const Header = () => {
                     );
                   }
                 )}
+                 {/* BLOG → WordPress */}
+                <a
+                  href="https://www.preetitoraskar.com/blog"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="nav-link"
+                >
+                  BLOG
+                </a>
                 <Link
                   to="/get-started"
                   className="border px-6 py-1 rounded-full text-white border-white hover:bg-white hover:text-black transition"

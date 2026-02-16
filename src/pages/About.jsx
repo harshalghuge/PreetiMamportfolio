@@ -170,7 +170,9 @@ export const About = () => {
               whileInView={{ scale: 1, opacity: 1 }}
               transition={{ duration: 1.5 }}
               src={section.image}
-              className={`${aboutImageClass} rounded-sm shadow-sm mb-6 lg:mb-4 lg:w-[42%] xl:w-[38%] ${idx % 2 === 0 ? "lg:float-left lg:mr-12" : "lg:float-right lg:ml-12"}`}
+              className={`${aboutImageClass} rounded-sm shadow-sm mb-6 lg:mb-4 ${
+                idx === 2 ? "lg:w-[46%] xl:w-[42%]" : "lg:w-[42%] xl:w-[38%]"
+              } ${idx % 2 === 0 ? "lg:float-left lg:mr-12" : "lg:float-right lg:ml-12"}`}
             />
             <motion.h3
               {...fadeUp}
