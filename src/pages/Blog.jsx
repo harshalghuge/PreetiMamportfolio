@@ -16,9 +16,9 @@ const WP_BASE = "https://blog.preetitoraskar.com/wp-json/wp/v2";
 
 const CATEGORIES = [
   { id: "all", label: "All Posts" },
-  { id: "design", label: "Design" }, // ← must match your WordPress category slug
-  { id: "tech", label: "Tech" },
-  { id: "life", label: "Life" },
+  { id: "soultales", label: "SoulTales" }, // ← must match your WordPress category slug
+  { id: "youngsoul", label: "YoungSoul" },
+  { id: "Kaifiyat", label: "kaifiyat" },
 ];
 
 const POSTS_PER_PAGE = 6;
