@@ -417,17 +417,7 @@ export function Blog() {
 
   return (
     <>
-      {/* ── HEADER SLOT ─────────────────────────────── */}
-      <div className="sticky top-0 z-50 w-full">
-        {/*
-          Replace the div below with your actual header:
-          import Header from "../components/Header";
-          <Header />
-        */}
-        <div className="bg-gray-100 border-b-2 border-dashed border-gray-300 text-gray-400 text-xs text-center py-4 font-mono">
-          ← Your React &lt;Header /&gt; Component Goes Here
-        </div>
-      </div>
+      
 
       {/* Keyframes for modal animation */}
       <style>{`

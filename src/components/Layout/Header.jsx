@@ -1,11 +1,13 @@
 // Header.jsx
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "../../styles/global.css";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const isBlogPage = location.pathname.startsWith("/blog");
 
   /* Header scroll behavior */
   useEffect(() => {
@@ -28,7 +30,7 @@ const Header = () => {
     < >
       {/* HEADER */}
       <header
-        className={`absolute inset-x-0 z-1030 transition-all duration-300 ease-out  ${
+        className={`absolute inset-x-0 z-[1030] transition-all duration-300 ease-out  ${
           scrolled && !mobileMenuOpen
             ? "top-4"
             : "top-0"
@@ -37,10 +39,10 @@ const Header = () => {
       >
         {/* HEADER CONTAINER */}
         <div
-          className={`mx-auto w-[92%] lg:w-[80%] bg-transparent transition-all duration-300 ${
+          className={`mx-auto w-[92%] lg:w-[80%] transition-all duration-300 ${
             scrolled && !mobileMenuOpen
               ? "bg-black backdrop-blur-md shadow-2xl rounded-full"
-              : ""
+              : "bg-transparent"
           }`}
         >
           <div
@@ -50,7 +52,11 @@ const Header = () => {
           >
             <div className="flex items-center justify-between">
               {/* Logo */}
-              <h1 className="text-white text-4xl md:text-6xl font-serif font-light">
+              <h1
+                className={`text-4xl md:text-6xl font-serif font-light ${
+                  isBlogPage ? "text-black" : "text-white"
+                }`}
+              >
                 Preeti
               </h1>
 
@@ -63,7 +69,11 @@ const Header = () => {
                         ? "/"
                         : `/${item.toLowerCase().replace(/ /g, "-")}`;
                     return (
-                      <Link key={item} to={path} className="nav-link">
+                      <Link
+                        key={item}
+                        to={path}
+                        className={`nav-link ${isBlogPage ? "!text-black after:!bg-black" : ""}`}
+                      >
                         {item}
                       </Link>
                     );
@@ -80,12 +90,19 @@ const Header = () => {
                   BLOG
                 </a>
                 */}
-                <Link to="/blog" className="nav-link">
+                <Link
+                  to="/blog"
+                  className={`nav-link ${isBlogPage ? "!text-black after:!bg-black" : ""}`}
+                >
                   BLOG
                 </Link>
                 <Link
                   to="/get-started"
-                  className="border px-6 py-1 rounded-full text-white border-white hover:bg-white hover:text-black transition"
+                  className={`border px-6 py-1 rounded-full transition ${
+                    isBlogPage
+                      ? "text-black border-black hover:bg-black hover:text-white"
+                      : "text-white border-white hover:bg-white hover:text-black"
+                  }`}
                 >
                   GET STARTED
                 </Link>
@@ -98,17 +115,23 @@ const Header = () => {
               >
                 <div className="space-y-1.5">
                   <span
-                    className={`block w-7 h-0.5 bg-white transition ${
+                    className={`block w-7 h-0.5 transition ${
+                      isBlogPage ? "bg-black" : "bg-white"
+                    } ${
                       mobileMenuOpen && "rotate-45 translate-y-2"
                     }`}
                   />
                   <span
-                    className={`block w-7 h-0.5 bg-white transition ${
+                    className={`block w-7 h-0.5 transition ${
+                      isBlogPage ? "bg-black" : "bg-white"
+                    } ${
                       mobileMenuOpen && "opacity-0"
                     }`}
                   />
                   <span
-                    className={`block w-7 h-0.5 bg-white transition ${
+                    className={`block w-7 h-0.5 transition ${
+                      isBlogPage ? "bg-black" : "bg-white"
+                    } ${
                       mobileMenuOpen && "-rotate-45 -translate-y-2"
                     }`}
                   />
