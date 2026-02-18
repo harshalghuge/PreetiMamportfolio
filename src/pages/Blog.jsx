@@ -1,648 +1,596 @@
-import React, { useState, useEffect, useRef } from "react";
+/**
+ * BlogPage.jsx  — Tailwind CSS version
+ * ─────────────────────────────────────────────────────────────────
+ * 1. Copy to  src/pages/BlogPage.jsx
+ * 2. Add route:  <Route path="/blog" element={<BlogPage />} />
+ * 3. Update WP_BASE and CATEGORIES slugs to match your WordPress
+ * ─────────────────────────────────────────────────────────────────
+ */
 
-// Sample blog data - replace with your actual data or API
-const sampleBlogs = [
-  {
-    id: 1,
-    title: "Why Your Child Can't Calm Down While Sitting Still",
-    excerpt: "Understanding the nervous system's role in children's behavior and emotional regulation.",
-    author: "Preeti Sharma",
-    date: "December 15, 2024",
-    readTime: "8 min read",
-    category: "Young Soul'Tales",
-    image: "https://images.pexels.com/photos/1166643/pexels-photo-1166643.jpeg",
-    mediumUrl: "https://soultales-by-preeti.medium.com/why-your-child-cant-calm-down-while-sitting-still-7737bb14138c",
-    featured: true,
-  },
-  {
-    id: 2,
-    title: "The Space Between Doing and Being",
-    excerpt: "How modern life has disconnected us from the present moment and what we can do about it.",
-    author: "Preeti Sharma",
-    date: "December 10, 2024",
-    readTime: "6 min read",
-    category: "Soul'Tales",
-    image: "https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg",
-    mediumUrl: "#",
-    featured: true,
-  },
-  {
-    id: 3,
-    title: "Healing Into Potential: A Community Approach",
-    excerpt: "Why listening circles work when traditional therapy doesn't reach everyone.",
-    author: "Preeti Sharma",
-    date: "December 5, 2024",
-    readTime: "10 min read",
-    category: "Kaifiyat",
-    image: "https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg",
-    mediumUrl: "#",
-    featured: true,
-  },
-  {
-    id: 4,
-    title: "The Missing Education in Our Schools",
-    excerpt: "What children need to learn about emotions before academics.",
-    author: "Preeti Sharma",
-    date: "November 28, 2024",
-    readTime: "7 min read",
-    category: "Young Soul'Tales",
-    image: "https://images.pexels.com/photos/1720186/pexels-photo-1720186.jpeg",
-    mediumUrl: "#",
-    featured: false,
-  },
-  {
-    id: 5,
-    title: "Presence as Practice: Beyond Mindfulness",
-    excerpt: "Moving from mindfulness as a technique to presence as a way of being.",
-    author: "Preeti Sharma",
-    date: "November 20, 2024",
-    readTime: "9 min read",
-    category: "Soul'Tales",
-    image: "https://images.pexels.com/photos/3762800/pexels-photo-3762800.jpeg",
-    mediumUrl: "#",
-    featured: false,
-  },
+import { useState, useEffect, useRef } from "react";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// CONFIG
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const WP_BASE = "https://blog.preetitoraskar.com/wp-json/wp/v2";
+
+const CATEGORIES = [
+  { id: "all", label: "All Posts" },
+  { id: "design", label: "Design" }, // ← must match your WordPress category slug
+  { id: "tech", label: "Tech" },
+  { id: "life", label: "Life" },
 ];
 
-export const Blog = () => {
-  const [blogs, setBlogs] = useState(sampleBlogs);
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [showAddBlogModal, setShowAddBlogModal] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
+const POSTS_PER_PAGE = 6;
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// HELPERS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const stripHtml = (html = "") => html.replace(/<[^>]*>/g, "");
+const formatDate = (d) =>
+  new Date(d).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+const readTime = (content) =>
+  Math.max(1, Math.ceil(stripHtml(content).split(/\s+/).length / 200)) +
+  " min read";
+const getImage = (post) =>
+  post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
+  "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80";
+const getExcerpt = (post) =>
+  stripHtml(post.excerpt?.rendered || post.content?.rendered || "").slice(
+    0,
+    140,
+  ) + "…";
+const getAuthor = (post) =>
+  post._embedded?.author?.[0]?.name || "Preeti Toraskar";
+const getCategory = (post) => post._embedded?.["wp:term"]?.[0]?.[0]?.name || "";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// HOOK — fetch from WordPress REST API
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function usePosts({ categorySlug, search, page }) {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [totalPages, setTotalPages] = useState(1);
+  const [catIdMap, setCatIdMap] = useState({});
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    fetch(`${WP_BASE}/categories?per_page=100`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((cats) => {
+        const map = {};
+        cats.forEach((c) => {
+          map[c.slug] = c.id;
+        });
+        setCatIdMap(map);
+      })
+      .catch(() => {});
   }, []);
-
-  const categories = ["All", "Young Soul'Tales", "Soul'Tales", "Kaifiyat"];
-
-  const filteredBlogs = selectedCategory === "All" 
-    ? blogs 
-    : blogs.filter(blog => blog.category === selectedCategory);
-
-  const featuredBlogs = blogs.filter(blog => blog.featured).slice(0, 3);
-  const latestBlog = blogs[0];
-
-  return (
-    <div className="relative w-full bg-[#f5f3ed] overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative min-h-[60vh] flex  items-center justify-center overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#e9e6dc] via-[#f5f3ed] to-[#ebe8e0]">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-[#d4a574]/10 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#c8886f]/10 rounded-full blur-3xl animate-float-delayed"></div>
-        </div>
-
-        {/* Hero Content */}
-        <div className="relative z-10 text-center px-4 max-w-5xl py-10">
-          <div className="mb-6 animate-fade-in-up">
-            <span className="text-sm md:text-base tracking-[0.3em] uppercase text-[#c8886f] font-light">
-              Stories & Insights
-            </span>
-          </div>
-
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-[#2a2a2a] mb-6 animate-fade-in-up animation-delay-200">
-            Soul'Tales
-            <br />
-            <span className="text-[#c8886f] italic">Blog</span>
-          </h1>
-
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed animate-fade-in-up animation-delay-400 mb-8">
-            Reflections on presence, transformation, and the journey back to ourselves
-          </p>
-
-          {/* Add New Blog Button */}
-          <button
-            onClick={() => setShowAddBlogModal(true)}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[#c8886f] text-white rounded-full text-sm tracking-widest uppercase font-light hover:bg-[#d4a574] transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 animate-fade-in-up animation-delay-600"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            Add New Blog
-          </button>
-        </div>
-      </section>
-
-      {/* Featured Blogs Section */}
-      <section className="relative py-10 md:py-24 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif text-[#2a2a2a] mb-4">
-              Featured Stories
-            </h2>
-            <div className="h-1 w-20 bg-gradient-to-r from-[#c8886f] to-transparent"></div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredBlogs.map((blog, index) => (
-              <FeaturedBlogCard key={blog.id} blog={blog} index={index} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Latest Blog Full Section - Medium Style */}
-      <section className="relative py-16 md:py-24 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-12 text-center">
-            <span className="text-sm tracking-[0.3em] uppercase text-[#c8886f] font-light">
-              Latest Publication
-            </span>
-            <h2 className="text-4xl md:text-5xl font-serif text-[#2a2a2a] mt-4 mb-6">
-              {latestBlog.title}
-            </h2>
-            
-            <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
-              <span>{latestBlog.author}</span>
-              <span>•</span>
-              <span>{latestBlog.date}</span>
-              <span>•</span>
-              <span>{latestBlog.readTime}</span>
-            </div>
-          </div>
-
-          {/* Featured Image */}
-          <div className="mb-12 rounded-2xl overflow-hidden shadow-2xl">
-            <img
-              src={latestBlog.image}
-              alt={latestBlog.title}
-              className="w-full aspect-[16/9] object-cover"
-            />
-          </div>
-
-          {/* Article Content - Medium Style Template */}
-          <article className="prose prose-lg max-w-none">
-            <div className="text-xl md:text-2xl text-gray-700 leading-relaxed mb-8 font-serif italic">
-              {latestBlog.excerpt}
-            </div>
-
-            <div className="space-y-6 text-gray-700 leading-relaxed">
-              <p className="text-lg">
-                Have you ever wondered why some children struggle to sit still during "quiet time"? 
-                Why they seem to need constant movement, fidgeting, or stimulation? As parents and 
-                educators, we often interpret this as misbehavior or lack of discipline. But what if 
-                I told you that the inability to calm down while sitting still has nothing to do with 
-                defiance and everything to do with the nervous system?
-              </p>
-
-              <h3 className="text-2xl font-serif text-[#2a2a2a] mt-8 mb-4">
-                Understanding the Nervous System
-              </h3>
-
-              <p className="text-lg">
-                Our nervous system is designed to keep us safe. It constantly scans our environment 
-                for threats—a process called neuroception. When a child's nervous system perceives 
-                danger (real or imagined), it activates a stress response: fight, flight, freeze, or fawn.
-              </p>
-
-              <div className="my-8 p-6 bg-[#f5f3ed] rounded-xl border-l-4 border-[#c8886f]">
-                <p className="text-lg italic text-gray-700">
-                  "The body keeps the score. When we don't feel safe, we cannot access the part of 
-                  our brain responsible for calm, presence, and connection."
-                </p>
-              </div>
-
-              <h3 className="text-2xl font-serif text-[#2a2a2a] mt-8 mb-4">
-                Why Sitting Still Feels Impossible
-              </h3>
-
-              <p className="text-lg">
-                When a child's nervous system is in a state of activation (sympathetic response), 
-                sitting still can feel unbearable. Their body is flooded with stress hormones like 
-                cortisol and adrenaline, preparing them to move, to act, to survive. Asking them to 
-                sit quietly is like asking a smoke alarm to stop ringing while the house is on fire.
-              </p>
-
-              {/* Additional Image */}
-              <div className="my-12 rounded-xl overflow-hidden">
-                <img
-                  src="https://images.pexels.com/photos/1720186/pexels-photo-1720186.jpeg"
-                  alt="Child learning"
-                  className="w-full aspect-[16/9] object-cover"
-                />
-                <p className="text-sm text-gray-500 mt-2 text-center">
-                  Understanding children's emotional regulation
-                </p>
-              </div>
-
-              <h3 className="text-2xl font-serif text-[#2a2a2a] mt-8 mb-4">
-                What Can We Do Instead?
-              </h3>
-
-              <p className="text-lg">
-                Instead of demanding stillness, we need to help children regulate their nervous systems. 
-                This means co-regulation—using our own calm presence to help their nervous system 
-                return to a state of safety.
-              </p>
-
-              <ul className="list-disc list-inside space-y-3 text-lg ml-4">
-                <li>Movement breaks: Allow children to move their bodies before expecting stillness</li>
-                <li>Deep pressure: Offer weighted blankets, tight hugs, or compression activities</li>
-                <li>Rhythmic activities: Singing, rocking, or swaying can soothe the nervous system</li>
-                <li>Connection first: Prioritize relationship and safety over compliance</li>
-              </ul>
-
-              <div className="my-12 bg-gradient-to-r from-[#e9e6dc] to-[#f5f3ed] p-8 rounded-2xl">
-                <h4 className="text-xl font-serif text-[#2a2a2a] mb-4">Key Takeaway</h4>
-                <p className="text-lg text-gray-700">
-                  When we understand that behavior is communication from the nervous system, we shift 
-                  from punishment to compassion. We move from "What's wrong with you?" to "What happened 
-                  to you?" And in that shift, transformation becomes possible.
-                </p>
-              </div>
-
-              <p className="text-lg">
-                This is the work we do at Soul'Tales—teaching parents and educators to see behavior 
-                through the lens of the nervous system, to respond with presence rather than punishment, 
-                and to create spaces where children can learn to self-regulate because they first 
-                experienced co-regulation.
-              </p>
-            </div>
-
-            {/* Explore More Button */}
-            <div className="mt-12 pt-8 border-t border-gray-200 text-center">
-              <a
-                href={latestBlog.mediumUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-[#2a2a2a] text-white rounded-full text-sm tracking-widest uppercase font-light hover:bg-[#c8886f] transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105"
-              >
-                Read Full Article on Medium
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </a>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      {/* Category Filter & All Blogs */}
-      <section className="relative py-16 md:py-24 px-4">
-        <div className="max-w-7xl mx-auto">
-          {/* Category Filter */}
-          <div className="mb-12 flex flex-wrap gap-4 justify-center">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-3 rounded-full text-sm tracking-widest uppercase font-light transition-all duration-300 ${
-                  selectedCategory === category
-                    ? "bg-[#c8886f] text-white shadow-lg"
-                    : "bg-white text-gray-700 hover:bg-[#ebe8e0]"
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-
-          {/* Blog Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredBlogs.map((blog, index) => (
-              <BlogCard key={blog.id} blog={blog} index={index} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Add Blog Modal */}
-      {showAddBlogModal && (
-        <AddBlogModal onClose={() => setShowAddBlogModal(false)} onAdd={(newBlog) => {
-          setBlogs([newBlog, ...blogs]);
-          setShowAddBlogModal(false);
-        }} />
-      )}
-
-      {/* Styles */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(30px, -30px) scale(1.1); }
-        }
-        @keyframes float-delayed {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(-30px, 30px) scale(1.1); }
-        }
-        @keyframes fade-in-up {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-float { animation: float 20s ease-in-out infinite; }
-        .animate-float-delayed { animation: float-delayed 25s ease-in-out infinite; }
-        .animate-fade-in-up { animation: fade-in-up 1s ease-out forwards; opacity: 0; }
-        .animation-delay-200 { animation-delay: 0.2s; }
-        .animation-delay-400 { animation-delay: 0.4s; }
-        .animation-delay-600 { animation-delay: 0.6s; }
-      `}</style>
-    </div>
-  );
-};
-
-// Featured Blog Card Component
-const FeaturedBlogCard = ({ blog, index }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const cardRef = useRef(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
+    setLoading(true);
+    setError(null);
+    const catId =
+      categorySlug && categorySlug !== "all" ? catIdMap[categorySlug] : null;
+    const params = new URLSearchParams({
+      _embed: 1,
+      per_page: POSTS_PER_PAGE,
+      page,
+      ...(catId && { categories: catId }),
+      ...(search && { search }),
+    });
 
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
+    fetch(`${WP_BASE}/posts?${params}`)
+      .then((res) => {
+        setTotalPages(parseInt(res.headers.get("X-WP-TotalPages") || "1"));
+        if (!res.ok) throw new Error("Could not load posts");
+        return res.json();
+      })
+      .then((data) => {
+        setPosts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [categorySlug, search, page, catIdMap]);
 
-    return () => {
-      if (cardRef.current) {
-        observer.unobserve(cardRef.current);
-      }
-    };
-  }, []);
+  return { posts, loading, error, totalPages };
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// FEATURED HERO POST
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function FeaturedPost({ post, onOpen }) {
+  if (!post) return null;
 
   return (
     <div
-      ref={cardRef}
-      className={`group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-      } hover:-translate-y-2`}
-      style={{ transitionDelay: `${index * 100}ms` }}
+      onClick={() => onOpen(post)}
+      className="group grid grid-cols-1 md:grid-cols-2 rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-300 cursor-pointer bg-white mb-12"
     >
       {/* Image */}
-      <div className="relative h-64 overflow-hidden">
+      <div className="relative min-h-[380px] md:min-h-[440px] overflow-hidden">
         <img
-          src={blog.image}
-          alt={blog.title}
-          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+          src={getImage(post)}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-        
-        {/* Category Badge */}
-        <div className="absolute top-4 left-4">
-          <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-xs tracking-widest uppercase text-[#2a2a2a] rounded-full">
-            {blog.category}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent" />
+        {getCategory(post) && (
+          <span className="absolute top-4 left-4 bg-gray-900 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
+            {getCategory(post)}
+          </span>
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="flex flex-col justify-center p-8 lg:p-12 bg-gray-50">
+        <p className="text-[10px] uppercase tracking-widest text-gray-400 font-semibold mb-2">
+          Latest Post
+        </p>
+        <p className="text-xs text-gray-400 mb-3 tracking-wide">
+          {formatDate(post.date)} · {readTime(post.content?.rendered || "")}
+        </p>
+        <h2
+          className="text-2xl lg:text-3xl font-bold leading-tight tracking-tight text-gray-900 mb-4"
+          dangerouslySetInnerHTML={{ __html: post.title?.rendered }}
+        />
+        <p className="text-gray-500 leading-relaxed mb-3 text-sm">
+          {getExcerpt(post)}
+        </p>
+        <p className="text-xs text-gray-400 mb-6">By {getAuthor(post)}</p>
+        <button className="self-start bg-gray-900 text-white text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-full hover:bg-gray-700 transition-colors duration-200">
+          Read Article →
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// BLOG CARD
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function BlogCard({ post, onOpen }) {
+  return (
+    <div
+      onClick={() => onOpen(post)}
+      className="group bg-white rounded-2xl border border-gray-100 overflow-hidden cursor-pointer shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-250"
+    >
+      {/* Thumbnail */}
+      <div className="overflow-hidden h-52">
+        <img
+          src={getImage(post)}
+          alt=""
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      </div>
+
+      {/* Body */}
+      <div className="p-5">
+        {getCategory(post) && (
+          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2 block">
+            {getCategory(post)}
+          </span>
+        )}
+        <h3
+          className="text-base font-bold leading-snug tracking-tight text-gray-900 mb-2"
+          dangerouslySetInnerHTML={{ __html: post.title?.rendered }}
+        />
+        <p className="text-gray-500 text-sm leading-relaxed mb-4">
+          {getExcerpt(post)}
+        </p>
+        <div className="flex justify-between items-center mb-3">
+          <span className="text-xs text-gray-300">{formatDate(post.date)}</span>
+          <span className="text-xs text-gray-300">
+            {readTime(post.content?.rendered || "")}
           </span>
         </div>
+        <span className="text-xs font-bold uppercase tracking-widest text-gray-400 group-hover:text-gray-900 transition-colors duration-200">
+          Read More →
+        </span>
       </div>
+    </div>
+  );
+}
 
-      {/* Content */}
-      <div className="p-6">
-        <h3 className="text-xl font-serif text-[#2a2a2a] mb-3 group-hover:text-[#c8886f] transition-colors duration-300">
-          {blog.title}
-        </h3>
-        <p className="text-gray-600 text-sm leading-relaxed mb-4">
-          {blog.excerpt}
-        </p>
-        
-        <div className="flex items-center justify-between text-xs text-gray-500">
-          <span>{blog.date}</span>
-          <span>{blog.readTime}</span>
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// SKELETON LOADER
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function SkeletonGrid() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 mb-10">
+      {[...Array(6)].map((_, i) => (
+        <div
+          key={i}
+          className="bg-white rounded-2xl border border-gray-100 overflow-hidden animate-pulse"
+        >
+          <div className="h-52 bg-gray-100" />
+          <div className="p-5 space-y-3">
+            <div className="h-3 bg-gray-100 rounded w-2/5" />
+            <div className="h-3 bg-gray-100 rounded w-4/5" />
+            <div className="h-3 bg-gray-100 rounded w-full" />
+            <div className="h-3 bg-gray-100 rounded w-3/5" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ARTICLE MODAL
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function ArticleModal({ post, onClose }) {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [onClose]);
+
+  if (!post) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center overflow-y-auto py-8 px-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-2xl w-full max-w-3xl relative overflow-hidden animate-[fadeUp_0.3s_ease]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 bg-white/90 rounded-full w-9 h-9 flex items-center justify-center text-gray-700 font-bold shadow-md hover:bg-gray-100 transition-colors"
+          title="Close (Esc)"
+        >
+          ✕
+        </button>
+
+        {/* Hero */}
+        <img src={getImage(post)} alt="" className="w-full h-72 object-cover" />
+
+        {/* Content */}
+        <div className="p-8 md:p-12">
+          {/* Meta */}
+          <div className="flex flex-wrap gap-2 items-center text-xs text-gray-400 tracking-wide mb-4">
+            {getCategory(post) && (
+              <span className="bg-gray-900 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
+                {getCategory(post)}
+              </span>
+            )}
+            <span>{formatDate(post.date)}</span>
+            <span>·</span>
+            <span>{readTime(post.content?.rendered || "")}</span>
+            <span>·</span>
+            <span>By {getAuthor(post)}</span>
+          </div>
+
+          {/* Title */}
+          <h1
+            className="text-2xl md:text-4xl font-extrabold tracking-tight leading-tight text-gray-900 mb-8"
+            dangerouslySetInnerHTML={{ __html: post.title?.rendered }}
+          />
+
+          {/* Full content — WordPress classes preserved */}
+          <div
+            className="prose prose-gray prose-lg max-w-none"
+            dangerouslySetInnerHTML={{ __html: post.content?.rendered }}
+          />
+
+          {/* Footer */}
+          <div className="flex flex-wrap justify-between items-center mt-10 pt-6 border-t border-gray-100 gap-4">
+            <button
+              onClick={onClose}
+              className="bg-gray-900 text-white text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-full hover:bg-gray-700 transition-colors"
+            >
+              ← Back to Blog
+            </button>
+            <a
+              href={post.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-gray-400 hover:text-gray-700 transition-colors"
+            >
+              Open on WordPress ↗
+            </a>
+          </div>
         </div>
       </div>
     </div>
   );
-};
+}
 
-// Regular Blog Card Component
-const BlogCard = ({ blog, index }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const cardRef = useRef(null);
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// NEWSLETTER
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function Newsletter() {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [err, setErr] = useState("");
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
+  const submit = () => {
+    if (!email.includes("@") || !email.includes(".")) {
+      setErr("Please enter a valid email.");
+      return;
     }
-
-    return () => {
-      if (cardRef.current) {
-        observer.unobserve(cardRef.current);
-      }
-    };
-  }, []);
+    setErr("");
+    // TODO: wire to Mailchimp / WPForms / ConvertKit
+    setSubmitted(true);
+  };
 
   return (
-    <a
-      href={blog.mediumUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      ref={cardRef}
-      className={`group block bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-      } hover:-translate-y-2`}
-      style={{ transitionDelay: `${index * 100}ms` }}
-    >
-      {/* Image */}
-      <div className="relative h-48 overflow-hidden">
-        <img
-          src={blog.image}
-          alt={blog.title}
-          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-      </div>
+    <div className="bg-gray-900 text-white rounded-2xl px-6 py-16 text-center mb-20">
+      <p className="text-[10px] uppercase tracking-widest text-gray-500 mb-2">
+        Stay Updated
+      </p>
+      <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">
+        New posts in your inbox
+      </h3>
+      <p className="text-gray-400 text-sm mb-8">
+        No spam. Unsubscribe any time.
+      </p>
 
-      {/* Content */}
-      <div className="p-6">
-        <div className="text-xs tracking-widest uppercase text-[#c8886f] mb-2">
-          {blog.category}
-        </div>
-        <h3 className="text-lg font-serif text-[#2a2a2a] mb-2 group-hover:text-[#c8886f] transition-colors duration-300">
-          {blog.title}
-        </h3>
-        <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-2">
-          {blog.excerpt}
+      {submitted ? (
+        <p className="text-green-400 font-semibold text-base">
+          ✓ You're subscribed — thank you!
         </p>
-        
-        <div className="flex items-center justify-between text-xs text-gray-500">
-          <span>{blog.date}</span>
-          <span>{blog.readTime}</span>
-        </div>
-      </div>
-    </a>
+      ) : (
+        <>
+          <div className="flex flex-wrap justify-center gap-2 max-w-md mx-auto">
+            <input
+              type="email"
+              placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && submit()}
+              className="flex-1 min-w-[200px] px-5 py-3 rounded-full text-gray-900 text-sm outline-none border-none"
+            />
+            <button
+              onClick={submit}
+              className="bg-white text-gray-900 text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-full hover:bg-gray-100 transition-colors"
+            >
+              Subscribe
+            </button>
+          </div>
+          {err && <p className="text-red-400 text-xs mt-3">{err}</p>}
+        </>
+      )}
+    </div>
   );
-};
+}
 
-// Add Blog Modal Component
-const AddBlogModal = ({ onClose, onAdd }) => {
-  const [formData, setFormData] = useState({
-    title: "",
-    excerpt: "",
-    category: "Young Soul'Tales",
-    image: "",
-    mediumUrl: "",
-    readTime: "",
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// MAIN PAGE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+export function Blog() {
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [searchInput, setSearchInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const [openPost, setOpenPost] = useState(null);
+  const gridRef = useRef(null);
+
+  const { posts, loading, error, totalPages } = usePosts({
+    categorySlug: activeCategory,
+    search: searchQuery,
+    page,
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newBlog = {
-      id: Date.now(),
-      ...formData,
-      author: "Preeti Sharma",
-      date: new Date().toLocaleDateString("en-US", { 
-        year: "numeric", 
-        month: "long", 
-        day: "numeric" 
-      }),
-      featured: false,
-    };
-    onAdd(newBlog);
+  useEffect(() => {
+    setPage(1);
+  }, [activeCategory, searchQuery]);
+
+  const handleCategory = (slug) => {
+    setActiveCategory(slug);
+    setSearchQuery("");
+    setSearchInput("");
   };
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearchQuery(searchInput.trim());
+    setActiveCategory("all");
   };
+
+  const goToPage = (p) => {
+    setPage(p);
+    gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const [featured, ...gridPosts] = posts;
+  const showFeatured =
+    !loading && !error && featured && page === 1 && !searchQuery;
+  const cardsToShow = searchQuery || page > 1 ? posts : gridPosts;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between rounded-t-2xl">
-          <h2 className="text-2xl font-serif text-[#2a2a2a]">Add New Blog</h2>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+    <>
+      {/* ── HEADER SLOT ─────────────────────────────── */}
+      <div className="sticky top-0 z-50 w-full">
+        {/*
+          Replace the div below with your actual header:
+          import Header from "../components/Header";
+          <Header />
+        */}
+        <div className="bg-gray-100 border-b-2 border-dashed border-gray-300 text-gray-400 text-xs text-center py-4 font-mono">
+          ← Your React &lt;Header /&gt; Component Goes Here
         </div>
+      </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Blog Title *
-            </label>
+      {/* Keyframes for modal animation */}
+      <style>{`
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 font-serif text-gray-900">
+        {/* ── PAGE HERO ─────────────────────────────── */}
+        <section className="text-center py-16 md:py-24">
+          <p className="text-[10px] uppercase tracking-[0.22em] text-gray-400 font-semibold mb-3">
+            The Creative Room
+          </p>
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-none mb-4">
+            Blog
+          </h1>
+          <p className="text-gray-500 text-base md:text-lg max-w-lg mx-auto mb-10 font-sans font-normal">
+            Thoughts on design, technology &amp; everything in between
+          </p>
+
+          {/* Search */}
+          <form
+            onSubmit={handleSearch}
+            className="flex flex-wrap gap-2 justify-center max-w-lg mx-auto"
+          >
             <input
               type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c8886f] focus:border-transparent outline-none transition-all duration-200"
-              placeholder="Enter blog title"
+              placeholder="Search articles…"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              className="flex-1 min-w-[200px] px-5 py-3 border border-gray-200 rounded-full text-sm bg-gray-50 outline-none font-sans focus:border-gray-400 transition-colors"
             />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Excerpt *
-            </label>
-            <textarea
-              name="excerpt"
-              value={formData.excerpt}
-              onChange={handleChange}
-              required
-              rows={3}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c8886f] focus:border-transparent outline-none transition-all duration-200 resize-none"
-              placeholder="Brief description of the blog"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Category *
-            </label>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c8886f] focus:border-transparent outline-none transition-all duration-200"
-            >
-              <option value="Young Soul'Tales">Young Soul'Tales</option>
-              <option value="Soul'Tales">Soul'Tales</option>
-              <option value="Kaifiyat">Kaifiyat</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Image URL *
-            </label>
-            <input
-              type="url"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c8886f] focus:border-transparent outline-none transition-all duration-200"
-              placeholder="https://example.com/image.jpg"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Medium Article URL *
-            </label>
-            <input
-              type="url"
-              name="mediumUrl"
-              value={formData.mediumUrl}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c8886f] focus:border-transparent outline-none transition-all duration-200"
-              placeholder="https://medium.com/@username/article-slug"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Read Time *
-            </label>
-            <input
-              type="text"
-              name="readTime"
-              value={formData.readTime}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c8886f] focus:border-transparent outline-none transition-all duration-200"
-              placeholder="e.g., 5 min read"
-            />
-          </div>
-
-          {/* Buttons */}
-          <div className="flex gap-4 pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-full hover:bg-gray-50 transition-all duration-200"
-            >
-              Cancel
-            </button>
             <button
               type="submit"
-              className="flex-1 px-6 py-3 bg-[#c8886f] text-white rounded-full hover:bg-[#d4a574] transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="bg-gray-900 text-white text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-full hover:bg-gray-700 transition-colors font-sans"
             >
-              Add Blog
+              Search
             </button>
-          </div>
-        </form>
-      </div>
-    </div>
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchInput("");
+                  setSearchQuery("");
+                }}
+                className="border border-gray-200 text-gray-400 text-xs px-4 py-3 rounded-full hover:border-gray-400 transition-colors font-sans"
+              >
+                ✕ Clear
+              </button>
+            )}
+          </form>
+        </section>
+
+        {/* ── FEATURED POST ─────────────────────────── */}
+        {showFeatured && <FeaturedPost post={featured} onOpen={setOpenPost} />}
+
+        {/* ── CATEGORY BUTTONS ──────────────────────── */}
+        <section ref={gridRef} className="flex flex-wrap gap-2 mb-8">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => handleCategory(cat.id)}
+              className={`px-5 py-2 rounded-full border text-sm font-sans font-medium tracking-wide transition-all duration-200
+                ${
+                  activeCategory === cat.id
+                    ? "bg-gray-900 text-white border-gray-900"
+                    : "bg-white text-gray-500 border-gray-200 hover:border-gray-400"
+                }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </section>
+
+        {/* ── POSTS GRID ────────────────────────────── */}
+        <section className="pb-12">
+          {loading && <SkeletonGrid />}
+
+          {error && !loading && (
+            <div className="text-center py-20 border-2 border-dashed border-gray-200 rounded-2xl">
+              <p className="text-4xl mb-3">⚠️</p>
+              <p className="font-bold text-gray-700 mb-1">
+                Couldn't load posts
+              </p>
+              <p className="text-gray-400 text-sm">{error}</p>
+              <p className="text-gray-300 text-xs mt-2">
+                Make sure{" "}
+                <code className="bg-gray-100 px-1 rounded">
+                  blog.preetitoraskar.com
+                </code>{" "}
+                is live and CORS is configured.
+              </p>
+            </div>
+          )}
+
+          {!loading && !error && posts.length === 0 && (
+            <div className="text-center py-20">
+              <p className="text-4xl mb-3">📭</p>
+              <p className="font-bold text-gray-700 mb-1">No posts found</p>
+              <p className="text-gray-400 text-sm">
+                {searchQuery
+                  ? `No results for "${searchQuery}" — try another term.`
+                  : "This category has no posts yet. Add some in WordPress!"}
+              </p>
+            </div>
+          )}
+
+          {!loading && !error && cardsToShow.length > 0 && (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 mb-10">
+                {cardsToShow.map((post) => (
+                  <BlogCard key={post.id} post={post} onOpen={setOpenPost} />
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex justify-center flex-wrap gap-2 mt-4">
+                  <button
+                    disabled={page <= 1}
+                    onClick={() => goToPage(page - 1)}
+                    className="px-4 py-2 rounded-full border border-gray-200 text-sm font-sans text-gray-500 hover:border-gray-400 disabled:opacity-30 transition-colors"
+                  >
+                    ← Prev
+                  </button>
+
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i + 1}
+                      onClick={() => goToPage(i + 1)}
+                      className={`px-4 py-2 rounded-full border text-sm font-sans transition-all ${
+                        page === i + 1
+                          ? "bg-gray-900 text-white border-gray-900"
+                          : "border-gray-200 text-gray-500 hover:border-gray-400"
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+
+                  <button
+                    disabled={page >= totalPages}
+                    onClick={() => goToPage(page + 1)}
+                    className="px-4 py-2 rounded-full border border-gray-200 text-sm font-sans text-gray-500 hover:border-gray-400 disabled:opacity-30 transition-colors"
+                  >
+                    Next →
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </section>
+
+        {/* ── NEWSLETTER ────────────────────────────── */}
+        <Newsletter />
+      </main>
+
+      {/* ── ARTICLE MODAL ─────────────────────────── */}
+      {openPost && (
+        <ArticleModal post={openPost} onClose={() => setOpenPost(null)} />
+      )}
+    </>
   );
-};
+}

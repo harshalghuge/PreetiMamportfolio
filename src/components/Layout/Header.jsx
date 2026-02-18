@@ -70,6 +70,7 @@ const Header = () => {
                   }
                 )}
                  {/* BLOG → WordPress */}
+                {/* Old external blog nav (kept as requested)
                 <a
                   href="https://www.preetitoraskar.com/blog"
                   target="_blank"
@@ -78,6 +79,10 @@ const Header = () => {
                 >
                   BLOG
                 </a>
+                */}
+                <Link to="/blog" className="nav-link">
+                  BLOG
+                </Link>
                 <Link
                   to="/get-started"
                   className="border px-6 py-1 rounded-full text-white border-white hover:bg-white hover:text-black transition"

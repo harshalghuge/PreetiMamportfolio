@@ -150,7 +150,7 @@ const MainSection = () => {
                   {/* Image Container */}
                   <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl">
                     <img
-                      src="/images/IMG12.jpeg"
+                      src="/images/IMG16.jpeg"
                       alt="Preeti"
                       className="w-full h-full object-cover"
                     />
