@@ -1,32 +1,36 @@
-/**
- * BlogPage.jsx  — Tailwind CSS version
- * ─────────────────────────────────────────────────────────────────
+﻿/**
+ * BlogPage.jsx  â€” Tailwind CSS version
+ * â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
  * 1. Copy to  src/pages/BlogPage.jsx
  * 2. Add route:  <Route path="/blog" element={<BlogPage />} />
  * 3. Update WP_BASE and CATEGORIES slugs to match your WordPress
- * ─────────────────────────────────────────────────────────────────
+ * â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
  */
 
 import { useState, useEffect, useRef } from "react";
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 // CONFIG
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 const WP_BASE = "https://blog.preetitoraskar.com/wp-json/wp/v2";
 
 const CATEGORIES = [
   { id: "all", label: "All Posts" },
-  { id: "soultales", label: "SoulTales" }, // ← must match your WordPress category slug
+  { id: "soultales", label: "SoulTales" }, // must match your WordPress category slug
   { id: "youngsoul", label: "YoungSoul" },
-  { id: "Kaifiyat", label: "kaifiyat" },
+  { id: "kaifiyat", label: "Kaifiyat" },
 ];
 
 const POSTS_PER_PAGE = 6;
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 // HELPERS
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 const stripHtml = (html = "") => html.replace(/<[^>]*>/g, "");
+const getFirstImageFromHtml = (html = "") => {
+  const match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+  return match?.[1] || null;
+};
 const formatDate = (d) =>
   new Date(d).toLocaleDateString("en-US", {
     year: "numeric",
@@ -36,21 +40,23 @@ const formatDate = (d) =>
 const readTime = (content) =>
   Math.max(1, Math.ceil(stripHtml(content).split(/\s+/).length / 200)) +
   " min read";
+const normalizeSlug = (s = "") => s.toLowerCase().replace(/[^a-z0-9]/g, "");
 const getImage = (post) =>
   post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
-  "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80";
+  getFirstImageFromHtml(post.content?.rendered || "") ||
+  null;
 const getExcerpt = (post) =>
   stripHtml(post.excerpt?.rendered || post.content?.rendered || "").slice(
     0,
     140,
-  ) + "…";
+  ) + "â€¦";
 const getAuthor = (post) =>
   post._embedded?.author?.[0]?.name || "Preeti Toraskar";
 const getCategory = (post) => post._embedded?.["wp:term"]?.[0]?.[0]?.name || "";
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// HOOK — fetch from WordPress REST API
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// HOOK â€” fetch from WordPress REST API
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 function usePosts({ categorySlug, search, page }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -64,7 +70,7 @@ function usePosts({ categorySlug, search, page }) {
       .then((cats) => {
         const map = {};
         cats.forEach((c) => {
-          map[c.slug] = c.id;
+          map[normalizeSlug(c.slug)] = c.id;
         });
         setCatIdMap(map);
       })
@@ -74,8 +80,11 @@ function usePosts({ categorySlug, search, page }) {
   useEffect(() => {
     setLoading(true);
     setError(null);
+    const normalizedCategory = normalizeSlug(categorySlug);
     const catId =
-      categorySlug && categorySlug !== "all" ? catIdMap[categorySlug] : null;
+      normalizedCategory && normalizedCategory !== "all"
+        ? catIdMap[normalizedCategory]
+        : null;
     const params = new URLSearchParams({
       _embed: 1,
       per_page: POSTS_PER_PAGE,
@@ -103,31 +112,34 @@ function usePosts({ categorySlug, search, page }) {
   return { posts, loading, error, totalPages };
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 // FEATURED HERO POST
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 function FeaturedPost({ post, onOpen }) {
   if (!post) return null;
+  const image = getImage(post);
 
   return (
     <div
       onClick={() => onOpen(post)}
-      className="group grid grid-cols-1 md:grid-cols-2 rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-300 cursor-pointer bg-white mb-12"
+      className={`group grid grid-cols-1 ${image ? "md:grid-cols-2" : ""} rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-300 cursor-pointer bg-white mb-12`}
     >
       {/* Image */}
-      <div className="relative min-h-[380px] md:min-h-[440px] overflow-hidden">
-        <img
-          src={getImage(post)}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent" />
-        {getCategory(post) && (
-          <span className="absolute top-4 left-4 bg-gray-900 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
-            {getCategory(post)}
-          </span>
-        )}
-      </div>
+      {image && (
+        <div className="relative min-h-[380px] md:min-h-[440px] overflow-hidden">
+          <img
+            src={image}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent" />
+          {getCategory(post) && (
+            <span className="absolute top-4 left-4 bg-gray-900 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
+              {getCategory(post)}
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Content */}
       <div className="flex flex-col justify-center p-8 lg:p-12 bg-gray-50">
@@ -135,7 +147,7 @@ function FeaturedPost({ post, onOpen }) {
           Latest Post
         </p>
         <p className="text-xs text-gray-400 mb-3 tracking-wide">
-          {formatDate(post.date)} · {readTime(post.content?.rendered || "")}
+          {formatDate(post.date)} Â· {readTime(post.content?.rendered || "")}
         </p>
         <h2
           className="text-2xl lg:text-3xl font-bold leading-tight tracking-tight text-gray-900 mb-4"
@@ -146,30 +158,33 @@ function FeaturedPost({ post, onOpen }) {
         </p>
         <p className="text-xs text-gray-400 mb-6">By {getAuthor(post)}</p>
         <button className="self-start bg-gray-900 text-white text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-full hover:bg-gray-700 transition-colors duration-200">
-          Read Article →
+          Read Article â†’
         </button>
       </div>
     </div>
   );
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 // BLOG CARD
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 function BlogCard({ post, onOpen }) {
+  const image = getImage(post);
   return (
     <div
       onClick={() => onOpen(post)}
       className="group bg-white rounded-2xl border border-gray-100 overflow-hidden cursor-pointer shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-250"
     >
       {/* Thumbnail */}
-      <div className="overflow-hidden h-52">
-        <img
-          src={getImage(post)}
-          alt=""
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-      </div>
+      {image && (
+        <div className="overflow-hidden h-52">
+          <img
+            src={image}
+            alt=""
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+      )}
 
       {/* Body */}
       <div className="p-5">
@@ -192,16 +207,16 @@ function BlogCard({ post, onOpen }) {
           </span>
         </div>
         <span className="text-xs font-bold uppercase tracking-widest text-gray-400 group-hover:text-gray-900 transition-colors duration-200">
-          Read More →
+          Read More â†’
         </span>
       </div>
     </div>
   );
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 // SKELETON LOADER
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 function SkeletonGrid() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 mb-10">
@@ -223,9 +238,9 @@ function SkeletonGrid() {
   );
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 // ARTICLE MODAL
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 function ArticleModal({ post, onClose }) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -242,29 +257,17 @@ function ArticleModal({ post, onClose }) {
   if (!post) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center overflow-y-auto py-8 px-4"
-      onClick={onClose}
-    >
-      <div
-        className="bg-white rounded-2xl w-full max-w-3xl relative overflow-hidden animate-[fadeUp_0.3s_ease]"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Close button */}
+    <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+      <div className="w-full min-h-screen relative animate-[fadeUp_0.3s_ease]">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 bg-white/90 rounded-full w-9 h-9 flex items-center justify-center text-gray-700 font-bold shadow-md hover:bg-gray-100 transition-colors"
+          className="fixed top-5 right-5 z-20 bg-white border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center text-gray-700 font-bold shadow-sm hover:bg-gray-100 transition-colors"
           title="Close (Esc)"
         >
-          ✕
+          x
         </button>
 
-        {/* Hero */}
-        <img src={getImage(post)} alt="" className="w-full h-72 object-cover" />
-
-        {/* Content */}
-        <div className="p-8 md:p-12">
-          {/* Meta */}
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 md:py-14">
           <div className="flex flex-wrap gap-2 items-center text-xs text-gray-400 tracking-wide mb-4">
             {getCategory(post) && (
               <span className="bg-gray-900 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
@@ -278,25 +281,22 @@ function ArticleModal({ post, onClose }) {
             <span>By {getAuthor(post)}</span>
           </div>
 
-          {/* Title */}
           <h1
-            className="text-2xl md:text-4xl font-extrabold tracking-tight leading-tight text-gray-900 mb-8"
+            className="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.05] text-gray-900 mb-8"
             dangerouslySetInnerHTML={{ __html: post.title?.rendered }}
           />
 
-          {/* Full content — WordPress classes preserved */}
           <div
-            className="prose prose-gray prose-lg max-w-none"
+            className="prose prose-gray md:prose-lg max-w-none"
             dangerouslySetInnerHTML={{ __html: post.content?.rendered }}
           />
 
-          {/* Footer */}
           <div className="flex flex-wrap justify-between items-center mt-10 pt-6 border-t border-gray-100 gap-4">
             <button
               onClick={onClose}
               className="bg-gray-900 text-white text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-full hover:bg-gray-700 transition-colors"
             >
-              ← Back to Blog
+              Back to Blog
             </button>
             <a
               href={post.link}
@@ -304,7 +304,7 @@ function ArticleModal({ post, onClose }) {
               rel="noopener noreferrer"
               className="text-xs text-gray-400 hover:text-gray-700 transition-colors"
             >
-              Open on WordPress ↗
+              Open on WordPress
             </a>
           </div>
         </div>
@@ -312,10 +312,6 @@ function ArticleModal({ post, onClose }) {
     </div>
   );
 }
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// NEWSLETTER
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function Newsletter() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -345,7 +341,7 @@ function Newsletter() {
 
       {submitted ? (
         <p className="text-green-400 font-semibold text-base">
-          ✓ You're subscribed — thank you!
+          âœ“ You're subscribed â€” thank you!
         </p>
       ) : (
         <>
@@ -372,9 +368,9 @@ function Newsletter() {
   );
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 // MAIN PAGE
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 export function Blog() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchInput, setSearchInput] = useState("");
@@ -428,7 +424,7 @@ export function Blog() {
       `}</style>
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 font-serif text-gray-900">
-        {/* ── PAGE HERO ─────────────────────────────── */}
+        {/* â”€â”€ PAGE HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <section className="text-center py-16 md:py-24">
           <p className="text-[10px] uppercase tracking-[0.22em] text-gray-400 font-semibold mb-3">
             The Creative Room
@@ -447,7 +443,7 @@ export function Blog() {
           >
             <input
               type="text"
-              placeholder="Search articles…"
+              placeholder="Search articlesâ€¦"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               className="flex-1 min-w-[200px] px-5 py-3 border border-gray-200 rounded-full text-sm bg-gray-50 outline-none font-sans focus:border-gray-400 transition-colors"
@@ -467,16 +463,16 @@ export function Blog() {
                 }}
                 className="border border-gray-200 text-gray-400 text-xs px-4 py-3 rounded-full hover:border-gray-400 transition-colors font-sans"
               >
-                ✕ Clear
+                âœ• Clear
               </button>
             )}
           </form>
         </section>
 
-        {/* ── FEATURED POST ─────────────────────────── */}
+        {/* â”€â”€ FEATURED POST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {showFeatured && <FeaturedPost post={featured} onOpen={setOpenPost} />}
 
-        {/* ── CATEGORY BUTTONS ──────────────────────── */}
+        {/* â”€â”€ CATEGORY BUTTONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <section ref={gridRef} className="flex flex-wrap gap-2 mb-8">
           {CATEGORIES.map((cat) => (
             <button
@@ -494,13 +490,13 @@ export function Blog() {
           ))}
         </section>
 
-        {/* ── POSTS GRID ────────────────────────────── */}
+        {/* â”€â”€ POSTS GRID â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <section className="pb-12">
           {loading && <SkeletonGrid />}
 
           {error && !loading && (
             <div className="text-center py-20 border-2 border-dashed border-gray-200 rounded-2xl">
-              <p className="text-4xl mb-3">⚠️</p>
+              <p className="text-4xl mb-3">âš ï¸</p>
               <p className="font-bold text-gray-700 mb-1">
                 Couldn't load posts
               </p>
@@ -517,11 +513,11 @@ export function Blog() {
 
           {!loading && !error && posts.length === 0 && (
             <div className="text-center py-20">
-              <p className="text-4xl mb-3">📭</p>
+              <p className="text-4xl mb-3">ðŸ“­</p>
               <p className="font-bold text-gray-700 mb-1">No posts found</p>
               <p className="text-gray-400 text-sm">
                 {searchQuery
-                  ? `No results for "${searchQuery}" — try another term.`
+                  ? `No results for "${searchQuery}" â€” try another term.`
                   : "This category has no posts yet. Add some in WordPress!"}
               </p>
             </div>
@@ -543,7 +539,7 @@ export function Blog() {
                     onClick={() => goToPage(page - 1)}
                     className="px-4 py-2 rounded-full border border-gray-200 text-sm font-sans text-gray-500 hover:border-gray-400 disabled:opacity-30 transition-colors"
                   >
-                    ← Prev
+                    â† Prev
                   </button>
 
                   {[...Array(totalPages)].map((_, i) => (
@@ -565,7 +561,7 @@ export function Blog() {
                     onClick={() => goToPage(page + 1)}
                     className="px-4 py-2 rounded-full border border-gray-200 text-sm font-sans text-gray-500 hover:border-gray-400 disabled:opacity-30 transition-colors"
                   >
-                    Next →
+                    Next â†’
                   </button>
                 </div>
               )}
@@ -573,14 +569,19 @@ export function Blog() {
           )}
         </section>
 
-        {/* ── NEWSLETTER ────────────────────────────── */}
+        {/* â”€â”€ NEWSLETTER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <Newsletter />
       </main>
 
-      {/* ── ARTICLE MODAL ─────────────────────────── */}
+      {/* â”€â”€ ARTICLE MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       {openPost && (
         <ArticleModal post={openPost} onClose={() => setOpenPost(null)} />
       )}
     </>
   );
 }
+
+
+
+
+
