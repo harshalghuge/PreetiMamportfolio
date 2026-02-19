@@ -47,7 +47,7 @@ function App() {
                 <Home />
                 <MainSection />
                 <WorkTogether />
-                <Blog />
+                {/* <Blog /> */}
                 <LandingBlog />
                 <JournalForm />
                 

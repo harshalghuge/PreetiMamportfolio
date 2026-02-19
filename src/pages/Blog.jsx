@@ -4,40 +4,78 @@ const WP_BASE = "https://blog.preetitoraskar.com/wp-json/wp/v2";
 
 const CATEGORIES = [
   { id: "all", label: "All Posts" },
-  { id: "soultales", label: "SoulTales" }, // must match your WordPress category slug
+  { id: "soultales", label: "SoulTales" }, 
   { id: "youngsoul", label: "YoungSoul" },
   { id: "kaifiyat", label: "Kaifiyat" },
 ];
 
 const POSTS_PER_PAGE = 6;
+const ARTICLE_CONTENT_CLASS =
+  [
+    "max-w-none text-gray-800",
+    "[&_p]:my-5 [&_p]:leading-8 [&_p]:text-[1.06rem]",
+    "[&_strong]:font-bold [&_b]:font-bold",
+    "[&_em]:italic",
+    "[&_h1]:text-4xl [&_h1]:leading-tight [&_h1]:font-extrabold [&_h1]:mt-10 [&_h1]:mb-5",
+    "[&_h2]:text-3xl [&_h2]:leading-tight [&_h2]:font-bold [&_h2]:mt-9 [&_h2]:mb-4",
+    "[&_h3]:text-2xl [&_h3]:leading-snug [&_h3]:font-bold [&_h3]:mt-8 [&_h3]:mb-4",
+    "[&_h4]:text-xl [&_h4]:leading-snug [&_h4]:font-semibold [&_h4]:mt-7 [&_h4]:mb-3",
+    "[&_h5]:text-lg [&_h5]:font-semibold [&_h5]:mt-6 [&_h5]:mb-3",
+    "[&_h6]:text-base [&_h6]:font-semibold [&_h6]:mt-6 [&_h6]:mb-3",
+    "[&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-5 [&_ul]:space-y-2",
+    "[&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-5 [&_ol]:space-y-2",
+    "[&_li]:leading-8",
+    "[&_blockquote]:my-8 [&_blockquote]:pl-5 [&_blockquote]:border-l-4 [&_blockquote]:border-gray-300 [&_blockquote]:text-gray-600 [&_blockquote]:italic",
+    "[&_a]:text-gray-900 [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-gray-700",
+    "[&_figure]:my-8 [&_figcaption]:mt-3 [&_figcaption]:text-sm [&_figcaption]:text-gray-500 [&_figcaption]:text-center",
+    "[&_img]:my-8 [&_img]:w-full [&_img]:h-auto [&_img]:rounded-xl",
+    "[&_hr]:my-10 [&_hr]:border-gray-200",
+    "[&_table]:w-full [&_table]:my-7 [&_table]:text-sm [&_table]:border-collapse",
+    "[&_th]:border [&_th]:border-gray-200 [&_th]:px-3 [&_th]:py-2 [&_th]:bg-gray-50 [&_th]:text-left [&_th]:font-semibold",
+    "[&_td]:border [&_td]:border-gray-200 [&_td]:px-3 [&_td]:py-2",
+    "[&_.wp-block-image]:my-8 [&_.wp-block-image_img]:my-0",
+    "[&_.wp-block-quote]:my-8 [&_.wp-block-quote]:pl-5 [&_.wp-block-quote]:border-l-4 [&_.wp-block-quote]:border-gray-300",
+    "[&_.wp-block-heading]:tracking-tight",
+  ].join(" ");
+
 // ----------------- HELPERS -----------------
 const stripHtml = (html = "") => html.replace(/<[^>]*>/g, "");
+
 const getFirstImageFromHtml = (html = "") => {
   const match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
   return match?.[1] || null;
 };
+
 const formatDate = (d) =>
   new Date(d).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
+
 const readTime = (content) =>
   Math.max(1, Math.ceil(stripHtml(content).split(/\s+/).length / 200)) +
   " min read";
+
 const normalizeSlug = (s = "") => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+
 const getImage = (post) =>
   post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
   getFirstImageFromHtml(post.content?.rendered || "") ||
   null;
+  
 const getExcerpt = (post) =>
   stripHtml(post.excerpt?.rendered || post.content?.rendered || "").slice(
     0,
     140,
   ) + "...";
+
+
 const getAuthor = (post) =>
   post._embedded?.author?.[0]?.name || "Preeti Toraskar";
+
 const getCategory = (post) => post._embedded?.["wp:term"]?.[0]?.[0]?.name || "";
+
 // ----------------- HOOK fetch from WordPress REST API -----------------
 function usePosts({ categorySlug, search, page }) {
   const [posts, setPosts] = useState([]);
@@ -114,15 +152,15 @@ function FeaturedPost({ post, onOpen }) {
   return (
     <div
       onClick={() => onOpen(post)}
-      className={`group grid grid-cols-1 ${image ? "md:grid-cols-2" : ""} rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-300 cursor-pointer bg-white mb-12`}
+      className={`group flex flex-col ${image ? "md:flex-row md:h-[390px]" : ""} rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-300 cursor-pointer bg-white mb-12`}
     >
       {/* Image */}
       {image && (
-        <div className="relative min-h-[380px] md:min-h-[440px] overflow-hidden">
+        <div className="relative min-h-[280px] md:min-h-0 md:h-full md:w-1/2 overflow-hidden bg-gray-100">
           <img
             src={image}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="absolute inset-0 !w-full !h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent" />
           {getCategory(post) && (
@@ -134,7 +172,7 @@ function FeaturedPost({ post, onOpen }) {
       )}
 
       {/* Content */}
-      <div className="flex flex-col justify-center p-8 lg:p-12 bg-gray-50">
+      <div className="flex flex-col justify-center p-6 lg:p-8 bg-gray-50 md:h-full md:w-1/2">
         <p className="text-[10px] uppercase tracking-widest text-gray-400 font-semibold mb-2">
           Latest Post
         </p>
@@ -142,13 +180,13 @@ function FeaturedPost({ post, onOpen }) {
           {formatDate(post.date)} | {readTime(post.content?.rendered || "")}
         </p>
         <h2
-          className="text-2xl lg:text-3xl font-bold leading-tight tracking-tight text-gray-900 mb-4"
+          className="text-2xl lg:text-[2rem] font-bold leading-tight tracking-tight text-gray-900 mb-3"
           dangerouslySetInnerHTML={{ __html: post.title?.rendered }}
         />
-        <p className="text-gray-500 leading-relaxed mb-3 text-sm">
+        <p className="text-gray-500 leading-relaxed mb-2 text-sm">
           {getExcerpt(post)}
         </p>
-        <p className="text-xs text-gray-400 mb-6">By {getAuthor(post)}</p>
+        <p className="text-xs text-gray-400 mb-5">By {getAuthor(post)}</p>
         <button className="self-start bg-gray-900 text-white text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-full hover:bg-gray-700 transition-colors duration-200">
           Read Article
         </button>
@@ -270,7 +308,7 @@ function ArticleModal({ post, onClose }) {
           />
 
           <div
-            className="prose prose-gray md:prose-lg max-w-none"
+            className={ARTICLE_CONTENT_CLASS}
             dangerouslySetInnerHTML={{ __html: post.content?.rendered }}
           />
 
