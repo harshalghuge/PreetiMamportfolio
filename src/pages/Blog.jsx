@@ -1,4 +1,7 @@
 ﻿import { useState, useEffect, useRef } from "react";
+import he from "he";
+
+
 // ----------------- CONFIG -----------------
 const WP_BASE = "https://blog.preetitoraskar.com/wp-json/wp/v2";
 
@@ -64,11 +67,16 @@ const getImage = (post) =>
   getFirstImageFromHtml(post.content?.rendered || "") ||
   null;
   
+
+
 const getExcerpt = (post) =>
-  stripHtml(post.excerpt?.rendered || post.content?.rendered || "").slice(
-    0,
-    140,
-  ) + "...";
+  he
+    .decode(
+      stripHtml(
+        post.excerpt?.rendered || post.content?.rendered || "",
+      ),
+    )
+    .slice(0, 140) + "...";
 
 
 const getAuthor = (post) =>
@@ -278,17 +286,30 @@ function ArticleModal({ post, onClose }) {
   if (!post) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+    <div className="fixed inset-0 z-[1200] bg-white overflow-y-auto">
       <div className="w-full min-h-screen relative animate-[fadeUp_0.3s_ease]">
         <button
           onClick={onClose}
-          className="fixed top-5 right-5 z-20 bg-white border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center text-gray-700 font-bold shadow-sm hover:bg-gray-100 transition-colors"
+          className="fixed top-5 right-5 z-30 inline-flex items-center justify-center bg-white/95 border border-gray-200 text-gray-700 shadow-sm hover:bg-gray-100 transition-colors h-10 w-10 rounded-full md:h-auto md:w-auto md:rounded-full md:px-4 md:py-2 md:gap-2 md:min-w-[150px] md:whitespace-nowrap"
           title="Close (Esc)"
         >
-          x
+          <span className="text-lg leading-none md:hidden" aria-hidden="true">
+            ×
+          </span>
+          <span className="hidden md:inline" aria-hidden="true">
+            ←
+          </span>
+          <span className="hidden md:inline text-sm font-semibold">
+            Back to Blogs
+          </span>
         </button>
 
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+        <div className="max-w-3xl mx-auto px-5 sm:px-8 pt-20 pb-12 md:pt-14 md:pb-14">
+          <h1
+            className="text-[2.2rem] md:text-6xl font-extrabold tracking-tight leading-[1.08] text-gray-900 mb-5 md:mb-8"
+            dangerouslySetInnerHTML={{ __html: post.title?.rendered }}
+          />
+
           <div className="flex flex-wrap gap-2 items-center text-xs text-gray-400 tracking-wide mb-4">
             {getCategory(post) && (
               <span className="bg-gray-900 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
@@ -301,11 +322,6 @@ function ArticleModal({ post, onClose }) {
             <span>|</span>
             <span>By {getAuthor(post)}</span>
           </div>
-
-          <h1
-            className="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.05] text-gray-900 mb-8"
-            dangerouslySetInnerHTML={{ __html: post.title?.rendered }}
-          />
 
           <div
             className={ARTICLE_CONTENT_CLASS}
@@ -366,15 +382,15 @@ function Newsletter() {
         </p>
       ) : (
         <>
-          <div className="flex flex-wrap justify-center gap-2 max-w-md mx-auto">
-            <input
+          <div className="flex flex-wrap justify-center items-center gap-2 max-w-md mx-auto">
+            {/* <input
               type="email"
               placeholder="your@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && submit()}
-              className="flex-1 min-w-[200px] px-5 py-3 rounded-full text-gray-900 text-sm outline-none border-none"
-            />
+              className="flex-1 min-w-[200px] px-5 py-3 rounded-full text-white text-sm outline-none border-none"
+            /> */}
             <button
               onClick={submit}
               className="bg-white text-gray-900 text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-full hover:bg-gray-100 transition-colors"
