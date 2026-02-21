@@ -383,14 +383,14 @@ function Newsletter() {
       ) : (
         <>
           <div className="flex flex-wrap justify-center items-center gap-2 max-w-md mx-auto">
-            {/* <input
+            <input
               type="email"
               placeholder="your@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && submit()}
-              className="flex-1 min-w-[200px] px-5 py-3 rounded-full text-white text-sm outline-none border-none"
-            /> */}
+              className="flex-1 min-w-[200px] px-5 py-3 rounded-full text-white text-sm outline-none border-2"
+            />
             <button
               onClick={submit}
               className="bg-white text-gray-900 text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-full hover:bg-gray-100 transition-colors"
