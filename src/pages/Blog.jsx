@@ -462,47 +462,45 @@ export function Blog() {
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 font-serif text-gray-900">
         {/* ----------------- PAGE HERO ----------------- */}
-        <section className="text-center py-16 md:py-24">
-          <p className="text-[10px] uppercase tracking-[0.22em] text-gray-400 font-semibold mb-3">
+        <section className="text-center pt-16 md:pt-24 pb-14">
+          <p className="text-[10px] uppercase tracking-[0.22em] text-gray-400 font-semibold mb-4">
             The Creative Room
           </p>
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-none mb-4">
             Blog
           </h1>
-          <p className="text-gray-500 text-base md:text-lg max-w-lg mx-auto mb-10 font-sans font-normal">
-            Thoughts on design, technology &amp; everything in between
+          <p className="text-gray-400 text-sm md:text-base max-w-sm mx-auto mb-8 font-sans font-normal leading-relaxed">
+            Stories on parenting, creativity &amp; the soul of everyday life
           </p>
 
-          {/* Search */}
+          {/* Search — unified pill bar */}
           <form
             onSubmit={handleSearch}
-            className="flex flex-wrap gap-2 justify-center max-w-lg mx-auto"
+            className="flex items-center max-w-md mx-auto bg-gray-50 border border-gray-200 rounded-full px-2 py-1.5 focus-within:border-gray-400 transition-colors"
           >
             <input
               type="text"
-              placeholder="Search articles"
+              placeholder="Search articles…"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="flex-1 min-w-[200px] px-5 py-3 border border-gray-200 rounded-full text-sm bg-gray-50 outline-none font-sans focus:border-gray-400 transition-colors"
+              className="flex-1 bg-transparent outline-none px-4 py-1.5 text-sm text-gray-700 font-sans placeholder:text-gray-400"
             />
-            <button
-              type="submit"
-              className="bg-gray-900 text-white text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-full hover:bg-gray-700 transition-colors font-sans"
-            >
-              Search
-            </button>
             {searchQuery && (
               <button
                 type="button"
-                onClick={() => {
-                  setSearchInput("");
-                  setSearchQuery("");
-                }}
-                className="border border-gray-200 text-gray-400 text-xs px-4 py-3 rounded-full hover:border-gray-400 transition-colors font-sans"
+                onClick={() => { setSearchInput(""); setSearchQuery(""); }}
+                className="text-gray-300 hover:text-gray-500 transition-colors font-sans text-base px-2 leading-none"
+                aria-label="Clear"
               >
-                 Clear
+                ×
               </button>
             )}
+            <button
+              type="submit"
+              className="bg-gray-900 text-white text-[10px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-full hover:bg-gray-700 transition-colors font-sans whitespace-nowrap"
+            >
+              Search
+            </button>
           </form>
         </section>
 
@@ -615,10 +613,3 @@ export function Blog() {
     </>
   );
 }
-
-
-
-
-
-
-
