@@ -30,27 +30,27 @@ const MainSection = () => {
           if (target === titleRef.current) {
             setTimeout(
               () => setIsVisible((prev) => ({ ...prev, title: true })),
-              50,
+              0,
             );
           } else if (target === para1Ref.current) {
             setTimeout(
               () => setIsVisible((prev) => ({ ...prev, paragraph1: true })),
-              150,
+              50,
             );
           } else if (target === dividerRef.current) {
             setTimeout(
               () => setIsVisible((prev) => ({ ...prev, divider: true })),
-              250,
+              100,
             );
           } else if (target === para2Ref.current) {
             setTimeout(
               () => setIsVisible((prev) => ({ ...prev, paragraph2: true })),
-              350,
+              150,
             );
           } else if (target === buttonRef.current) {
             setTimeout(
               () => setIsVisible((prev) => ({ ...prev, button: true })),
-              450,
+              200,
             );
           }
 
@@ -114,7 +114,7 @@ const MainSection = () => {
                   className={`text-lg md:text-xl leading-relaxed text-[#2D2A1F]/80 transition-all duration-700 delay-200 ${
                     isVisible.divider
                       ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-8"
+                      : "opacity-0 translate-y-4"
                   }`}
                 >
                   I spent years searching for something I couldn't name. A
@@ -127,7 +127,7 @@ const MainSection = () => {
                   className={`text-lg md:text-xl leading-relaxed text-[#2D2A1F]/80 transition-all duration-700 delay-300 ${
                     isVisible.paragraph2
                       ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-8"
+                      : "opacity-0 translate-y-4"
                   }`}
                 >
                   The answer wasn't in achievement or success. It was in the

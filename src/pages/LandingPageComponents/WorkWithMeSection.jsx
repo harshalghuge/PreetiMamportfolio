@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 const offerings = [
@@ -89,11 +89,14 @@ const alternatingThemes = [
 
 const WorkWithMeSection = () => {
   const sectionRefs = useRef([]);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobileView = window.matchMedia("(max-width: 767px)").matches;
+    setIsMobile(isMobileView);
 
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || isMobileView) {
       sectionRefs.current.forEach((node) => {
         if (!node) return;
         node.classList.add("opacity-100", "translate-y-0");
@@ -158,7 +161,7 @@ const WorkWithMeSection = () => {
                 key={item.title}
                 ref={(el) => (sectionRefs.current[index] = el)}
                 className="mx-auto w-full max-w-7xl px-4 sm:px-5 md:px-8"
-                style={{ transitionDelay: `${index * 110}ms` }}
+                style={{ transitionDelay: isMobile ? "0ms" : `${index * 110}ms` }}
               >
                 <div
                   className="grid items-stretch overflow-hidden border-y md:min-h-[520px] md:grid-cols-2"
@@ -170,8 +173,9 @@ const WorkWithMeSection = () => {
                     <img
                       src={item.image}
                       alt={item.title}
-                      loading="lazy"
-                      decoding="async"
+                      loading={index === 0 ? "eager" : "lazy"}
+                      fetchPriority={index === 0 ? "high" : "auto"}
+                      decoding={index === 0 ? "sync" : "async"}
                       className="absolute inset-0 block h-full w-full object-cover object-center"
                       style={{ width: "100%", height: "100%", objectFit: "cover" }}
                     />

@@ -13,6 +13,9 @@ const CATEGORIES = [
 ];
 
 const POSTS_PER_PAGE = 6;
+const CACHE_TTL_MS = 5 * 60 * 1000;
+const LIST_POST_FIELDS = ["id", "date", "title", "excerpt", "content", "link", "featured_media", "_embedded"].join(",");
+const postsCache = new Map();
 const ARTICLE_CONTENT_CLASS =
   [
     "max-w-none text-gray-800",
@@ -45,8 +48,13 @@ const ARTICLE_CONTENT_CLASS =
 const stripHtml = (html = "") => html.replace(/<[^>]*>/g, "");
 
 const getFirstImageFromHtml = (html = "") => {
-  const match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
-  return match?.[1] || null;
+  // Try src first, then data-src (lazy-loaded images), then data-lazy-src
+  const srcMatch = html.match(/<img[^>]+\bsrc=["']([^"']+)["']/i);
+  if (srcMatch?.[1] && !srcMatch[1].startsWith("data:")) return srcMatch[1];
+  const dataSrcMatch = html.match(/<img[^>]+\bdata-src=["']([^"']+)["']/i);
+  if (dataSrcMatch?.[1]) return dataSrcMatch[1];
+  const dataLazySrcMatch = html.match(/<img[^>]+\bdata-lazy-src=["']([^"']+)["']/i);
+  return dataLazySrcMatch?.[1] || null;
 };
 
 const formatDate = (d) =>
@@ -62,10 +70,29 @@ const readTime = (content) =>
 
 const normalizeSlug = (s = "") => s.toLowerCase().replace(/[^a-z0-9]/g, "");
 
-const getImage = (post) =>
-  post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
-  getFirstImageFromHtml(post.content?.rendered || "") ||
-  null;
+const getImage = (post) => {
+  // 1. Featured media source_url (most reliable)
+  const featuredMedia = post._embedded?.["wp:featuredmedia"]?.[0];
+  if (featuredMedia?.source_url) return featuredMedia.source_url;
+
+  // 2. Media details sizes (different resolutions)
+  const sizes = featuredMedia?.media_details?.sizes;
+  if (sizes) {
+    const sizeUrl =
+      sizes.large?.source_url ||
+      sizes.medium_large?.source_url ||
+      sizes.medium?.source_url ||
+      sizes.full?.source_url;
+    if (sizeUrl) return sizeUrl;
+  }
+
+  // 3. yoast_head_json og_image (SEO meta often has image)
+  const ogImage = post.yoast_head_json?.og_image?.[0]?.url;
+  if (ogImage) return ogImage;
+
+  // 4. Extract from rendered content HTML (handles lazy-loaded images too)
+  return getFirstImageFromHtml(post.content?.rendered || "") || null;
+};
   
 
 
@@ -88,6 +115,7 @@ const getCategory = (post) => post._embedded?.["wp:term"]?.[0]?.[0]?.name || "";
 function usePosts({ categorySlug, search, page }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
   const [error, setError] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
   const [catIdMap, setCatIdMap] = useState({});
@@ -106,6 +134,7 @@ function usePosts({ categorySlug, search, page }) {
   }, []);
 
   useEffect(() => {
+    const controller = new AbortController();
     setLoading(true);
     setError(null);
     const normalizedCategory = normalizeSlug(categorySlug);
@@ -115,29 +144,52 @@ function usePosts({ categorySlug, search, page }) {
         : null;
     const params = new URLSearchParams({
       _embed: 1,
+      _fields: LIST_POST_FIELDS,
       per_page: POSTS_PER_PAGE,
       page,
       ...(catId && { categories: catId }),
       ...(search && { search }),
     });
 
-    fetch(`${WP_BASE}/posts?${params}`)
+    const cacheKey = params.toString();
+    const cached = postsCache.get(cacheKey);
+    if (cached && Date.now() < cached.expiresAt) {
+      setPosts(cached.data);
+      setTotalPages(cached.totalPages);
+      setLoading(false);
+      setHasLoadedOnce(true);
+      return () => controller.abort();
+    }
+
+    fetch(`${WP_BASE}/posts?${params}`, { signal: controller.signal })
       .then((res) => {
-        setTotalPages(parseInt(res.headers.get("X-WP-TotalPages") || "1"));
+        const pages = parseInt(res.headers.get("X-WP-TotalPages") || "1", 10);
         if (!res.ok) throw new Error("Could not load posts");
-        return res.json();
+        return res.json().then((data) => ({ data, pages }));
       })
-      .then((data) => {
+      .then(({ data, pages }) => {
         setPosts(data);
-        setLoading(false);
+        setTotalPages(pages);
+        setHasLoadedOnce(true);
+        postsCache.set(cacheKey, {
+          data,
+          totalPages: pages,
+          expiresAt: Date.now() + CACHE_TTL_MS,
+        });
       })
       .catch((err) => {
+        if (err.name === "AbortError") return;
         setError(err.message);
+        setHasLoadedOnce(true);
+      })
+      .finally(() => {
         setLoading(false);
       });
+
+    return () => controller.abort();
   }, [categorySlug, search, page, catIdMap]);
 
-  return { posts, loading, error, totalPages };
+  return { posts, loading, hasLoadedOnce, error, totalPages };
 }
 
 function useLatestPost() {
@@ -168,6 +220,7 @@ function FeaturedPost({ post, onOpen }) {
           <img
             src={image}
             alt=""
+            onError={(e) => { e.currentTarget.parentElement.style.display = "none"; }}
             className="absolute inset-0 !w-full !h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent" />
@@ -216,6 +269,7 @@ function BlogCard({ post, onOpen }) {
           <img
             src={image}
             alt=""
+            onError={(e) => { e.currentTarget.parentElement.parentElement.removeChild(e.currentTarget.parentElement); }}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         </div>
@@ -238,7 +292,7 @@ function BlogCard({ post, onOpen }) {
         <div className="flex justify-between items-center mb-3">
           <span className="text-xs text-gray-300">{formatDate(post.date)}</span>
           <span className="text-xs text-gray-300">
-            {readTime(post.content?.rendered || "")}
+            {readTime(post.excerpt?.rendered || "")}
           </span>
         </div>
         <span className="text-xs font-bold uppercase tracking-widest text-gray-400 group-hover:text-gray-900 transition-colors duration-200">
@@ -266,6 +320,21 @@ function SkeletonGrid() {
           </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+function LoadingSpinner({ text = "Loading posts...", compact = false }) {
+  return (
+    <div
+      className={`flex flex-col items-center justify-center ${compact ? "py-5" : "py-16"}`}
+    >
+      <div
+        className={`${compact ? "h-7 w-7 border-2" : "h-10 w-10 border-4"} rounded-full border-gray-200 border-t-gray-800 animate-spin`}
+      />
+      <p className={`${compact ? "mt-2 text-xs" : "mt-3 text-sm"} text-gray-500`}>
+        {text}
+      </p>
     </div>
   );
 }
@@ -413,7 +482,7 @@ export function Blog() {
   const [openPost, setOpenPost] = useState(null);
   const gridRef = useRef(null);
 
-  const { posts, loading, error, totalPages } = usePosts({
+  const { posts, loading, hasLoadedOnce, error, totalPages } = usePosts({
     categorySlug: activeCategory,
     search: searchQuery,
     page,
@@ -439,6 +508,25 @@ export function Blog() {
   const goToPage = (p) => {
     setPage(p);
     gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const handleOpenPost = async (post) => {
+    if (post?.content?.rendered) {
+      setOpenPost(post);
+      return;
+    }
+
+    try {
+      const res = await fetch(`${WP_BASE}/posts/${post.id}?_embed=1`);
+      if (!res.ok) {
+        setOpenPost(post);
+        return;
+      }
+      const fullPost = await res.json();
+      setOpenPost(fullPost);
+    } catch {
+      setOpenPost(post);
+    }
   };
 
   const showFeatured =
@@ -505,7 +593,7 @@ export function Blog() {
         </section>
 
         {/* ----------------- FEATURED POST ----------------- */}
-        {showFeatured && <FeaturedPost post={latestPost} onOpen={setOpenPost} />}
+        {showFeatured && <FeaturedPost post={latestPost} onOpen={handleOpenPost} />}
 
         {/* ----------------- CATEGORY BUTTONS ----------------- */}
         <section ref={gridRef} className="flex flex-wrap gap-2 mb-8">
@@ -527,7 +615,16 @@ export function Blog() {
 
         {/* ----------------- POSTS GRID ----------------- */}
         <section className="pb-12">
-          {loading && <SkeletonGrid />}
+          {!hasLoadedOnce && loading && (
+            <>
+              <LoadingSpinner />
+              <SkeletonGrid />
+            </>
+          )}
+
+          {hasLoadedOnce && loading && cardsToShow.length > 0 && (
+            <LoadingSpinner text="Updating posts..." compact />
+          )}
 
           {error && !loading && (
             <div className="text-center py-20 border-2 border-dashed border-gray-200 rounded-2xl">
@@ -546,7 +643,7 @@ export function Blog() {
             </div>
           )}
 
-          {!loading && !error && posts.length === 0 && (
+          {hasLoadedOnce && !loading && !error && cardsToShow.length === 0 && (
             <div className="text-center py-20">
               <p className="text-4xl mb-3"></p>
               <p className="font-bold text-gray-700 mb-1">No posts found</p>
@@ -558,11 +655,11 @@ export function Blog() {
             </div>
           )}
 
-          {!loading && !error && cardsToShow.length > 0 && (
+          {!error && cardsToShow.length > 0 && (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 mb-10">
                 {cardsToShow.map((post) => (
-                  <BlogCard key={post.id} post={post} onOpen={setOpenPost} />
+                  <BlogCard key={post.id} post={post} onOpen={handleOpenPost} />
                 ))}
               </div>
 
