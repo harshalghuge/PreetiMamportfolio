@@ -1,5 +1,4 @@
 ﻿import { useState, useEffect, useRef } from "react";
-import he from "he";
 
 
 // ----------------- CONFIG -----------------
@@ -69,6 +68,12 @@ const readTime = (content) =>
   " min read";
 
 const normalizeSlug = (s = "") => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+const decodeHtmlEntities = (text = "") => {
+  if (typeof window === "undefined" || typeof document === "undefined") return text;
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = text;
+  return textarea.value;
+};
 
 const getImage = (post) => {
   // 1. Featured media source_url (most reliable)
@@ -97,12 +102,11 @@ const getImage = (post) => {
 
 
 const getExcerpt = (post) =>
-  he
-    .decode(
-      stripHtml(
-        post.excerpt?.rendered || post.content?.rendered || "",
-      ),
-    )
+  decodeHtmlEntities(
+    stripHtml(
+      post.excerpt?.rendered || post.content?.rendered || "",
+    ),
+  )
     .slice(0, 140) + "...";
 
 
