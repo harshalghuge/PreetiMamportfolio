@@ -296,9 +296,9 @@ export const Contact = () => {
                     className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-stone-400 focus:border-transparent outline-none transition-all bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
                   >
                     <option value="">Select a subject</option>
-                    <option value="therapy">Individual Therapy</option>
-                    <option value="movement">Movement Therapy</option>
-                    <option value="consultation">Consultation</option>
+                    <option value="therapy">Soul Tales</option>
+                    <option value="movement">Young Soul</option>
+                    <option value="consultation">Kaifiyat</option>
                     <option value="other">Other Inquiry</option>
                   </select>
                 </div>

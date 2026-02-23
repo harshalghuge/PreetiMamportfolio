@@ -41,7 +41,7 @@ const Header = () => {
         <div
           className={`mx-auto w-[92%] lg:w-[80%] transition-all duration-300 ${
             scrolled && !mobileMenuOpen
-              ? "bg-black backdrop-blur-md shadow-2xl rounded-full"
+              ? "bg-white/20 backdrop-blur-md shadow-2xl rounded-full"
               : "bg-transparent"
           }`}
         >

@@ -8,7 +8,7 @@ export const About = () => {
     {
       title: "The Breaking Open",
       image:
-        "https://media.istockphoto.com/id/1272104162/photo/farmer-woman-silhouette-standing-used-a-tablet-in-the-sugar-cane-plantation-in-the-background.jpg?s=612x612&w=0&k=20&c=C-s6Rzm_WxL0X5V_MP3AOJtbS--ulCckk2XXr7YsQEE=",
+        "../images/BreakingOpen1.png",
       paragraphs: [
         "For 18 years, I designed spaces. Beautiful ones. Homes where families were supposed to thrive. Offices where people were supposed to feel inspired.",
         "I was good at it. Successful. But inside? I was disappearing.",
@@ -54,7 +54,7 @@ export const About = () => {
     {
       title: "The Work Now",
       image:
-        "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=2069&auto=format&fit=crop",
+        "../images/WorkWithme.webp",
       paragraphs: [
         "Today, I do three things:",
         "Through Young SoulTales, I give children the emotional literacy I wish I'd had at 7, teaching them to understand themselves before the world teaches them to disconnect.",
@@ -248,39 +248,7 @@ export const About = () => {
         </div>
       </section> */}
 
-      {/* --- APPROACH --- */}
-      <section className="py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col lg:flex-row gap-20 items-center">
-            <div className="w-full lg:w-1/2">
-              <img
-                src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=2070&auto=format&fit=crop"
-                className={`${aboutImageClass} rounded-sm shadow-xl`}
-                alt="Process"
-              />
-            </div>
-            <motion.div {...fadeUp} className="w-full lg:w-1/2 space-y-8">
-              <h2 className="font-serif text-5xl font-light">My Approach</h2>
-              <p className="text-xl font-light text-stone-600 leading-relaxed">
-                I believe in meeting you where you are. Whether you're dealing
-                with trauma, navigating life transitions, or seeking deeper
-                self-understanding, my approach combines evidence-based therapy
-                with creative, body-centered practices.
-              </p>
-              <div className="h-px w-full bg-stone-100" />
-              <p className="text-xl font-light text-stone-600 leading-relaxed">
-                Drawing from my design background, I help you create new
-                internal architectures—spaces within yourself where healing and
-                growth can flourish.
-              </p>
-              <p className="text-xl font-serif italic text-stone-800">
-                Movement becomes a language when words aren't enough. Expression
-                becomes healing when we honor what the body holds.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+     
 
       {/* --- SEVEN TRUTHS --- */}
       <section className="py-32 px-6 bg-[#D9CCBC] text-stone-800">
