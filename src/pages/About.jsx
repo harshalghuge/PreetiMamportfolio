@@ -8,7 +8,7 @@ export const About = () => {
     {
       title: "The Breaking Open",
       image:
-        "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1974&auto=format&fit=crop",
+        "https://media.istockphoto.com/id/1272104162/photo/farmer-woman-silhouette-standing-used-a-tablet-in-the-sugar-cane-plantation-in-the-background.jpg?s=612x612&w=0&k=20&c=C-s6Rzm_WxL0X5V_MP3AOJtbS--ulCckk2XXr7YsQEE=",
       paragraphs: [
         "For 18 years, I designed spaces. Beautiful ones. Homes where families were supposed to thrive. Offices where people were supposed to feel inspired.",
         "I was good at it. Successful. But inside? I was disappearing.",
@@ -37,7 +37,7 @@ export const About = () => {
     {
       title: "The Missing Education",
       image:
-        "https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=2070&auto=format&fit=crop",
+        "https://media.gettyimages.com/id/111816248/photo/young-student-looking-out-windows-of-classroom.jpg?s=2048x2048&w=gi&k=20&c=NPgZlkn_1mJSCdjUU8K--EyC1zTr2iWWxPk_3c5YLfM=",
       paragraphs: [
         "We learn math. We learn language. We learn history.",
         "But no one teaches us how to understand our own hearts.",
