@@ -95,16 +95,17 @@ export const About = () => {
      <section className="relative h-[380px] flex items-center justify-center overflow-hidden">
         <div className="bg-white "></div>
         <div
-          className="absolute inset-0 bg-cover bg-center bg-fixed rounded-b-[2rem]
-             bg-[url('../images/aboutBg_mobile.JPEG')]
-             md:bg-[url('../images/IMG_4276.JPEG')]"
+          className="absolute inset-0 bg-cover bg-center bg-fixed rounded-b-[2rem] 
+             bg-[url('../images/cover_abt3.JPEG')]
+             md:bg-[url('../images/cover_abt2.JPEG')]
+            "
         >
           <div className="absolute inset-0 bg-black/40 rounded-b-[2rem]"></div>
         </div>
 
         <div className="relative z-10 text-center text-white px-6">
           <h1 className="font-serif text-6xl md:text-7xl lg:text-8xl font-light mb-6">
-            Preeti Toraskar
+            Who I am
           </h1>
           <p className="text-xl md:text-2xl font-light tracking-wider">
             Psychotherapist · Spatial Designer · Movement Therapist
@@ -115,13 +116,13 @@ export const About = () => {
       {/* --- WHO I AM (Poster Style) --- */}
       <section id="who-i-am" className="py-22 px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
+          <div className="grid lg:grid-cols-12 gap-12 items-start">
             <motion.div {...fadeUp} className="lg:col-span-7">
-              <h2 className="font-serif text-4xl lg:text-6xl mb-6 text-stone-800">
-                Who I am
-              </h2>
+              {/* <h2 className="font-serif text-4xl lg:text-6xl mb-6 text-stone-800">
+                - About me
+              </h2> */}
 
-              <div className="max-w-xl space-y-8 text-xl text-stone-600 leading-relaxed font-light">
+              <div className="max-w-xl space-y-8  text-xl text-stone-600 leading-relaxed font-light">
                 <p>
                   I'm Preeti - and I spent years searching for something I
                   couldn't name.

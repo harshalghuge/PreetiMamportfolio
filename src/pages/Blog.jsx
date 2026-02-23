@@ -554,8 +554,8 @@ export function Blog() {
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 font-serif text-gray-900">
         {/* ----------------- PAGE HERO ----------------- */}
-        <section className="text-center pt-16 md:pt-24 pb-14">
-          <p className="text-[10px] uppercase tracking-[0.22em] text-gray-400 font-semibold mb-4">
+        <section className="text-center pt-20 md:pt-24 pb-14">
+          <p className="text-[10px] uppercase tracking-[0.22em] text-gray-400 font-semibold mb-4 mt-4">
             The Creative Room
           </p>
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-none mb-4">
