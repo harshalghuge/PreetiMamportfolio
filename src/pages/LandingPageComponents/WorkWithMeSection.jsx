@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const offerings = [
@@ -89,14 +89,25 @@ const alternatingThemes = [
 
 const WorkWithMeSection = () => {
   const sectionRefs = useRef([]);
-  const [isMobile, setIsMobile] = useState(false);
+
+  // FIX 1: Removed useState(false) for isMobile.
+  // The problem: useState initialises as false, then setIsMobile(true) fires
+  // AFTER the first render inside useEffect. So on mobile, the observer was
+  // set up with isMobile=false (wrong), attaching heavy transitions and wrong
+  // delay values before the state update could correct things — causing jank.
+  // Fix: read matchMedia synchronously in a useRef so the value is correct
+  // from the very first render with zero re-renders needed.
+  const isMobileRef = useRef(
+    typeof window !== "undefined"
+      ? window.matchMedia("(max-width: 767px)").matches
+      : false
+  );
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isMobileView = window.matchMedia("(max-width: 767px)").matches;
-    setIsMobile(isMobileView);
+    const isMobile = isMobileRef.current;
 
-    if (prefersReducedMotion || isMobileView) {
+    if (prefersReducedMotion || isMobile) {
       sectionRefs.current.forEach((node) => {
         if (!node) return;
         node.classList.add("opacity-100", "translate-y-0");
@@ -109,24 +120,39 @@ const WorkWithMeSection = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          entry.target.classList.add("translate-y-0", "opacity-100");
-          entry.target.classList.remove("translate-y-10", "opacity-0");
+
+          // FIX 2: Use inline styles for the reveal animation instead of
+          // toggling Tailwind classes. When both translate-y-0 and translate-y-10
+          // exist at the same time (a timing edge case), Tailwind's specificity
+          // makes the transition silently break. Inline styles have no conflict.
+          entry.target.style.opacity = "1";
+          entry.target.style.transform = "translateY(0)";
+
+          // FIX 3: Release will-change after the animation finishes so the
+          // browser can free the GPU compositor layer. Keeping will-change
+          // permanently on mobile degrades scroll performance for the whole page.
+          entry.target.addEventListener(
+            "transitionend",
+            () => { entry.target.style.willChange = "auto"; },
+            { once: true }
+          );
+
           observer.unobserve(entry.target);
         });
       },
       { threshold: 0.12, rootMargin: "0px 0px -45px 0px" }
     );
 
-    sectionRefs.current.forEach((node) => {
+    sectionRefs.current.forEach((node, i) => {
       if (!node) return;
-      node.classList.add(
-        "transition-all",
-        "duration-700",
-        "ease-out",
-        "transform-gpu",
-        "translate-y-10",
-        "opacity-0"
-      );
+      // FIX 2 (continued): initial hidden state via inline styles (not classes).
+      node.style.opacity = "0";
+      node.style.transform = "translateY(40px)";
+      node.style.transition = "opacity 0.7s ease-out, transform 0.7s ease-out";
+      // FIX 1 (continued): transitionDelay now set here where isMobile is
+      // guaranteed correct, not in JSX where the stale state value was used.
+      node.style.transitionDelay = `${i * 110}ms`;
+      node.style.willChange = "opacity, transform";
       observer.observe(node);
     });
 
@@ -137,7 +163,7 @@ const WorkWithMeSection = () => {
     <div className="w-full overflow-x-clip bg-[#faf4f4]">
       <section className="relative flex h-[320px] items-center justify-center overflow-hidden sm:h-[360px] md:h-[380px]">
         <div className="absolute inset-0 bg-cover bg-center bg-[url('../images/aboutBg_mobile.JPEG')] md:bg-[url('../images/IMG_4276.JPEG')] lg:bg-fixed">
-          <div className="absolute inset-0  bg-black/45"></div>
+          <div className="absolute inset-0 bg-black/45"></div>
         </div>
 
         <div className="relative z-10 max-w-4xl px-5 text-center text-white sm:px-6">
@@ -161,7 +187,8 @@ const WorkWithMeSection = () => {
                 key={item.title}
                 ref={(el) => (sectionRefs.current[index] = el)}
                 className="mx-auto w-full max-w-7xl px-4 sm:px-5 md:px-8"
-                style={{ transitionDelay: isMobile ? "0ms" : `${index * 110}ms` }}
+                // transitionDelay removed from here — now set in useEffect
+                // where isMobile is guaranteed to be the correct value.
               >
                 <div
                   className="grid items-stretch overflow-hidden border-y md:min-h-[520px] md:grid-cols-2"

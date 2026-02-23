@@ -308,7 +308,7 @@ export const About = () => {
             href="/contact"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-block px-16 py-5 border border-white text-white hover:bg-white hover:text-black transition-all duration-300 text-sm uppercase tracking-[0.3em]"
+            className="inline-block px-14  rounded-2xl py-5 border border-white text-white hover:bg-white hover:text-black transition-all duration-300 text-sm uppercase tracking-[0.02em] md:tracking-[0.3em]"
           >
             Book a Discovery Call
           </motion.a>

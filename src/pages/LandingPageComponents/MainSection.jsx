@@ -87,7 +87,7 @@ const MainSection = () => {
                 : "opacity-0 -translate-x-8"
             }`}
           >
-            <div className="w-12 h-[1px] bg-[#8B7355]" />
+            <div className="w-12 h-[1px] hidden md:block bg-[#8B7355]" />
             <span className="text-sm tracking-[0.3em] text-[#8B7355] font-light uppercase">
               About
             </span>
@@ -96,7 +96,7 @@ const MainSection = () => {
           {/* Main Content Grid */}
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
             {/* Text Content */}
-            <div className="lg:col-span-6 space-y-8 text-center lg:text-left">
+            <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
               <h2
                 ref={para1Ref}
                 className={`text-4xl md:text-5xl lg:text-6xl font-serif text-[#1D1A13] leading-[1.1] transition-all duration-700 delay-100 ${
@@ -170,9 +170,9 @@ const MainSection = () => {
 
       {/* ================= BOTTOM SECTION ================= */}
       <section className="w-full bg-[#F7F4EE]">
-        <div className="grid">
+        <div className="grid ">
           {/* Journey Section */}
-          <div className="flex flex-col items-center justify-center py-2">
+          <div className="flex flex-col items-center justify-center py-10">
             <JourneySection />
           </div>
         </div>
