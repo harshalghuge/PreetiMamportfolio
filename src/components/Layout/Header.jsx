@@ -79,33 +79,13 @@ const Header = () => {
                     );
                   }
                 )}
-                 {/* BLOG → WordPress */}
-                {/* Old external blog nav (kept as requested)
-                <a
-                  href="https://www.preetitoraskar.com/blog"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="nav-link"
-                >
-                  BLOG
-                </a>
-                */}
                 <Link
                   to="/blog"
                   className={`nav-link ${isBlogPage ? "!text-black after:!bg-black" : ""}`}
                 >
                   BLOG
                 </Link>
-                <Link
-                  to="/get-started"
-                  className={`border px-6 py-1 rounded-full transition ${
-                    isBlogPage
-                      ? "text-black border-black hover:bg-black hover:text-white"
-                      : "text-white border-white hover:bg-white hover:text-black"
-                  }`}
-                >
-                  GET STARTED
-                </Link>
+                
               </nav>
 
               {/* Hamburger */}

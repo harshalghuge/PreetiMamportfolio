@@ -427,15 +427,36 @@ function Newsletter() {
   const [submitted, setSubmitted] = useState(false);
   const [err, setErr] = useState("");
 
-  const submit = () => {
-    if (!email.includes("@") || !email.includes(".")) {
-      setErr("Please enter a valid email.");
-      return;
+  const submit = async () => {
+  if (!email.includes("@") || !email.includes(".")) {
+    setErr("Please enter a valid email.");
+    return;
+  }
+
+  setErr("");
+
+  try {
+    const res = await fetch(
+      "https://blog.preetitoraskar.com/wp-json/newsletter/v1/subscribe",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Subscription failed");
     }
-    setErr("");
-    // TODO: wire to Mailchimp / WPForms / ConvertKit
+
     setSubmitted(true);
-  };
+
+  } catch (err) {
+    setErr(err.message);
+  }
+};
 
   return (
     <div className="bg-gray-900 text-white rounded-2xl px-6 py-16 text-center mb-20">
