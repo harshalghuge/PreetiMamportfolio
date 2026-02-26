@@ -12,7 +12,7 @@ const WorkTogether = () => {
   const cards = [
     {
       number: "01",
-      title: "Young Soul'Tales",
+      title: "Young Soul Tales",
       subtitle: "For Children & Parents",
       quote: "The Missing Education",
       description:
@@ -24,7 +24,7 @@ const WorkTogether = () => {
     },
     {
       number: "02",
-      title: "Soul'Tales",
+      title: "Soul Tales",
       subtitle: "For Adults",
       quote: "The Space Between",
       description:
