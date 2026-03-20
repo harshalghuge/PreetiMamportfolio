@@ -7,7 +7,7 @@ const WP_BASE = "https://blog.preetitoraskar.com/wp-json/wp/v2";
 const CATEGORIES = [
   { id: "all", label: "All Posts" },
   { id: "soultales", label: "SoulTales" }, 
-  { id: "youngsoul", label: "YoungSoul" },
+  { id: "youngsoul", label: "Young SoulTales" },
   { id: "kaifiyat", label: "Kaifiyat" },
 ];
 

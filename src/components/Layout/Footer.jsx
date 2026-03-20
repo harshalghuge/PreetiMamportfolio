@@ -6,7 +6,7 @@ export const Footer = () => {
   const siteName = 'Preeti'
   const socialLinks = {
     instagram: PORTFOLIO_INFO.social?.instagram || 'https://instagram.com',
-    linkedin: PORTFOLIO_INFO.social?.linkedin || 'https://linkedin.com',
+    linkedin: PORTFOLIO_INFO.social?.linkedin || 'https://www.linkedin.com/in/i-preeti/',
     facebook: PORTFOLIO_INFO.social?.facebook || 'https://facebook.com',
   }
 
@@ -39,11 +39,11 @@ export const Footer = () => {
                 </svg>
               </a>
 
-              <a href={socialLinks.facebook} target="_blank" rel="noreferrer" aria-label="Facebook">
+              {/* <a href={socialLinks.facebook} target="_blank" rel="noreferrer" aria-label="Facebook">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M13.5 21v-7h2.35l.4-3h-2.75V9.2c0-.87.24-1.46 1.49-1.46h1.59V5.06A21 21 0 0 0 14.25 5C11.93 5 10.5 6.4 10.5 8.95V11H8v3h2.5v7h3z" />
                 </svg>
-              </a>
+              </a> */}
             </div>
           </div>
         </div>

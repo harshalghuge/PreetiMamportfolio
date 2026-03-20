@@ -62,7 +62,7 @@ const Header = () => {
 
               {/* Desktop Nav */}
               <nav className="hidden lg:flex gap-8 text-l font-bold">
-                {["HOME", "ABOUT", "WORK WITH ME", "CONTACT"].map(
+                {["HOME", "ABOUT", "BLOG", "WORK WITH ME", "CONTACT"].map(
                   (item) => {
                     const path =
                       item === "HOME"
@@ -79,13 +79,6 @@ const Header = () => {
                     );
                   }
                 )}
-                <Link
-                  to="/blog"
-                  className={`nav-link ${isBlogPage ? "!text-black after:!bg-black" : ""}`}
-                >
-                  BLOG
-                </Link>
-                
               </nav>
 
               {/* Hamburger */}
@@ -133,7 +126,7 @@ const Header = () => {
         }`}
       >
         <nav className="h-full flex flex-col items-center justify-center  space-y-8 text-white text-lg tracking-widest">
-          {["HOME", "ABOUT", "WORK WITH ME", "BLOG", "CONTACT"].map((item) => {
+          {["HOME", "ABOUT", "BLOG", "WORK WITH ME", "CONTACT"].map((item) => {
             const path =
               item === "HOME"
                 ? "/"

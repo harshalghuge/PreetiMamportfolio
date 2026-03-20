@@ -8,7 +8,7 @@ export const About = () => {
     {
       title: "The Breaking Open",
       image:
-        "../images/BreakingOpen1.png",
+        "../images/breakDown.avif",
       paragraphs: [
         "For 18 years, I designed spaces. Beautiful ones. Homes where families were supposed to thrive. Offices where people were supposed to feel inspired.",
         "I was good at it. Successful. But inside? I was disappearing.",
@@ -22,7 +22,7 @@ export const About = () => {
     {
       title: "The Searching",
       image:
-        "https://images.unsplash.com/photo-1474418397713-7ede21d49118?q=80&w=1974&auto=format&fit=crop",
+        "../images/TheSearching.jpg",
       paragraphs: [
         "I broke. And in breaking, I finally started looking for answers.",
         "Not in the places I'd been taught to look, not in achievement or productivity or being enough. But in places that scared me. In my body. In my past. In the parts of myself I'd learned to hide.",
@@ -37,7 +37,7 @@ export const About = () => {
     {
       title: "The Missing Education",
       image:
-        "https://media.gettyimages.com/id/111816248/photo/young-student-looking-out-windows-of-classroom.jpg?s=2048x2048&w=gi&k=20&c=NPgZlkn_1mJSCdjUU8K--EyC1zTr2iWWxPk_3c5YLfM=",
+        "../images/MissingEducation.png",
       paragraphs: [
         "We learn math. We learn language. We learn history.",
         "But no one teaches us how to understand our own hearts.",

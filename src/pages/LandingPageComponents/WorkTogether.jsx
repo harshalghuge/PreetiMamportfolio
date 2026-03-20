@@ -12,7 +12,7 @@ const WorkTogether = () => {
   const cards = [
     {
       number: "01",
-      title: "Young Soul Tales",
+      title: "Young SoulTales",
       subtitle: "For Children & Parents",
       quote: "The Missing Education",
       description:
@@ -24,7 +24,7 @@ const WorkTogether = () => {
     },
     {
       number: "02",
-      title: "Soul Tales",
+      title: "SoulTales",
       subtitle: "For Adults",
       quote: "The Space Between",
       description:
@@ -90,8 +90,8 @@ const WorkTogether = () => {
     <section ref={sectionRef} className="w-full bg-[#e9e6dc]">
 
       {/* Header */}
-      <div className="py-14 px-4 text-center max-w-4xl mx-auto">
-        <h2 className="text-4xl md:text-6xl font-serif text-[#2a2a2a] mb-6">
+      <div className="pt-8 pb-10 px-4 text-center max-w-4xl mx-auto">
+        <h2 className="text-4xl md:text-6xl font-serif text-[#2a2a2a] mb-4">
           Three Paths, One Philosophy
         </h2>
         <p className="text-[16px] text-gray-600 leading-relaxed">
@@ -101,18 +101,18 @@ const WorkTogether = () => {
       </div>
 
       {/* Cards Container */}
-      <div className="cards-container w-full min-h-screen pt-[30px] pb-[50px] border-t-2 border-b-2 border-dashed border-[#d0cdc3]">
+      <div className="cards-container w-full min-h-screen pt-4 pb-12 border-t border-b border-[#d7d2c7]">
         <div className="cards w-full max-w-[1200px] mx-auto px-4 md:px-8 lg:px-12">
           {cards.map((card, index) => (
             <div
               key={card.number}
               ref={(el) => (wrappersRef.current[index] = el)}
-              className="card-wrapper w-full mb-[50px] last:mb-0"
+              className="card-wrapper w-full mb-10 last:mb-0"
               style={{ perspective: "500px" }}
             >
               <div
                 ref={(el) => (cardsRef.current[index] = el)}
-                className="card w-full bg-white rounded-3xl overflow-hidden shadow-2xl"
+                className="card w-full overflow-hidden rounded-[32px] border border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(71,60,46,0.14)] backdrop-blur-sm"
               >
                 <div
                   className={`grid items-stretch md:grid-cols-2 md:min-h-[520px] ${
@@ -125,7 +125,7 @@ const WorkTogether = () => {
                     index % 2 === 1 ? "md:col-start-2" : ""
                   }`}
                 >
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30 group-hover:from-black/0 group-hover:to-black/20 transition-all duration-500 z-10" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/30 group-hover:from-black/0 group-hover:to-black/20 transition-all duration-500 z-10" />
                     <img
                       src={card.image}
                       alt={card.title}
@@ -142,13 +142,14 @@ const WorkTogether = () => {
 
                   {/* Content */}
                   <div
-                    className={`h-full flex flex-col justify-center p-6 md:p-12 lg:p-16 ${
+                    className={`relative h-full flex flex-col justify-center p-6 md:p-12 lg:p-16 ${
                       index % 2 === 1 ? "md:col-start-1" : ""
                     }`}
                     style={{ backgroundColor: card.bgColor }}
                   >
+                    <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.65),transparent_45%)] pointer-events-none" />
                     <span
-                      className="inline-block mb-5 px-5 py-2 rounded-full text-xs tracking-widest uppercase self-start font-semibold"
+                      className="relative inline-block mb-5 px-5 py-2 rounded-full text-xs tracking-[0.24em] uppercase self-start font-semibold border border-white/60 shadow-sm"
                       style={{
                         backgroundColor: card.color + "25",
                         color: card.color,
@@ -157,26 +158,26 @@ const WorkTogether = () => {
                       {card.subtitle}
                     </span>
 
-                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-serif mb-4 text-[#1a1a1a] leading-tight">
+                    <h3 className="relative text-3xl md:text-4xl lg:text-5xl font-serif mb-4 text-[#1a1a1a] leading-tight">
                       {card.title}
                     </h3>
 
                     <p
-                      className="text-xl md:text-2xl lg:text-3xl font-serif italic mb-6 leading-relaxed"
+                      className="relative text-xl md:text-2xl lg:text-3xl font-serif italic mb-6 leading-relaxed"
                       style={{ color: card.color }}
                     >
                       "{card.quote}"
                     </p>
 
-                    <p className="text-base lg:text-lg text-gray-700 leading-relaxed mb-8">
+                    <p className="relative text-base lg:text-lg text-gray-700 leading-relaxed mb-8 max-w-xl">
                       {card.description}
                     </p>
 
                     <button
-                      className="group self-start px-8 py-3.5 rounded-full text-white text-sm font-medium tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-xl inline-flex items-center gap-2"
+                      className="group relative self-start px-8 py-3.5 rounded-full text-white text-sm font-medium tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-xl inline-flex items-center gap-2"
                       style={{
                         backgroundColor: card.color,
-                        boxShadow: `0 4px 14px ${card.color}40`,
+                        boxShadow: `0 10px 24px ${card.color}35`,
                       }}
                     >
                       <span>Explore Journey</span>
