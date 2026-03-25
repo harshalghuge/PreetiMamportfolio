@@ -24,7 +24,7 @@ const offerings = [
     description:
       "A 90-minute guided experience in the art of being truly heard, creating room for authentic connection and emotional release.",
     meta: "In-person | 90 Minutes | Monthly",
-    image: "/images/IMG8.jpeg",
+    image: "/images/IMG8.jpg",
     theme: {
       bg: "#e4eee7",
       border: "#b8ccb9",
@@ -40,7 +40,7 @@ const offerings = [
     description:
       "Immersive residential experiences blending shadow work, person-centered presence, and somatic practices in carefully held spaces.",
     meta: "Residential | Multi-day | Limited Spots",
-    image: "/images/IMG13.jpeg",
+    image: "/images/IMG13.jpg",
     theme: {
       bg: "#f0e3e6",
       border: "#d1b8c2",
@@ -56,7 +56,7 @@ const offerings = [
     description:
       "Bring emotional intelligence and human skills to your teams through practical sessions on self-awareness, listening, and leadership.",
     meta: "In-person or Virtual | Customised",
-    image: "/images/IMG14.jpeg",
+    image: "/images/IMG14.jpg",
     theme: {
       bg: "#e1e8f1",
       border: "#b8c6da",
