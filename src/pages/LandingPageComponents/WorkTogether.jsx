@@ -30,7 +30,7 @@ const WorkTogether = () => {
       description:
         "Life isn't about birth and death, it's about everything in between. Transformational retreats for adults.",
       image:
-        "../images/IMG9.jpg",
+        "/images/IMG9.jpeg",
       color: "#c8886f",
       bgColor: "#faf7f4",
     },

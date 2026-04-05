@@ -162,7 +162,7 @@ const WorkWithMeSection = () => {
   return (
     <div className="w-full overflow-x-clip bg-[#faf4f4]">
       <section className="relative flex h-[320px] items-center justify-center overflow-hidden sm:h-[360px] md:h-[380px]">
-        <div className="absolute inset-0 bg-cover bg-center bg-[url('../images/aboutBg_mobile.JPEG')] md:bg-[url('../images/IMG_4276.JPEG')] lg:bg-fixed">
+        <div className="absolute inset-0 bg-cover bg-center bg-[url('/images/aboutBg_mobile.JPEG')] md:bg-[url('/images/IMG_4276.JPEG')] lg:bg-fixed">
           <div className="absolute inset-0 bg-black/45"></div>
         </div>
 

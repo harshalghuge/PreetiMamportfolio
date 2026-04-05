@@ -7,7 +7,9 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const isBlogPage = location.pathname.startsWith("/blog");
+  const isDarkTextPage =
+    location.pathname.startsWith("/blog") ||
+    location.pathname.startsWith("/contact");
 
   /* Header scroll behavior */
   useEffect(() => {
@@ -54,7 +56,7 @@ const Header = () => {
               {/* Logo */}
               <h1
                 className={`text-4xl md:text-6xl font-serif font-light ${
-                  isBlogPage ? "text-black" : "text-white"
+                  isDarkTextPage ? "text-black" : "text-white"
                 }`}
               >
                 Preeti
@@ -72,7 +74,7 @@ const Header = () => {
                       <Link
                         key={item}
                         to={path}
-                        className={`nav-link ${isBlogPage ? "!text-black after:!bg-black" : ""}`}
+                        className={`nav-link ${isDarkTextPage ? "!text-black after:!bg-black" : ""}`}
                       >
                         {item}
                       </Link>
@@ -89,21 +91,21 @@ const Header = () => {
                 <div className="space-y-1.5">
                   <span
                     className={`block w-7 h-0.5 transition ${
-                      isBlogPage ? "bg-black" : "bg-white"
+                      isDarkTextPage ? "bg-black" : "bg-white"
                     } ${
                       mobileMenuOpen && "rotate-45 translate-y-2"
                     }`}
                   />
                   <span
                     className={`block w-7 h-0.5 transition ${
-                      isBlogPage ? "bg-black" : "bg-white"
+                      isDarkTextPage ? "bg-black" : "bg-white"
                     } ${
                       mobileMenuOpen && "opacity-0"
                     }`}
                   />
                   <span
                     className={`block w-7 h-0.5 transition ${
-                      isBlogPage ? "bg-black" : "bg-white"
+                      isDarkTextPage ? "bg-black" : "bg-white"
                     } ${
                       mobileMenuOpen && "-rotate-45 -translate-y-2"
                     }`}

@@ -84,8 +84,8 @@ export const About = () => {
         <div className="bg-white "></div>
         <div
           className="absolute inset-0 bg-cover bg-center bg-fixed rounded-b-[2rem]
-             bg-[url('../images/IMG6.JPEG')]
-             md:bg-[url('../images/IMG_4276.JPEG')]"
+             bg-[url('/images/aboutBg_mobile.JPEG')]
+             md:bg-[url('/images/IMG_4276.JPEG')]"
         >
           <div className="absolute inset-0 bg-black/40 rounded-b-[2rem]"></div>
         </div>

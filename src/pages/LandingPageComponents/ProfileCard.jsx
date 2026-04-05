@@ -22,7 +22,7 @@ export default function ProfileCard() {
   "
       >
         <img
-          src={"/HeroSectionBg/profile.JPEG"}
+          src={"/images/profile.JPEG"}
           alt="Profile Card"
           className="w-full h-full object-cover"
         />

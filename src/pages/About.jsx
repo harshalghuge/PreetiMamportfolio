@@ -8,7 +8,7 @@ export const About = () => {
     {
       title: "The Breaking Open",
       image:
-        "../images/breakDown.avif",
+        "/images/breakDown.jpg",
       paragraphs: [
         "For 18 years, I designed spaces. Beautiful ones. Homes where families were supposed to thrive. Offices where people were supposed to feel inspired.",
         "I was good at it. Successful. But inside? I was disappearing.",
@@ -22,7 +22,7 @@ export const About = () => {
     {
       title: "The Searching",
       image:
-        "../images/TheSearching.jpg",
+        "/images/TheSearching.jpg",
       paragraphs: [
         "I broke. And in breaking, I finally started looking for answers.",
         "Not in the places I'd been taught to look, not in achievement or productivity or being enough. But in places that scared me. In my body. In my past. In the parts of myself I'd learned to hide.",
@@ -37,7 +37,7 @@ export const About = () => {
     {
       title: "The Missing Education",
       image:
-        "../images/MissingEducation.png",
+        "/images/MissingEducation.png",
       paragraphs: [
         "We learn math. We learn language. We learn history.",
         "But no one teaches us how to understand our own hearts.",
@@ -54,7 +54,7 @@ export const About = () => {
     {
       title: "The Work Now",
       image:
-        "../images/WorkWithme.webp",
+        "/images/WorkWithme.webp",
       paragraphs: [
         "Today, I do three things:",
         "Through Young SoulTales, I give children the emotional literacy I wish I'd had at 7, teaching them to understand themselves before the world teaches them to disconnect.",
@@ -96,8 +96,8 @@ export const About = () => {
         <div className="bg-white "></div>
         <div
           className="absolute inset-0 bg-cover bg-center bg-fixed rounded-b-[2rem] 
-             bg-[url('../images/cover_abt3.JPEG')]
-             md:bg-[url('../images/cover_abt2.JPEG')]
+             bg-[url('/images/cover_abt3.JPEG')]
+             md:bg-[url('/images/cover_abt2.JPEG')]
             "
         >
           <div className="absolute inset-0 bg-black/40 rounded-b-[2rem]"></div>
