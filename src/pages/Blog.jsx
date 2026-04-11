@@ -717,7 +717,7 @@ export function Blog() {
 
       <main className="max-w-[1192px] mx-auto px-4 sm:px-8 lg:px-16 font-serif text-gray-900">
         {/* Page title + search */}
-        <section className="text-center pt-16 md:pt-26 pb-10 max-w-[680px] mx-auto">
+        <section className="text-center pt-24 md:pt-26 pb-10 max-w-[680px] mx-auto">
           <p className="text-[10px] uppercase tracking-[0.22em] text-gray-400 font-semibold mb-3">
             The Creative Room
           </p>

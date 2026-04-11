@@ -1,6 +1,7 @@
 ﻿import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,10 +18,10 @@ const WorkTogether = () => {
       quote: "The Missing Education",
       description:
         "Teaching children the emotional skills they deserve from the start, before the world teaches them to disconnect from themselves.",
-      image:
-        "/images/youngsoul1.jpeg",
+      image: "/images/youngsoul1.jpeg",
       color: "#f1a14b",
       bgColor: "#fef9f3",
+      Link: "https://youngsoultales.com/"
     },
     {
       number: "02",
@@ -29,10 +30,10 @@ const WorkTogether = () => {
       quote: "The Space Between",
       description:
         "Life isn't about birth and death, it's about everything in between. Transformational retreats for adults.",
-      image:
-        "/images/IMG9.jpeg",
+      image: "/images/IMG9.avif",
       color: "#c8886f",
       bgColor: "#faf7f4",
+      Link: "https://soultales.co/"
     },
     {
       number: "03",
@@ -41,10 +42,10 @@ const WorkTogether = () => {
       quote: "Healing Into Potential",
       description:
         "Healing isn't about fixing what's broken, it's about uncovering what was always whole.",
-      image:
-        "/images/kaifiat1.png",
+      image: "/images/kaifiat1.webp",
       color: "#d4a574",
       bgColor: "#f8f5f1",
+      Link: "https://kaifiyat.org/"
     },
   ];
 
@@ -59,7 +60,7 @@ const WorkTogether = () => {
         const card = cardElements[i];
         let scale = 1,
           rotation = 0;
-        
+
         if (i !== cardElements.length - 1) {
           scale = 0.9 + 0.025 * i;
           rotation = -10;
@@ -88,7 +89,6 @@ const WorkTogether = () => {
 
   return (
     <section ref={sectionRef} className="w-full bg-[#e9e6dc]">
-
       {/* Header */}
       <div className="pt-8 pb-10 px-4 text-center max-w-4xl mx-auto">
         <h2 className="text-4xl md:text-6xl font-serif text-[#2a2a2a] mb-4">
@@ -120,17 +120,21 @@ const WorkTogether = () => {
                   }`}
                 >
                   {/* Image */}
-                <div
-                  className={`relative h-[210px] md:h-full overflow-hidden group ${
-                    index % 2 === 1 ? "md:col-start-2" : ""
-                  }`}
-                >
+                  <div
+                    className={`relative h-[210px] md:h-full overflow-hidden group ${
+                      index % 2 === 1 ? "md:col-start-2" : ""
+                    }`}
+                  >
                     <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/30 group-hover:from-black/0 group-hover:to-black/20 transition-all duration-500 z-10" />
                     <img
                       src={card.image}
                       alt={card.title}
                       className="absolute inset-0 block w-full h-full object-cover object-center scale-105 group-hover:scale-110 transition-transform duration-700"
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
                     />
                     <div
                       className="absolute top-8 left-8 text-7xl md:text-9xl font-serif opacity-55 z-20 select-none"
@@ -173,28 +177,30 @@ const WorkTogether = () => {
                       {card.description}
                     </p>
 
-                    <button
-                      className="group relative self-start px-8 py-3.5 rounded-full text-white text-sm font-medium tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-xl inline-flex items-center gap-2"
-                      style={{
-                        backgroundColor: card.color,
-                        boxShadow: `0 10px 24px ${card.color}35`,
-                      }}
-                    >
-                      <span>Explore Journey</span>
-                      <svg
-                        className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                    <a href={card.Link} target="_blank" rel="noopener noreferrer">
+                      <button
+                        className="group relative self-start px-8 py-3.5 rounded-full text-white text-sm font-medium tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-xl inline-flex items-center gap-2"
+                        style={{
+                          backgroundColor: card.color,
+                          boxShadow: `0 10px 24px ${card.color}35`,
+                        }}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </button>
+                        <span>Explore Journey</span>
+                        <svg
+                          className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 8l4 4m0 0l-4 4m4-4H3"
+                          />
+                        </svg>
+                      </button>
+                    </a>
                   </div>
                 </div>
               </div>

@@ -7,19 +7,19 @@ const MainSection = () => {
     paragraph1: false,
     divider: false,
     paragraph2: false,
-    button: false,
+    accent: false,
   });
 
   const titleRef = useRef(null);
   const para1Ref = useRef(null);
   const dividerRef = useRef(null);
   const para2Ref = useRef(null);
-  const buttonRef = useRef(null);
+  const accentRef = useRef(null);
 
   useEffect(() => {
     const observerOptions = {
-      threshold: 0.1,
-      rootMargin: "0px 0px -40px 0px",
+      threshold: 0.05,
+      rootMargin: "0px 0px -10px 0px",
     };
 
     const observerCallback = (entries) => {
@@ -28,30 +28,15 @@ const MainSection = () => {
           const target = entry.target;
 
           if (target === titleRef.current) {
-            setTimeout(
-              () => setIsVisible((prev) => ({ ...prev, title: true })),
-              0,
-            );
+            setIsVisible((prev) => ({ ...prev, title: true }));
           } else if (target === para1Ref.current) {
-            setTimeout(
-              () => setIsVisible((prev) => ({ ...prev, paragraph1: true })),
-              50,
-            );
+            setIsVisible((prev) => ({ ...prev, paragraph1: true }));
           } else if (target === dividerRef.current) {
-            setTimeout(
-              () => setIsVisible((prev) => ({ ...prev, divider: true })),
-              100,
-            );
+            setIsVisible((prev) => ({ ...prev, divider: true }));
           } else if (target === para2Ref.current) {
-            setTimeout(
-              () => setIsVisible((prev) => ({ ...prev, paragraph2: true })),
-              150,
-            );
-          } else if (target === buttonRef.current) {
-            setTimeout(
-              () => setIsVisible((prev) => ({ ...prev, button: true })),
-              200,
-            );
+            setIsVisible((prev) => ({ ...prev, paragraph2: true }));
+          } else if (target === accentRef.current) {
+            setIsVisible((prev) => ({ ...prev, accent: true }));
           }
 
           observer.unobserve(target);
@@ -68,7 +53,7 @@ const MainSection = () => {
     if (para1Ref.current) observer.observe(para1Ref.current);
     if (dividerRef.current) observer.observe(dividerRef.current);
     if (para2Ref.current) observer.observe(para2Ref.current);
-    if (buttonRef.current) observer.observe(buttonRef.current);
+    if (accentRef.current) observer.observe(accentRef.current);
 
     return () => observer.disconnect();
   }, []);
@@ -81,10 +66,10 @@ const MainSection = () => {
           {/* Section Label */}
           <div
             ref={titleRef}
-            className={`flex items-center justify-center lg:justify-start gap-3 mb-10 md:mb-0 transition-all duration-700 ${
+            className={`flex items-center justify-center lg:justify-start gap-3 mb-10 md:mb-0 transition-all duration-300 ease-out ${
               isVisible.title
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-8"
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
             }`}
           >
             <div className="w-12 h-[1px] hidden md:block bg-[#8B7355]" />
@@ -99,10 +84,10 @@ const MainSection = () => {
             <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
               <h2
                 ref={para1Ref}
-                className={`text-4xl md:text-5xl lg:text-6xl font-serif text-[#1D1A13] leading-[1.1] transition-all duration-700 delay-100 ${
+                className={`text-4xl md:text-5xl lg:text-6xl font-serif text-[#1D1A13] leading-[1.1] transition-all duration-300 ease-out ${
                   isVisible.paragraph1
                     ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
+                    : "opacity-0 translate-y-4"
                 }`}
               >
                 Meet Preeti
@@ -111,7 +96,7 @@ const MainSection = () => {
               <div className="space-y-6">
                 <p
                   ref={dividerRef}
-                  className={`text-lg md:text-xl leading-relaxed text-[#2D2A1F]/80 transition-all duration-700 delay-200 ${
+                  className={`text-lg md:text-xl leading-relaxed text-[#2D2A1F]/80 transition-all duration-300 ease-out ${
                     isVisible.divider
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-4"
@@ -124,7 +109,7 @@ const MainSection = () => {
 
                 <p
                   ref={para2Ref}
-                  className={`text-lg md:text-xl leading-relaxed text-[#2D2A1F]/80 transition-all duration-700 delay-300 ${
+                  className={`text-lg md:text-xl leading-relaxed text-[#2D2A1F]/80 transition-all duration-300 ease-out ${
                     isVisible.paragraph2
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-4"
@@ -134,7 +119,14 @@ const MainSection = () => {
                   education no one ever gave us: how to understand ourselves.
                 </p>
 
-                <p className="text-lg md:text-xl leading-relaxed text-[#2D2A1F] font-medium italic">
+                <p
+                  ref={accentRef}
+                  className={`text-lg md:text-xl leading-relaxed text-[#2D2A1F] font-medium italic transition-all duration-300 ease-out ${
+                    isVisible.accent
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-4"
+                  }`}
+                >
                   That became my life's work.
                 </p>
               </div>
@@ -150,7 +142,7 @@ const MainSection = () => {
                   {/* Image Container */}
                   <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl">
                     <img
-                      src="/images/IMG16.jpeg"
+                      src="/images/IMG16.webp"
                       alt="Preeti"
                       className="w-full h-full object-cover"
                     />

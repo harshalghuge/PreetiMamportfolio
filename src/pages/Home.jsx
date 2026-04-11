@@ -19,7 +19,7 @@ const Home = () => {
       <motion.div
         style={{
           backgroundPositionY: desktopBgY,
-          backgroundImage: `url("/images/IMG5.jpg")`,
+          backgroundImage: `url("/images/IMG5.webp")`,
           filter: "grayscale(100%) contrast(110%) brightness(72%)",
         }}
         className="absolute inset-0 bg-cover bg-center bg-fixed hidden md:block will-change-[background-position]"
@@ -29,7 +29,7 @@ const Home = () => {
       <div
         className="absolute inset-0 bg-cover bg-center bg-fixed block md:hidden"
         style={{
-          backgroundImage: `url("/images/mobilebg1.JPEG")`,
+          backgroundImage: `url("/images/mobilebg1.webp")`,
           filter: "grayscale(100%) contrast(108%) brightness(70%)",
         }}
       />

@@ -37,7 +37,7 @@ export const About = () => {
     {
       title: "The Missing Education",
       image:
-        "/images/MissingEducation.png",
+        "/images/MissingEducation.avif",
       paragraphs: [
         "We learn math. We learn language. We learn history.",
         "But no one teaches us how to understand our own hearts.",
