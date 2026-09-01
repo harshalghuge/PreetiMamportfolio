@@ -105,7 +105,7 @@ const FinalCTA = () => {
           <div className="mx-auto flex h-[340px] w-[220px] justify-center overflow-hidden sm:h-[420px] sm:w-[250px]">
            
               <img
-                src="/images/IMG10.webp"
+                src="/images/IMG10_50.webp"
                 alt="Final CTA visual"
                 loading="lazy"
                 className="w-full h-full object-cover rounded-[60%]"
