@@ -113,9 +113,9 @@ export const About = () => {
       {/* --- HERO SECTION --- */}
       {/* FIX: Removed bg-fixed (parallax) — it caused repaints on every scroll and reload issues.
                Replaced with a plain <img> tag for the background with object-cover. */}
-      <section className="relative h-[280px] sm:h-[320px] md:h-[380px] lg:h-[430px] flex items-center justify-center overflow-hidden rounded-b-[2rem]">
+      <section className="relative h-[280px] sm:h-[320px] md:h-[380px] lg:h-[330px] flex items-center justify-center overflow-hidden rounded-b-[2rem]">
         <img
-          src="/images/nprofile31.jpeg"
+          src="/images/nprofile2.jpeg"
           alt=""
           aria-hidden="true"
           loading="eager"
