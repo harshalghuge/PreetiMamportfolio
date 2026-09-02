@@ -245,7 +245,7 @@ export default function JourneySection() {
           <div className="w-full max-w-7xl mx-auto px-16 py-2 lg:py-10 relative z-10">
             {/* Header */}
             <div className="text-center mb-16">
-              <h2 className="text-4xl xl:text-5xl font-light text-stone-700 tracking-wide">
+              <h2 className="text-4xl xl:text-5xl font-light text-stone-700 tracking-wide mt-15">
                 The Journey So Far
               </h2>
               <div className="h-[3px] bg-gradient-to-r w-[25rem] mx-auto from-transparent via-[#8B7355] to-transparent transition-all duration-1000 delay-300 opacity-100 mt-3" />
