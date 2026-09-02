@@ -57,7 +57,13 @@ const Header = () => {
               <h1
                 className={`font-serif font-light transition-all duration-500 ${
                   scrolled ? "text-3xl md:text-4xl" : "text-4xl md:text-6xl"
-                } ${isDarkTextPage ? "text-black" : "text-white"}`}
+                } ${
+                  scrolled
+                    ? "text-white"
+                    : isDarkTextPage
+                      ? "text-black"
+                      : "text-white"
+                }`}
               >
                 Preeti
               </h1>
@@ -76,7 +82,11 @@ const Header = () => {
                         key={item}
                         to={path}
                         className={`nav-link ${
-                          isDarkTextPage ? "!text-black after:!bg-black" : ""
+                          scrolled
+                            ? "!text-white after:!bg-white"
+                            : isDarkTextPage
+                              ? "!text-black after:!bg-black"
+                              : "!text-white after:!bg-white"
                         }`}
                       >
                         {item}
@@ -94,19 +104,31 @@ const Header = () => {
                 <div className="space-y-1.5">
                   <span
                     className={`block w-7 h-0.5 transition ${
-                      isDarkTextPage ? "bg-black" : "bg-white"
+                      scrolled
+                        ? "bg-white"
+                        : isDarkTextPage
+                          ? "bg-black"
+                          : "bg-white"
                     } ${mobileMenuOpen && "rotate-45 translate-y-2"}`}
                   />
 
                   <span
                     className={`block w-7 h-0.5 transition ${
-                      isDarkTextPage ? "bg-black" : "bg-white"
+                      scrolled
+                        ? "bg-white"
+                        : isDarkTextPage
+                          ? "bg-black"
+                          : "bg-white"
                     } ${mobileMenuOpen && "opacity-0"}`}
                   />
 
                   <span
                     className={`block w-7 h-0.5 transition ${
-                      isDarkTextPage ? "bg-black" : "bg-white"
+                      scrolled
+                        ? "bg-white"
+                        : isDarkTextPage
+                          ? "bg-black"
+                          : "bg-white"
                     } ${mobileMenuOpen && "-rotate-45 -translate-y-2"}`}
                   />
                 </div>
