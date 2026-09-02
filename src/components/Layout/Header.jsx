@@ -29,35 +29,35 @@ const Header = () => {
   }, [mobileMenuOpen]);
 
   return (
-    < >
+    <>
+      {/* HEADER */}
       {/* HEADER */}
       <header
-        className={`absolute inset-x-0 z-[1030] transition-all duration-300 ease-out  ${
+        className={`fixed z-[1030] transition-all duration-500 ease-out ${
           scrolled && !mobileMenuOpen
-            ? "top-4"
-            : "top-0"
-            
+            ? "top-4 left-1/2 -translate-x-1/2 w-[70%] lg:w-[62%]"
+            : "top-0 left-0 w-full"
         }`}
       >
         {/* HEADER CONTAINER */}
         <div
-          className={`mx-auto w-[92%] lg:w-[80%] transition-all duration-300 ${
+          className={`mx-auto transition-all duration-500 ${
             scrolled && !mobileMenuOpen
-              ? "bg-white/20 backdrop-blur-md shadow-2xl rounded-full"
-              : "bg-transparent"
+              ? "bg-black/40 backdrop-blur-md shadow-2xl rounded-full "
+              : "bg-transparent lg:px-20"
           }`}
         >
           <div
-            className={`px-6 lg:px-10 ${
+            className={`px-6 lg:px-10 transition-all duration-500 ${
               scrolled ? "py-2" : "py-4"
             }`}
           >
             <div className="flex items-center justify-between">
               {/* Logo */}
               <h1
-                className={`text-4xl md:text-6xl font-serif font-light ${
-                  isDarkTextPage ? "text-black" : "text-white"
-                }`}
+                className={`font-serif font-light transition-all duration-500 ${
+                  scrolled ? "text-3xl md:text-4xl" : "text-4xl md:text-6xl"
+                } ${isDarkTextPage ? "text-black" : "text-white"}`}
               >
                 Preeti
               </h1>
@@ -70,16 +70,19 @@ const Header = () => {
                       item === "HOME"
                         ? "/"
                         : `/${item.toLowerCase().replace(/ /g, "-")}`;
+
                     return (
                       <Link
                         key={item}
                         to={path}
-                        className={`nav-link ${isDarkTextPage ? "!text-black after:!bg-black" : ""}`}
+                        className={`nav-link ${
+                          isDarkTextPage ? "!text-black after:!bg-black" : ""
+                        }`}
                       >
                         {item}
                       </Link>
                     );
-                  }
+                  },
                 )}
               </nav>
 
@@ -92,23 +95,19 @@ const Header = () => {
                   <span
                     className={`block w-7 h-0.5 transition ${
                       isDarkTextPage ? "bg-black" : "bg-white"
-                    } ${
-                      mobileMenuOpen && "rotate-45 translate-y-2"
-                    }`}
+                    } ${mobileMenuOpen && "rotate-45 translate-y-2"}`}
                   />
+
                   <span
                     className={`block w-7 h-0.5 transition ${
                       isDarkTextPage ? "bg-black" : "bg-white"
-                    } ${
-                      mobileMenuOpen && "opacity-0"
-                    }`}
+                    } ${mobileMenuOpen && "opacity-0"}`}
                   />
+
                   <span
                     className={`block w-7 h-0.5 transition ${
                       isDarkTextPage ? "bg-black" : "bg-white"
-                    } ${
-                      mobileMenuOpen && "-rotate-45 -translate-y-2"
-                    }`}
+                    } ${mobileMenuOpen && "-rotate-45 -translate-y-2"}`}
                   />
                 </div>
               </button>
@@ -118,7 +117,7 @@ const Header = () => {
       </header>
 
       {/* MOBILE FULLSCREEN MENU */}
-    
+
       <div
         className={`fixed inset-0 z-[1020] bg-black/10 backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)]
         ${
@@ -158,5 +157,5 @@ const Header = () => {
   );
 };
 
-export {Header};
+export { Header };
 export default Header;

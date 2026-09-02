@@ -115,7 +115,7 @@ export const About = () => {
                Replaced with a plain <img> tag for the background with object-cover. */}
       <section className="relative h-[220px] sm:h-[320px] md:h-[380px] lg:h-[330px] flex items-center justify-center overflow-hidden rounded-b-[2rem]">
         <img
-          src="/images/imgabtbg.jpg"
+          src="/images/abtbg.jpg"
           alt=""
           aria-hidden="true"
           loading="eager"
@@ -123,18 +123,18 @@ export const About = () => {
             absolute inset-0
             w-full h-full
             object-cover
-            object-[center_35%]
-            sm:object-[center_35%]
+            object-[center_10%]
+            sm:object-[center_45%]
             md:object-[center_30%]
             lg:object-[center_10%]
-            lg:-top-[400px]
+            lg:-top-[240px]
           "
         />
 
         <div className="absolute inset-0 bg-black/40 rounded-b-[2rem]" />
 
-        <div className="relative z-10 text-center text-white px-8 top-5">
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-light mb-6">
+        <div className="relative z-10 text-center text-white px-4 lg:px-8 top-5">
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-light mb-2 lg:mb-6">
             Who I am
           </h1>
 
