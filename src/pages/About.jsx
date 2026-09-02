@@ -115,7 +115,7 @@ export const About = () => {
                Replaced with a plain <img> tag for the background with object-cover. */}
       <section className="relative h-[280px] sm:h-[320px] md:h-[380px] lg:h-[330px] flex items-center justify-center overflow-hidden rounded-b-[2rem]">
         <img
-          src="/images/nprofile2.jpeg"
+          src="/images/imgabtbg.jpg"
           alt=""
           aria-hidden="true"
           loading="eager"
@@ -124,7 +124,7 @@ export const About = () => {
             w-full h-full
             object-cover
             object-center
-            -top-60
+            -top-100
           "
         />
 
@@ -175,7 +175,7 @@ export const About = () => {
               <div className="absolute -inset-4 border border-stone-200 z-0" />
               {/* FIX: Renamed mobilebg1.JPEG → mobilebg1.jpeg (lowercase) to avoid Linux case-sensitivity errors */}
               <img
-                src="/images/mobilebg1.jpeg"
+                src="/images/mobilebg1.webp"
                 className={`relative z-10 grayscale-[20%] hover:grayscale-0 transition-all duration-700 shadow-2xl ${aboutImageClass}`}
                 alt="Portrait of Preeti"
                 loading="eager"
