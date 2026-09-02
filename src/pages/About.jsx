@@ -8,7 +8,7 @@ export const About = () => {
     {
       title: "The Breaking Open",
       // FIX: renamed from breakDown.jpg → breakdown.jpg (use lowercase on server)
-      image: "/images/IMG_9961.JPG",
+      image: "/images/IMG_9961.jpg",
       paragraphs: [
         "For 18 years, I designed spaces. Beautiful ones. Homes where families were supposed to thrive. Offices where people were supposed to feel inspired.",
         "I was good at it. Successful. But inside? I was disappearing.",
@@ -53,7 +53,7 @@ export const About = () => {
     {
       title: "The Work Now",
       // FIX: renamed from WorkWithme.webp → workwithme.webp (use lowercase on server)
-      image: "/images/IMG_9973.JPEG",
+      image: "/images/IMG_9973.jpeg",
       paragraphs: [
         "Today, I do three things:",
         "Through Young SoulTales, I give children the emotional literacy I wish I'd had at 7, teaching them to understand themselves before the world teaches them to disconnect.",
