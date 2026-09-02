@@ -8,7 +8,7 @@ export const About = () => {
     {
       title: "The Breaking Open",
       // FIX: renamed from breakDown.jpg → breakdown.jpg (use lowercase on server)
-      image: "/images/IMG_9961.jpg",
+      image: "/images/img_9961.jpg",
       paragraphs: [
         "For 18 years, I designed spaces. Beautiful ones. Homes where families were supposed to thrive. Offices where people were supposed to feel inspired.",
         "I was good at it. Successful. But inside? I was disappearing.",
@@ -22,7 +22,7 @@ export const About = () => {
     {
       title: "The Searching",
       // FIX: renamed from TheSearching.jpg → thesearching.jpg (use lowercase on server)
-      image: "/images/IMG_99631.jpg",
+      image: "/images/img_99631.jpg",
       paragraphs: [
         "I broke. And in breaking, I finally started looking for answers.",
         "Not in the places I'd been taught to look, not in achievement or productivity or being enough. But in places that scared me. In my body. In my past. In the parts of myself I'd learned to hide.",
@@ -36,7 +36,7 @@ export const About = () => {
     {
       title: "The Missing Education",
       // FIX: renamed from MissingEducation.avif → missingeducation.avif (use lowercase on server)
-      image: "/images/IMG_9957.JPEG",
+      image: "/images/img_9957.jpeg",
       paragraphs: [
         "We learn math. We learn language. We learn history.",
         "But no one teaches us how to understand our own hearts.",
@@ -53,7 +53,7 @@ export const About = () => {
     {
       title: "The Work Now",
       // FIX: renamed from WorkWithme.webp → workwithme.webp (use lowercase on server)
-      image: "/images/IMG_9973.jpeg",
+      image: "/images/img_9973.jpeg",
       paragraphs: [
         "Today, I do three things:",
         "Through Young SoulTales, I give children the emotional literacy I wish I'd had at 7, teaching them to understand themselves before the world teaches them to disconnect.",
