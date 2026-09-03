@@ -39,7 +39,7 @@ const Home = () => {
 
       {/* Content Container */}
       <div className="">
-        <div className="mt-24  text-center">
+        <div className="mt-16  text-center">
           <div className="relative z-10 w-full">
             <div className="mx-auto max-w-7xl">
               <div className="max-w-5xl">

@@ -139,7 +139,7 @@ export const About = () => {
           </h1>
 
           <p className="text-xl md:text-2xl font-light tracking-wider">
-            Psychotherapist · Spatial Designer · Movement Therapist
+            Expressive Movement Therapist · Spatial Designer · Movement Therapist
           </p>
         </div>
       </section>

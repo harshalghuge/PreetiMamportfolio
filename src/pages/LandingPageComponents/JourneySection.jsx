@@ -7,7 +7,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 const JOURNEY_ITEMS = [
   { title: "Bachelor's in Arts", subtitle: "Psychology", year: "FOUNDATION", side: "left" },
   { title: "18 Years in Spatial Design", subtitle: "Creative expertise", year: "2006-2024", side: "right" },
-  { title: "Dr. Daniel Siegel Training", subtitle: "Putting Personalities into Practice", year: "2024", side: "left" },
+  { title: "Dr. Daniel Siegel Training", subtitle: "Putting Personalities into Practice", year: "2025", side: "left" },
   { title: "Transform Trauma", subtitle: "London, 2025", year: "2025", side: "right" },
   { title: "Trauma Congress", subtitle: "Barcelona, 2025", year: "2025", side: "left" },
   { title: "Master's", subtitle: "Expressive Movement Therapy", year: "2026", side: "right"}
